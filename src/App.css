@@ -1,0 +1,31 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.logoImg{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.mainContainer{
+    margin: 1rem;
+}
+.logo{
+    display: flex;
+    align-items: center;
+}
+.navItems{
+    display: flex;
+    text-decoration: none;
+    list-style: none;
+    gap: 2rem;
+    justify-content: end;
+}
+.navItems>li{
+    cursor: pointer;
+}
+.navItems>li:hover{
+    color: salmon;
+    transition: all 0.3s;
+}
