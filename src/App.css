@@ -1,6 +1,7 @@
 *{
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 .logoImg{
     width: 80px;
@@ -29,3 +30,71 @@
     color: salmon;
     transition: all 0.3s;
 }
+/* signup page */
+.signinTitle{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+::placeholder{
+    font-size: 20px;
+}
+.signinContainer{
+    width: 27vw;
+    margin: auto;
+    box-shadow: 2px 2px 4px gray;
+    padding: 60px 30px;
+    border-radius: 10px;
+    margin-top: 25vh;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.emptyMsg{
+    color: red;
+    font-size: 15px;
+}
+.btn-primary:disabled{
+    background-color: gray !important;
+}
+
+/* media queries */
+@media all and (max-width:1024px){
+    .signinContainer{
+        width: 60vw;
+        margin-top: 25vh;
+    }
+}
+@media all and (max-width:768px){
+    .signinContainer{
+        width: 60vw;
+        margin-top: 25vh;
+    }
+}
+@media all and (max-width:480px){
+    .signinContainer{
+        width: 80vw;
+        min-height: 50vh;
+        margin-top: 25vh;
+    }
+}
+@media all and (max-width:250px){
+    .signinContainer{
+        width: 80vw;
+        min-height: 50vh;
+        margin-top: 25vh;
+        padding: 10px;
+    }
+    ::placeholder{
+        font-size: 15px;
+    }
+    .signinTitle{
+        font-size: 19px;
+        font-weight: bold;
+    }
+}
+
+

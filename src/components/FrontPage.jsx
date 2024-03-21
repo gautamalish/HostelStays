@@ -1,4 +1,4 @@
-import hostel from "./images/hostel.jpg"
+import hostel from "../images/hostel.jpg"
 export default function FrontPage(){
     return(
         <div className="frontPageContainer">
