@@ -96,5 +96,11 @@ form{
         font-weight: bold;
     }
 }
+/* forgot password */
+.loginBtn{
+    min-width: 10vw;
+    margin: auto;
+    background-color: rgba(2, 14, 14, 0.863);
+}
 
 

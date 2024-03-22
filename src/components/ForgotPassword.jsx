@@ -4,33 +4,36 @@ import { Alert } from "react-bootstrap"
 import {signInWithEmailAndPassword} from "firebase/auth"
 import {auth} from "../context/firebase"
 import { useAuth } from "../context/AuthContext"
-export default function Signin(){
+export default function ForgotPassword(){
     const navigate=useNavigate()
+    const loginNavigate=useNavigate()
     const emailRef=useRef(null)
-    const [formData,setFormData]=useState({email:"",password:""})
+    const [formData,setFormData]=useState({email:""})
     const [error,setError]=useState("")
-    const { login } = useAuth()
+    const [message,setMessage]=useState("")
+    const { resetPassword } = useAuth()
     const [loading,setLoading]=useState(false)
     useEffect(()=>{
         emailRef.current.focus()
     },[])
     async function handleSubmit(e) {
         e.preventDefault()
-        if(!formData.email || !formData.password){
-            setError("Please fill up all the fields")
+        if(!formData.email){
+            setError("Please fill up the field")
             return
         }
         try {
+          setMessage("")
           setError("")
           setLoading(true)
-          await login(formData.email, formData.password)
-          navigate("/frontpage")
+          await resetPassword(formData.email)
+          setMessage("Check your inbox for further instructions")
         } catch(error) {
             console.log(error.code)
             if (error.code === "auth/invalid-credential") {
-                setError("User not found. Please use correct username and password");
+                setError("User not found. Please use correct email");
             } else {
-                setError("Failed to log in. Please try again later.");
+                setError("Failed to Reset Password.");
             }
         }
     
@@ -45,23 +48,18 @@ export default function Signin(){
     }
     return(
         <div className="signinContainer">
-            <h1 className="signinTitle">Log In</h1>
+            <h1 className="signinTitle">Password Reset</h1>
             {error!="" && <Alert variant="danger">{error}</Alert>}
+            {message!="" && <Alert variant="success">{message}</Alert>}
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="exampleInputEmail1" style={{fontWeight:"bold"}}>Email address</label>
                     <input type="email" name="email" className="form-control" ref={emailRef} id="exampleInputEmail1" aria-describedby="emailHelp" value={formData.email} onChange={handleChange} placeholder="Enter email"/>
                     <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
-                <div className="form-group">
-                    <label htmlFor="exampleInputPassword1" style={{fontWeight:"bold"}}>Password</label>
-                    <input type="password" name="password" className="form-control" id="exampleInputPassword1" value={formData.password} onChange={handleChange} placeholder="Password"/>
-                </div>
-                <button type="submit" className="btn btn-primary" disabled={loading}>Log In</button>
+                <button type="submit" className="btn btn-primary" disabled={loading}>Reset Password</button>
+                <button type="submit" className="btn btn-primary loginBtn" onClick={()=>loginNavigate("/")} disabled={loading}>Back to LogIn</button>
             </form>
-            <div className="w-100 text-center mt-2">
-                <Link to="/forgot-password">Forgot Password?</Link>
-            </div>
         </div>
 
     )
