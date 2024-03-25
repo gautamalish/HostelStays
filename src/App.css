@@ -1,34 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-.logoImg{
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    cursor: pointer;
-}
-.mainContainer{
-    margin: 1rem;
-}
-.logo{
-    display: flex;
-    align-items: center;
-}
-.navItems{
-    display: flex;
-    text-decoration: none;
-    list-style: none;
-    gap: 2rem;
-    justify-content: end;
-}
-.navItems>li{
-    cursor: pointer;
-}
-.navItems>li:hover{
-    color: salmon;
-    transition: all 0.3s;
 }
 /* signup page */
 .signinTitle{
@@ -67,6 +41,54 @@ form{
     margin: auto;
     background-color: rgba(2, 14, 14, 0.863);
 }
+/* Navbar */
+.hostelImg{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+.bellIcon{
+    font-size: 30px;
+}
+.navContainer{
+    background-color: burlywood;
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+/* sidebar */
+.sidebarContainer{
+    background-color: #312E81;
+    width: fit-content;
+    height: 90vh;
+}
+.sidebarContainer>ul>li{
+    list-style: none;
+    font-size: 20px;
+    color: #A5B4FD;
+    font-family: Roboto;
+    text-decoration: none;
+    cursor: pointer;
+}
+ul{
+    padding: 20px 20px;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    align-items: center;
+    height: 60vh;
+    justify-content: space-around;
+}
+.sidebarTitle{
+    font-size: 25px;
+    color: #A5B4FD;
+    cursor: pointer;
+}
+.sidebarContainer>ul>li:hover,.sidebarTitle:hover{
+    color: white;
+}
 /* media queries */
 @media all and (max-width:1024px){
     .signinContainer{
@@ -84,6 +106,15 @@ form{
     .signinContainer{
         width: 80vw;
         margin-top: 15vh;
+    }
+    .sidebarContainer{
+        background-color: #312E81;
+        width: 30vw;
+        height: 90vh;
+    }
+    .sidebarContainer>ul>li{
+        font-size: 15px;
+        padding: 10px 2px;
     }
 }
 @media all and (max-width:250px){

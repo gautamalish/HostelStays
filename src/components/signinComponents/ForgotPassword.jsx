@@ -2,8 +2,8 @@ import { useState,useRef, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Alert } from "react-bootstrap"
 import {signInWithEmailAndPassword} from "firebase/auth"
-import {auth} from "../context/firebase"
-import { useAuth } from "../context/AuthContext"
+import {auth} from "../../context/firebase"
+import { useAuth } from "../../context/AuthContext"
 export default function ForgotPassword(){
     const navigate=useNavigate()
     const loginNavigate=useNavigate()

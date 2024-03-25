@@ -1,9 +1,9 @@
 import './App.css'
 import { useState } from 'react'
-import Signin from './components/Signin'
-import FrontPage from "./components/FrontPage"
+import Signin from './components/signinComponents/Signin'
+import FrontPage from "./components/frontpageComponents/FrontPage"
 import { Route,Routes } from 'react-router-dom'
-import ForgotPassword from './components/ForgotPassword'
+import ForgotPassword from './components/signinComponents/ForgotPassword'
 function App() {
   return (
     <div className='mainContainer'>
