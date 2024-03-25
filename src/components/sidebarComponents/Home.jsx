@@ -5,7 +5,11 @@ import Sidebar from '../frontpageComponents/Sidebar'
 function Home() {
   return (
     <div className='homeContainer'>
-        <h1>Home</h1>
+        <Navbar/>
+      <div className='contentContainer'>
+      <Sidebar/>
+      <h1>Home</h1>
+      </div>
     </div>
   )
 }

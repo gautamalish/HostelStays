@@ -4,7 +4,11 @@ import Sidebar from '../frontpageComponents/Sidebar'
 function Tenants() {
   return (
     <div>
-    <h1>Tenants</h1>
+    <Navbar/>
+      <div className='contentContainer'>
+      <Sidebar/>
+      <h1>Tenants</h1>
+      </div>
     </div>
   )
 }

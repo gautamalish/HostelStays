@@ -5,7 +5,11 @@ import Sidebar from '../frontpageComponents/Sidebar'
 function Menu() {
   return (
     <div>
+      <Navbar/>
+      <div className='contentContainer'>
+      <Sidebar/>
       <h1>Menu</h1>
+      </div>
     </div>
   )
 }

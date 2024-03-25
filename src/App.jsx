@@ -13,9 +13,7 @@ import Manager from './components/sidebarComponents/Manager'
 function App() {
   return (
     <div className='mainContainer'>
-      <Navbar/>
-      <div className='contentContainer'>
-      <Sidebar/>
+      
       <Routes>
         <Route path='/' element={<Signin/>}/>
         <Route path='home' element={<Home/>}/>
@@ -26,8 +24,6 @@ function App() {
         <Route path='forgot-password' element={<ForgotPassword/>}/>
       </Routes>
       </div>
-      
-    </div>
   )
 }
 

@@ -93,9 +93,6 @@ ul{
     color: white;
 }
 /* homepage */
-.homeContainer{
-    width: 200px;
-}
 .contentContainer{
     display: flex;
 }
