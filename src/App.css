@@ -99,6 +99,21 @@ ul{
 .contentContainer{
     display: flex;
 }
+.logoutModal{
+    margin: auto;
+}
+.logoutModal>p{
+    font-size: 25px;
+}
+.buttons{
+    display: flex;
+    justify-content: space-around;
+    font-size: 20px;
+}
+.buttons>button{
+    padding: 7px 20px;
+    border-radius: 7px;
+}
 /* media queries */
 @media all and (max-width:1024px){
     .signinContainer{

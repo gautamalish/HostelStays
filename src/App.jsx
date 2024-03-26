@@ -11,13 +11,16 @@ import Navbar from './components/frontpageComponents/Navbar'
 import Sidebar from './components/frontpageComponents/Sidebar'
 import Manager from './components/sidebarComponents/Manager'
 import { useAuth } from './context/AuthContext'
+import Logout from './components/Logout'
+import React from 'react'
 function App() {
   const {currentUser}=useAuth()
+  const [showLogout,setShowLogout]=React.useState(false)
   return (
     <div className='mainContainer'>
       {currentUser && <Navbar/>}
       <div className='contentContainer'>
-      {currentUser && <Sidebar/>}
+      {currentUser && <Sidebar setShowLogout={setShowLogout}/>}
       <Routes>
         <Route path='/' element={<Signin/>}/>
         <Route path='home' element={<Home/>}/>
@@ -26,6 +29,7 @@ function App() {
         <Route path='staffs' element={<Staffs/>}/>
         <Route path='tenants' element={<Tenants/>}/>
         <Route path='forgot-password' element={<ForgotPassword/>}/>
+        <Route path='logout' element={<Logout setShowLogout={setShowLogout}/>}/>
       </Routes>
       </div>
       </div>
