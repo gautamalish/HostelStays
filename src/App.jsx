@@ -10,10 +10,14 @@ import Tenants from './components/sidebarComponents/Tenants'
 import Navbar from './components/frontpageComponents/Navbar'
 import Sidebar from './components/frontpageComponents/Sidebar'
 import Manager from './components/sidebarComponents/Manager'
+import { useAuth } from './context/AuthContext'
 function App() {
+  const {currentUser}=useAuth()
   return (
     <div className='mainContainer'>
-      
+      {currentUser && <Navbar/>}
+      <div className='contentContainer'>
+      {currentUser && <Sidebar/>}
       <Routes>
         <Route path='/' element={<Signin/>}/>
         <Route path='home' element={<Home/>}/>
@@ -23,6 +27,7 @@ function App() {
         <Route path='tenants' element={<Tenants/>}/>
         <Route path='forgot-password' element={<ForgotPassword/>}/>
       </Routes>
+      </div>
       </div>
   )
 }

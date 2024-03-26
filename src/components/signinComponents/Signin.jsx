@@ -22,7 +22,7 @@ export default function Signin(){
           setError("")
           setLoading(true)
           await login(formData.email, formData.password)
-          navigate("/home")
+          navigate("/home",{replace:true})
         } catch(error) {
             console.log(error.code)
             if (error.code === "auth/invalid-credential") {

@@ -4,11 +4,7 @@ import Sidebar from '../frontpageComponents/Sidebar'
 function Staffs() {
   return (
     <div>
-    <Navbar/>
-      <div className='contentContainer'>
-      <Sidebar/>
       <h1>Staffs</h1>
-      </div>
     </div>
   )
 }

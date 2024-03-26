@@ -92,6 +92,9 @@ ul{
 .sidebarContainer>ul>.navlink:hover,.sidebarTitle:hover{
     color: white;
 }
+.active{
+    color: white;
+}
 /* homepage */
 .contentContainer{
     display: flex;
