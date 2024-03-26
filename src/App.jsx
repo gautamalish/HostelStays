@@ -14,8 +14,9 @@ import { useAuth } from './context/AuthContext'
 import Logout from './components/Logout'
 import React from 'react'
 function App() {
-  const {currentUser}=useAuth()
+  const {currentUser,LogoutOnTabClose}=useAuth()
   const [showLogout,setShowLogout]=React.useState(false)
+  LogoutOnTabClose()
   return (
     <div className='mainContainer'>
       {currentUser && <Navbar/>}
