@@ -1,6 +1,6 @@
 import React from 'react'
-import Navbar from '../frontpageComponents/Navbar'
-import Sidebar from '../frontpageComponents/Sidebar'
+import Navbar from '../../components/navbar/Navbar'
+import Sidebar from '../../components/sidebar/Sidebar'
 function Staffs() {
   return (
     <div>

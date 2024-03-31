@@ -12,9 +12,11 @@ export function useAuth() {
 
 function LogoutOnTabClose() {
   useEffect(() => {
-    const handleBeforeUnload = async () => {
+    const handleBeforeUnload = async (event) => {
+      event.preventDefault()
       try {
         await signOut(auth);
+        delete event['returnValue']
       } catch (error) {
         console.error('Error signing out:', error);
       }

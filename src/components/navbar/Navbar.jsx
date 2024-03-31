@@ -1,6 +1,7 @@
 import React from 'react'
 import hostel from "../../images/hostel.jpg"
 import { IoNotifications } from "react-icons/io5";
+import "./navbar.css"
 function Navbar() {
   return (
     <div className='navContainer'>

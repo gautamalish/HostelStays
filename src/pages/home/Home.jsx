@@ -1,9 +1,10 @@
 import React from 'react'
-import Navbar from '../frontpageComponents/Navbar'
-import Sidebar from '../frontpageComponents/Sidebar'
+import Navbar from '../../components/navbar/Navbar'
+import Sidebar from '../../components/sidebar/Sidebar'
 import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import Logout from '../Logout'
+import Logout from '../Logout/Logout'
+import "./home.css"
 function Home() {
   return (
     <div className='homeContainer'>
