@@ -4,7 +4,7 @@ import { Alert } from "react-bootstrap"
 import {signInWithEmailAndPassword} from "firebase/auth"
 import {auth} from "../../context/firebase"
 import { useAuth } from "../../context/AuthContext"
-import "./forgotPassword.css"
+import "./forgotPassword.scss"
 export default function ForgotPassword(){
     const navigate=useNavigate()
     const loginNavigate=useNavigate()

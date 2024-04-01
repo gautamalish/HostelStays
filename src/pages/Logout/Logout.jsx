@@ -1,7 +1,8 @@
 import React from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
-function Logout({setShowLogout}) {
+import "./logout.scss"
+function Logout() {
     const {logout}=useAuth()
   const navigate=useNavigate()
   const homeNavigate=useNavigate()
@@ -15,7 +16,6 @@ function Logout({setShowLogout}) {
     }
   }
   function handleNoClick(){
-    setShowLogout(false)
     homeNavigate("/home")
   }
   return (

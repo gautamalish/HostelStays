@@ -1,11 +1,17 @@
 import React from 'react'
 import Navbar from '../../components/navbar/Navbar'
 import Sidebar from '../../components/sidebar/Sidebar'
-import "./tenants.css"
+import "./tenants.scss"
 function Tenants() {
   return (
-    <div>
-      <h1>Tenants</h1>
+    <div className='tenants'>
+      <Sidebar/>
+      <div className="tenantsContent">
+        <Navbar/>
+        <div>
+          <h1>Tenants</h1>
+        </div>
+      </div>
     </div>
   )
 }

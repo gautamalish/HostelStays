@@ -2,7 +2,7 @@ import { useState,useRef, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Alert } from "react-bootstrap"
 import { useAuth } from "../../context/AuthContext"
-import "./signin.css"
+import "./signin.scss"
 export default function Signin(){
     const navigate=useNavigate()
     const emailRef=useRef(null)

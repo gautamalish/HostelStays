@@ -10,26 +10,6 @@ export function useAuth() {
   return useContext(AuthContext)
 }
 
-function LogoutOnTabClose() {
-  useEffect(() => {
-    const handleBeforeUnload = async (event) => {
-      event.preventDefault()
-      try {
-        await signOut(auth);
-        delete event['returnValue']
-      } catch (error) {
-        console.error('Error signing out:', error);
-      }
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
-}
-
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()
   const [loading, setLoading] = useState(true)
@@ -53,7 +33,6 @@ export function AuthProvider({ children }) {
   function updatePassword(password) {
     return currentUser.updatePassword(password)
   }
-  console.log(currentUser)
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       setCurrentUser(user)
@@ -70,7 +49,6 @@ export function AuthProvider({ children }) {
     resetPassword,
     updateEmail,
     updatePassword,
-    LogoutOnTabClose,
   }
   return (
     <AuthContext.Provider value={value}>
