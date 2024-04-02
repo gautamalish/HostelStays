@@ -1,0 +1,110 @@
+*{
+    box-sizing: border-box;
+}
+.dataTable{
+    height: 700px;
+    padding: 20px;
+
+    .dataTableTitle{
+        width: 100%;
+        font-size: 24px;
+        color: gray;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .link{
+            color: green;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 400;
+            border: 1px solid green;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    }
+
+    .cellWithImg{
+        display: flex;
+        align-items: center;
+
+        .cellImg{
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+    }
+    .cellWithStatus{
+        padding: 20px;
+        border-radius: 5px;
+        /* border: 2px solid gray; */
+        margin: 20px 0px;
+
+        &.active{
+            background-color: rgba(0,128,0,0.05);
+            color: green;
+            width: 50px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        &.pending{
+            background-color: rgba(255,217,0,0.05);
+            color: goldenrod;
+            width: 50px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        &.passive{
+            background-color: rgba(255,0,0,0.05);
+            color: red;
+            width: 50px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+    .cellAction{
+        display: flex;
+       margin: 20px 0px;
+       width: 110px;
+        .viewButton{
+            width: fit-content; /* Set a fixed width for the buttons */
+            height: 30px; /* Set a fixed height for the buttons */
+            margin-bottom: 8px; /* Adjust the spacing between buttons */
+            cursor: pointer;
+            text-align: center; /* Center align the button text */
+            line-height: 40px; /* Center the text vertically */
+            border-radius: 5px;
+            display: flex;
+            border: 2px dotted rgba(0, 0, 139, 0.454);
+            margin-right: 5px;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+            color: blue;
+        }
+        .deleteButton{
+            width: fit-content; /* Set a fixed width for the buttons */
+            height: 30px; /* Set a fixed height for the buttons */
+            margin-bottom: 8px; /* Adjust the spacing between buttons */
+            cursor: pointer;
+            text-align: center; /* Center align the button text */
+            line-height: 40px; /* Center the text vertically */
+            border-radius: 5px;
+            display: flex;
+            border: 2px dotted rgba(220, 20, 60, 0.586);
+            align-items: center;
+            padding: 5px;
+            color: red;
+        }
+    }
+}

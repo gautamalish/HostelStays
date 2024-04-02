@@ -13,6 +13,8 @@ import Sidebar from './components/sidebar/Sidebar'
 import { useAuth } from './context/AuthContext'
 import Logout from './pages/Logout/Logout'
 import React from 'react'
+import New from './pages/AddNew/AddNewResident'
+import { productInputs, userInputs } from './formSource'
 function App() {
   const {currentUser}=useAuth()
   const RequireAuth=({children})=>{
@@ -22,13 +24,16 @@ function App() {
   return (
     <div className='mainContainer'>
       <Routes>
-        <Route path='/' element={<Signin/>}/>
+        <Route path='/'>
+          <Route index element={<Signin/>}/>
         <Route path='home' element={<RequireAuth><Home/></RequireAuth>}/>
         <Route path='menu' element={<RequireAuth><Menu/></RequireAuth>}/>
         <Route path='staffs' element={<RequireAuth><Staffs/></RequireAuth>}/>
+        <Route path='new' element={<RequireAuth><New inputs={userInputs} title="Add New User"/></RequireAuth>}/>
         <Route path='tenants' element={<RequireAuth><Tenants/></RequireAuth>}/>
         <Route path='forgot-password' element={<ForgotPassword/>}/>
         <Route path='logout' element={<RequireAuth><Logout/></RequireAuth>}/>
+        </Route>
       </Routes>
     </div>
   )
