@@ -2,7 +2,7 @@ import React from 'react'
 import Navbar from '../../components/navbar/Navbar'
 import Sidebar from '../../components/sidebar/Sidebar'
 import "./tenants.scss"
-import DataTable from '../../components/datatable/DataTable'
+import DataTable from '../../components/datatable/ResidentsDataTable'
 
 function Tenants() {
   return (

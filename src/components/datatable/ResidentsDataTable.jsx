@@ -1,13 +1,41 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./dataTable.scss"
 import { DataGrid } from '@mui/x-data-grid';
-import { userRows,userColumns } from '../../dataTableSrc';
+import { userColumns } from '../../dataTableSrc';
 import { Link } from 'react-router-dom';
 import { useAuth } from "../../context/AuthContext";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from '../../context/firebase';
+import { doc, deleteDoc } from "firebase/firestore";
+
 function DataTable() {
-  const [data,setData]=useState(userRows)
+  const [data,setData]=useState([])
   const {currentUser}=useAuth()
-  function handleDeleteClick(id){
+
+  useEffect(()=>{
+    async function fetchData(){
+      let list=[]
+      try{
+        const querySnapshot = await getDocs(collection(db, "residents"));
+        querySnapshot.forEach((doc) => {
+          list.push({id:doc.id,...doc.data()})
+        });
+        setData(list)
+      }
+      catch(error){
+        console.log(error)
+      }
+    }
+    fetchData()
+  },[])
+
+  async function handleDeleteClick(id){
+    try{
+      await deleteDoc(doc(db, "residents", id));
+    }
+    catch(error){
+      console.log(error)
+    }
     setData(data.filter(item=>item.id!==id))
   }
   const actionColumn=[
