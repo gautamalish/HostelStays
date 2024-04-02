@@ -1,5 +1,5 @@
 export const userColumns = [
-    { field: "id", headerName: "ID", width: 70 },
+    { field: "id", headerName: "ID", width: 280 },
     {
       field: "user",
       headerName: "User",
@@ -22,11 +22,11 @@ export const userColumns = [
     {
       field: "address",
       headerName: "Address",
-      width: 100,
+      width: 150,
     },
     {
       field: "country",
       headerName: "Country",
-      width: 100,
+      width: 150,
     },
   ];

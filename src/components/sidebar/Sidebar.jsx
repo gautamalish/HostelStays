@@ -47,7 +47,7 @@ function Sidebar({ setShowLogout }) {
           </NavLink>
           <p className="title">EXIT</p>
           <NavLink to="/logout" className="navlink">
-            <li onClick={() => setShowLogout(true)}>
+            <li>
               <ExitToAppIcon className="icon"/>
               <span>Logout</span>
             </li>
