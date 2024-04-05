@@ -4,47 +4,40 @@ import { DataGrid } from '@mui/x-data-grid';
 import { userColumns } from '../../dataTableSrc';
 import { Link } from 'react-router-dom';
 import { useAuth } from "../../context/AuthContext";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs,onSnapshot, snapshotEqual } from "firebase/firestore";
 import { auth, db } from '../../context/firebase';
 import { doc, deleteDoc } from "firebase/firestore";
+import { Unsubscribe } from '@mui/icons-material';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import DeleteModel from '../deleteModel/DeleteModel';
 function DataTable() {
   const [data,setData]=useState([])
   const {currentUser}=useAuth()
-
+  const [deleteModal,setDeleteModal]=useState(false)
+  const [idToDelete,setIdToDelete]=useState(null)
   useEffect(()=>{
-    async function fetchData(){
+    const unsub = onSnapshot(collection(db, "residents"), (snapShot) => {
       let list=[]
-      try{
-        const querySnapshot = await getDocs(collection(db, "residents"));
-        querySnapshot.forEach((doc) => {
-          list.push({id:doc.id,...doc.data()})
-        });
-        setData(list)
-      }
-      catch(error){
-        console.log(error)
-      }
-    }
-    fetchData()
-  },[])
-
-  async function handleDeleteClick(id){
-    try{
-      await deleteDoc(doc(db, "residents", id));
-    }
-    catch(error){
+      snapShot.docs.forEach((doc)=>{
+        list.push({id:doc.id,...doc.data()})
+      });
+      setData(list)
+    },(error)=>{
       console.log(error)
+    });
+    return()=>{
+      unsub()
     }
-    setData(data.filter(item=>item.id!==id))
+  },[])
+  async function handleDeleteClick(id){
+  setDeleteModal(true);
+  setIdToDelete(id);
   }
-  console.log(data)
-  const actionColumn=[
+    const actionColumn=[
     {field:"action",headerName:"Action",width:200,renderCell:(params)=>{
       return(
         <div className='cellAction'>
-          <Link to="/users/test" style={{textDecoration:"none"}}>
-          <div className='viewButton'>Update</div>
-          </Link>
           <div className='deleteButton' onClick={()=>handleDeleteClick(params.row.id)}>Delete</div>
         </div>
       )
@@ -55,13 +48,14 @@ function DataTable() {
   };
   return (
     <div className='dataTable'>
+      {deleteModal && <DeleteModel id={idToDelete} setData={setData} setDeleteModal={setDeleteModal} data={data}/>}
       <div className="dataTableTitle">
         Residents
-        {currentUser.email=="admin@gmail.com" && <Link to="/new" style={{textDecoration:"none"}} className='link'>Add New</Link>}
+        {currentUser.email=="np03cs4a220120@heraldcollege.edu.np" && <Link to="/new" style={{textDecoration:"none"}} className='link'>Add New</Link>}
       </div>
       <DataGrid className='dataGrid'
         rows={data}
-        columns={userColumns.concat(actionColumn)}
+        columns={currentUser.email=="np03cs4a220120@heraldcollege.edu.np"?userColumns.concat(actionColumn):userColumns}
         initialState={{
           pagination: {
             paginationModel: { page: 0, pageSize: 10 },
@@ -71,6 +65,7 @@ function DataTable() {
         checkboxSelection
         getRowHeight={getRowHeight}
       />
+      <ToastContainer/>
     </div>
   )
 }

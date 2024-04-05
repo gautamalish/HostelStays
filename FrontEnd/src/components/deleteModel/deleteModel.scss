@@ -1,0 +1,91 @@
+.modalBackground {
+    width: 87vw;
+    height: 85vh;
+    // background-color: rgba(200, 200, 200);
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    top: 200px;
+    // align-items: center;
+    z-index: 100;
+    // border: 2px solid red;
+
+    .modalContent {
+        width: 300px;
+        height: 300px;
+        border-radius: 12px;
+        background-color: white;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        display: flex;
+        flex-direction: column;
+        padding: 25px;
+
+        .title {
+            display: inline-block;
+            text-align: center;
+            margin-top: 10px;
+
+            h1{
+                font-size: 25px;
+                // font-weight: normal;
+            }
+          }
+          .titleCloseBtn {
+            display: flex;
+            margin-left: auto;
+            justify-content: center;
+            align-items: center;
+            margin-top: 0px;
+            background-color: rgba(220, 20, 60, 0.839);
+            width: 30px;
+            border-radius: 5px;
+            padding-bottom: 3px;
+            button {
+                background-color: transparent;
+                border: none;
+                color: white;
+                font-size: 25px;
+                cursor: pointer;
+                width: 30px;
+                height: 30px;
+                
+              }
+          }
+          .footer {
+            flex: 20%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            button {
+                width: 150px;
+                height: 45px;
+                margin: 10px;
+                border: none;
+                background-color: cornflowerblue;
+                color: white;
+                border-radius: 8px;
+                font-size: 20px;
+                cursor: pointer;
+
+                &:active{
+                  background-color: rgb(32, 80, 168);
+                }
+              }
+              #deleteBtn {
+                background-color: rgba(220, 20, 60, 0.819);
+
+                &:active{
+                    background-color: rgb(148, 6, 35);
+                }
+              }
+          }
+          
+      }
+  }
+  
+  
+  
+  
+  
+  

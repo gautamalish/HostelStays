@@ -23,6 +23,15 @@
             padding: 5px;
             border-radius: 5px;
             cursor: pointer;
+
+            &:hover{
+                background-color: green;
+                color: white;
+                transition: all 0.3s;
+            }
+            &:active{
+                background-color: rgba(1, 65, 1, 0.925);
+            }
         }
     }
 
@@ -105,6 +114,12 @@
             align-items: center;
             padding: 5px;
             color: red;
+
+            &:hover{
+                background-color: rgba(220, 20, 60, 0.747);
+                color: white;
+                transition: all 0.3s;
+            }
         }
     }
 }
