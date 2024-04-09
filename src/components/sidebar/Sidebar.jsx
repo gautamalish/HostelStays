@@ -27,6 +27,12 @@ function Sidebar({ setShowLogout }) {
             </li>
           </NavLink>
           <p className="title">MENU</p>
+          <NavLink to="/rooms" className="navlink">
+              <li>
+                <MeetingRoomIcon className="icon"/>
+                <span>Rooms</span>
+                </li>
+            </NavLink>
           <NavLink to="/menu" className="navlink">
             <li>
               <RestaurantOutlinedIcon className="icon"/>
