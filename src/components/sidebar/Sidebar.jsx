@@ -7,6 +7,7 @@ import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
 import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import "./sidebar.scss";
 function Sidebar({ setShowLogout }) {
   return (
@@ -27,6 +28,12 @@ function Sidebar({ setShowLogout }) {
             </li>
           </NavLink>
           <p className="title">MENU</p>
+          <NavLink to="/rooms" className="navlink">
+              <li>
+                <MeetingRoomIcon className="icon"/>
+                <span>Rooms</span>
+                </li>
+            </NavLink>
           <NavLink to="/menu" className="navlink">
             <li>
               <RestaurantOutlinedIcon className="icon"/>
