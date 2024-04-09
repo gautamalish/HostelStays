@@ -6,12 +6,10 @@ import { IoNotifications } from "react-icons/io5";
 import "./navbar.scss"
 import { NavLink } from 'react-bootstrap';
 function Navbar() {
-  // State to manage the visibility of the popover
   const [showPopover, setShowPopover] = useState(false);
-  // Reference to the button to manage the popover position
+
   const imgRef = useRef(null);
 
-  // Effect to close the popover when clicking outside of it
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (imgRef.current && !imgRef.current.contains(event.target)) {
