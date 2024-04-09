@@ -1,19 +1,19 @@
-import React from 'react'
-import Navbar from '../../components/navbar/Navbar'
-import Sidebar from '../../components/sidebar/Sidebar'
-import "./staffs.scss"
+import React from "react";
+import Navbar from "../../components/navbar/Navbar";
+import Sidebar from "../../components/sidebar/Sidebar";
+import "./staffs.scss";
 function Staffs() {
   return (
-    <div className='staffs'>
-        <Sidebar/>
+    <div className="staffs">
+      <Sidebar />
       <div className="staffsContent">
-        <Navbar/>
+        <Navbar />
         <div className="staffsMain">
-          <h1>staffs</h1>
+          <h1>Staffs</h1>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Staffs
+export default Staffs;

@@ -1,11 +1,17 @@
-.home{
-    display: flex;
-    .homeContent{
-        flex: 6;
-
-        .homeMain{
-            width: 200px;
-        }
+.home {
+  display: flex;
+  .homeContent {
+    flex: 2;
+    .homeMain {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .circularCharts {
+        display: flex;
+        justify-content: space-between; // Distribute items evenly along the main axis
+        width: 100%; // Ensure full width of the parent container
+        margin-top: 20px; // Optional: Add spacing between the charts
+      }
     }
-    
+  }
 }

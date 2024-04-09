@@ -1,0 +1,31 @@
+// BarChart.scss
+
+.barChart {
+  display: flex;
+  justify-content: space-around;
+}
+
+.barContainer {
+  text-align: center;
+  padding: 10px;
+}
+
+.barLabel {
+  margin-bottom: 5px;
+}
+
+.bar {
+  width: 50px;
+  height: 200px;
+  background-color: #a01414;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.barFill {
+  transition: height 0.5s ease-in-out;
+}
+
+.barValue {
+  margin-top: 5px;
+}
