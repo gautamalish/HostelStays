@@ -1,0 +1,15 @@
+.tenants{
+    display: flex;
+    .tenantsContent{
+        flex: 6;
+
+        .tenantsMain{
+            margin: 10px;
+
+            .top{
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+    }
+}
