@@ -15,6 +15,9 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
   const [initialLogin,setInitialLogin]=useState(false)
   function login(email, password) {
+    if(!initialLogin){
+      setInitialLogin(true)
+    }
     return signInWithEmailAndPassword(auth,email, password)
   }
 
@@ -35,9 +38,15 @@ export function AuthProvider({ children }) {
   }
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
-        setCurrentUser(user)
+      if (user) {
+        if (user.metadata.creationTime === user.metadata.lastSignInTime) {
+          console.log("user signed up")
+        } else {
+            console.log("User logged in");
+            setCurrentUser(user)
+        }
+      }
       setLoading(false)
-      setInitialLogin(true)
     })
 
     return unsubscribe

@@ -16,10 +16,15 @@ import { useAuth } from "../../context/AuthContext";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { uploadBytesResumable } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import { Bounce } from "react-toastify";
+import { Alert } from "react-bootstrap";
+// import 'react-toastify/dist/ReactToastify.css';
 function New({ inputs, title }) {
   const [file, setFile] = useState("");
   const [data, setData] = useState({});
   const [perc, setPerc] = useState(null);
+  const [error,setError]=useState("");
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   useEffect(() => {
@@ -69,16 +74,20 @@ function New({ inputs, title }) {
   const handleInput = (e) => {
     const id = e.target.id;
     const value = e.target.value;
-    console.log(data);
     setData({ ...data, [id]: value });
   };
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!data.password) {
-      console.log("Password is missing");
+    if (!data.password || !data.email || !data.phone || !data.address || !data.country || !data.username || !data.displayName) {
+      setError("Please fill up all the fields")
       return;
     }
+    else if(data.password.length<6){
+      setError("Password must be of atleast 6 characters long")
+      return
+    }
     try {
+      setError("")
       const res = await createUserWithEmailAndPassword(
         auth,
         data.email,
@@ -89,10 +98,27 @@ function New({ inputs, title }) {
         timeStamp: serverTimestamp(),
       });
       navigate(-1);
+      toast.success('New user added', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        });
     } catch (error) {
-      console.log(error);
+      if(error.code=="auth/invalid-email"){
+        setError("Please use a valid email")
+      }
+      else{
+        setError("Failed to create the user. Please try later")
+      }
     }
   }
+  
   return (
     <div className="new">
       <Sidebar />
@@ -102,6 +128,7 @@ function New({ inputs, title }) {
           <h1>{title}</h1>
         </div>
         <div className="bottom">
+        
           <div className="left">
             <img
               src={
@@ -112,7 +139,9 @@ function New({ inputs, title }) {
               className="profileImg"
               alt="No image icon"
             />
+            {error && <Alert variant="danger" className="alert">{error}</Alert>}
           </div>
+          
           <div className="right">
             <form onSubmit={handleSubmit}>
               <div className="formInput">
@@ -140,10 +169,13 @@ function New({ inputs, title }) {
                   </div>
                 );
               })}
-
+              <div className="footer">
+              
               <button type="submit" disabled={perc !== null && perc < 100}>
-                Send
+                Add
               </button>
+              </div>
+               
             </form>
           </div>
         </div>
