@@ -6,6 +6,7 @@ import { Route,Routes } from 'react-router-dom'
 import ForgotPassword from './pages/forgotPassword/ForgotPassword'
 import Home from './pages/home/Home'
 import Menu from './pages/meals/Meals'
+import Rooms from './pages/Rooms/Rooms'
 import Staffs from './pages/staffs/Staffs'
 import Tenants from './pages/tenants/Tenants'
 import Navbar from './components/navbar/Navbar'
@@ -27,6 +28,7 @@ function App() {
         <Route path='/'>
           <Route index element={<Signin/>}/>
         <Route path='home' element={<RequireAuth><Home/></RequireAuth>}/>
+        <Route path='rooms' element={<RequireAuth><Rooms/></RequireAuth>}/>
         <Route path='menu' element={<RequireAuth><Menu/></RequireAuth>}/>
         <Route path='staffs' element={<RequireAuth><Staffs/></RequireAuth>}/>
         <Route path='new' element={<RequireAuth><New inputs={userInputs} title="Add New User"/></RequireAuth>}/>

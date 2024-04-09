@@ -11,7 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
-ServiceSecurityKey.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -22,3 +22,4 @@ ServiceSecurityKey.json
 *.njsproj
 *.sln
 *.sw?
+ServiceSecurityKey.json
