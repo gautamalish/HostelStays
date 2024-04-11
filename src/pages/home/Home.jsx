@@ -13,7 +13,6 @@ function Home() {
       <div className="homeContent">
         <Navbar />
         <div className="homeMain">
-        <div className="top">top</div>
         <div className="bottom">
           <CircularChart/>
         </div>

@@ -48,16 +48,14 @@ export default function Signin(){
             {error!="" && <Alert variant="danger">{error}</Alert>}
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="exampleInputEmail1" style={{fontWeight:"bold"}}>Email address</label>
-                    <input type="email" name="email" className="form-control" ref={emailRef} id="exampleInputEmail1" aria-describedby="emailHelp" value={formData.email} onChange={handleChange} placeholder="Enter email"/>
-                    <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+                    <input type="email" name="email" className="form-control" ref={emailRef} id="exampleInputEmail1" aria-describedby="emailHelp" value={formData.email} onChange={handleChange} placeholder="Email"/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="exampleInputPassword1" style={{fontWeight:"bold"}}>Password</label>
                     <input type="password" name="password" className="form-control" id="exampleInputPassword1" value={formData.password} onChange={handleChange} placeholder="Password"/>
                 </div>
-                <button type="submit" className="btn btn-primary" disabled={loading}>Log In</button>
+                <button type="submit" className="btn btn-primary" disabled={loading}>Sign In</button>
             </form>
+            
             <div className="w-100 text-center mt-2">
                 <Link to="/forgot-password">Forgot Password?</Link>
             </div>
