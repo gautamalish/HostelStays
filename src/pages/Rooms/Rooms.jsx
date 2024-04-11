@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from '../../components/navbar/Navbar'
 import Sidebar from '../../components/sidebar/Sidebar'
+import Crud from './crud'
 import "./Rooms.scss"
 
 function Rooms() {
@@ -10,7 +11,7 @@ function Rooms() {
       <div className="roomsContent">
         <Navbar/>
         <div className='roomsMain'>
-           <h1>Room</h1>
+           <Crud/>
         </div>
       </div>
     </div>
