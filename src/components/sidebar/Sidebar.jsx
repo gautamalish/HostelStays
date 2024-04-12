@@ -7,7 +7,7 @@ import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
 import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom" 
 import "./sidebar.scss";
 function Sidebar({ setShowLogout }) {
   return (
