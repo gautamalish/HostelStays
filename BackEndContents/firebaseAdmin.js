@@ -4,7 +4,7 @@ const admin = require("firebase-admin");
 const cors=require('cors')
 const port = 3000;
 // Import the service account credentials
-const serviceAccount = require("../FrontEnd/ServiceSecurityKey.json");
+const serviceAccount = require("./ServiceSecurityKey.json");
 
 // Initialize the Firebase Admin SDK
 admin.initializeApp({

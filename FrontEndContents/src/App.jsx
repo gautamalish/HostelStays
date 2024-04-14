@@ -15,6 +15,7 @@ import { useAuth } from "./context/AuthContext";
 import Logout from "./pages/Logout/Logout";
 import React from "react";
 import New from "./pages/AddNew/AddNewResident";
+import NewStaff from "./pages/AddNew/AddNewStaff";
 import { productInputs, userInputs } from "./formSource";
 function App() {
   const { currentUser } = useAuth();
@@ -63,7 +64,15 @@ function App() {
             path="new"
             element={
               <RequireAuth>
-                <New inputs={userInputs} title="Add New User" />
+                <New inputs={userInputs} title="Add New Resident" />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="newstaff"
+            element={
+              <RequireAuth>
+                <NewStaff inputs={userInputs} title="Add New Staff" />
               </RequireAuth>
             }
           />

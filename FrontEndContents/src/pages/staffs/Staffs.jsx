@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import "./staffs.scss";
+import DataTable from "../../components/StaffsDataTable/StaffsDataTable";
 function Staffs() {
   return (
     <div className="staffs">
@@ -9,7 +10,7 @@ function Staffs() {
       <div className="staffsContent">
         <Navbar />
         <div className="staffsMain">
-          <h1>Staffs</h1>
+          <DataTable/>
         </div>
       </div>
     </div>

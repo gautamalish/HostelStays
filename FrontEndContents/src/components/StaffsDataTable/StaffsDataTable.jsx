@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import "./ResidentsDataTable.scss"
+import "./staffsDataTable.scss"
 import { DataGrid } from '@mui/x-data-grid';
 import { userColumns } from '../../dataTableSrc';
 import { Link } from 'react-router-dom';
@@ -10,14 +10,14 @@ import { doc, deleteDoc } from "firebase/firestore";
 import { Unsubscribe } from '@mui/icons-material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import DeleteModel from '../deleteModel/DeleteResidentsModel';
+import DeleteModel from '../deleteModel/DeleteStaffsModel';
 function DataTable() {
   const [data,setData]=useState([])
   const {currentUser}=useAuth()
   const [deleteModal,setDeleteModal]=useState(false)
   const [idToDelete,setIdToDelete]=useState(null)
   useEffect(()=>{
-    const unsub = onSnapshot(collection(db, "residents"), (snapShot) => {
+    const unsub = onSnapshot(collection(db, "staffs"), (snapShot) => {
       let list=[]
       snapShot.docs.forEach((doc)=>{
         list.push({id:doc.id,...doc.data()})
@@ -50,8 +50,8 @@ function DataTable() {
     <div className='dataTable'>
       {deleteModal && <DeleteModel id={idToDelete} setData={setData} setDeleteModal={setDeleteModal} data={data}/>}
       <div className="dataTableTitle">
-        Residents
-        {currentUser.email=="np03cs4a220120@heraldcollege.edu.np" && <Link to="/new" style={{textDecoration:"none"}} className='link'>Add New</Link>}
+        Staffs
+        {currentUser.email=="np03cs4a220120@heraldcollege.edu.np" && <Link to="/newstaff" style={{textDecoration:"none"}} className='link'>Add New</Link>}
       </div>
       <DataGrid className='dataGrid'
         rows={data}
