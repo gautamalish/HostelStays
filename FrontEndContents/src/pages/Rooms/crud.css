@@ -1,97 +1,129 @@
-*{
+* {
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
+    font-family: Nunito;
     box-sizing: border-box;
 }
 
-body{
-    background: rgb(255, 255, 255);  
+body {
+    background-color: #f5f5f5;
 }
 
-.form_container{
-        background: rgb(204, 204, 204);
-        padding: 20px 30px;
-        margin: 0px auto;
-        width: 325px;
-        margin-top: 50px;
+.form_container {
+    background-color: #f9f9f9;
+    padding: 20px 30px;
+    margin: 50px auto;
+    width: 325px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid blue; /* Add border at the bottom */
 }
 
 .form_container h2 {
-    text-decoration: underline;
     text-align: center;
-    color: rgb(52, 52, 251);
-    font-size: 16px;
+    color: #333;
+    font-size: 18px;
     text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 1px;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
 .form_container .box {
-    margin-top: 10px;
-    width: 100%;   
-}
-
-.form_container .box input{
-    width: 100%;
-    padding: 10px 0px;
-    border: none;
-    outline: none;
-    border-bottom: 1px solid rgb(52, 52, 251);
-}
-
-.form_container button{
-    margin-left: 20px;
-    padding: 10px 30px;
-    border: none;
-    outline: none;
-    background: rgb(52, 52, 251);
-    color:aliceblue;
     margin-top: 20px;
-    cursor: pointer;
+    font-size: 17px;
 }
 
-.database{
-    padding: 20px 30px;
+.form_container .box input {
     width: 100%;
+    padding: 10px;
+    border: none;
+    border-bottom: 2px solid #1b54e6;
+    outline: none;
+    font-size: 16px;
+    transition: border-bottom 0.3s ease;
 }
 
-.database h2{
-    text-decoration: underline;
-    color: rgb(52, 52, 251);
-    font-size: 18px;
+.form_container .box input:focus {
+    border-bottom: 2px solid #2196f3;
+}
+
+.form_container button {
+    margin-top: 30px;
+    margin-left: 30px;
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    background-color: blue;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
     text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
-.database .container{
+.form_container button:hover {
+    background-color: #000000;
+}
+
+.database {
+    padding: 20px;
+    border-top: 2px solid #dddddd; /* Add border at the top */
+}
+
+.database h2 {
+    text-align: center;
+    color: #333;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.database .container {
     display: flex;
     flex-wrap: wrap;
     max-width: 100%;
 }
 
-.database .container .box{
-    padding: 10px 20px;
-    margin-top: 20px;
-    margin-left: 15px;
-    background: rgb(164, 164, 164)
-    
+.database .container .box {
+    padding: 20px;
+    margin: 0 15px 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    width: 350px; /* Adjust the width as needed */
+    border: 2px solid #ddd; /* Add border for separation */
 }
 
-.database .container .box h3{
-    margin: 10px;
-    font-size: 16px;
-    color: #ffff;
+.database .container .box:hover {
+    box-shadow: 0 10px 30px rgba(4, 0, 255, 0.2);
 }
 
-.database .container .box button{
+.database .container .box h3 {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+
+
+.database .container .box button {
     margin-top: 15px;
     padding: 10px 20px;
     background: blue;
     color: #fff;
     outline: none;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
-    margin-left: 10px;
+    margin-left: 30px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.database .container .box button:hover {
+    background-color: #294564;
 }
