@@ -1,7 +1,12 @@
 .rooms{
     display: flex;
     .roomsContent{
-        flex: 6;
+        flex: 6;    
+        flex-direction: column;
+    
+        max-height: calc(100vh - 60px); 
+        overflow-y: auto;
+    
     }
-    background-color: white;
+    background-color: aliceblue;
   }

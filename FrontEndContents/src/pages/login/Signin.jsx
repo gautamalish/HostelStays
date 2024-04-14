@@ -43,22 +43,24 @@ export default function Signin(){
         }))
     }
     return(
-        <div className="signinContainer">
-            <h1 className= "mainTitle">Hostel Stays</h1>
-            <h3 className="signinTitle">Log In</h3>
-            {error!="" && <Alert variant="danger">{error}</Alert>}
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <input type="email" name="email" className="form-control" ref={emailRef} id="exampleInputEmail1" aria-describedby="emailHelp" value={formData.email} onChange={handleChange} placeholder="Email"/>
+        <div className="Signinpage">
+            <div className="signinContainer">
+                <h1 className= "mainTitle">Hostel Stays</h1>
+                <h3 className="signinTitle">Log In</h3>
+                {error!="" && <Alert variant="danger">{error}</Alert>}
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <input type="email" name="email" className="form-control" ref={emailRef} id="exampleInputEmail1" aria-describedby="emailHelp" value={formData.email} onChange={handleChange} placeholder="Email"/>
+                    </div>
+                    <div className="form-group">
+                        <input type="password" name="password" className="form-control" id="exampleInputPassword1" value={formData.password} onChange={handleChange} placeholder="Password"/>
+                    </div>
+                    <button type="submit" className="btn btn-primary" disabled={loading}>Sign In</button>
+                </form>
+                
+                <div className="w-100 text-center mt-2">
+                    <Link to="/forgot-password">Forgot Password?</Link>
                 </div>
-                <div className="form-group">
-                    <input type="password" name="password" className="form-control" id="exampleInputPassword1" value={formData.password} onChange={handleChange} placeholder="Password"/>
-                </div>
-                <button type="submit" className="btn btn-primary" disabled={loading}>Sign In</button>
-            </form>
-            
-            <div className="w-100 text-center mt-2">
-                <Link to="/forgot-password">Forgot Password?</Link>
             </div>
         </div>
 

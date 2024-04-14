@@ -1,6 +1,18 @@
-body{
-    background-image: url("../../images/hostel1.png");
+.Signinpage {
+    background-color: #1C67C2;
+    background-image: url("../../images/hostel1.png"); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    width: 100%;
+    height: 100%; 
+    z-index: -1;
 }
+
+
 .signinTitle{
     display: flex;
     justify-content: center;
@@ -13,15 +25,16 @@ body{
 ::placeholder{
     font-size: 20px;
 }
-.signinContainer{
+.signinContainer {
     width: 30vw;
     margin: auto;
     padding: 50px 50px;
     border-radius: 10px;
     margin-top: 10rem;
     background-size: cover;
-    background-color: #DFDAD4;
+    background-color: rgba(223, 218, 212, 0.8);
 }
+
 form{
     display: flex;
     flex-direction: column;
