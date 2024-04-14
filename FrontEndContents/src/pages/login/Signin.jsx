@@ -44,7 +44,8 @@ export default function Signin(){
     }
     return(
         <div className="signinContainer">
-            <h1 className="signinTitle">Log In</h1>
+            <h1 className= "mainTitle">Hostel Stays</h1>
+            <h3 className="signinTitle">Log In</h3>
             {error!="" && <Alert variant="danger">{error}</Alert>}
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
