@@ -1,8 +1,86 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    box-sizing: border-box;
+}
 .meals{
     display: flex;
-
-    .mealsContent{
+    background-color:aliceblue;
+    .mealscontext{
         flex: 6;
     }
-    background-color: white;
+
+    .meals-container{
+        background-color: white;
+        padding: 20px 30px;
+        margin: 0px auto;
+        width: 350px;
+        margin-top: 50px;
+    }
+    .meals-container h2{
+        text-align: center;
+        color: #232323;
+        font-size: 26px;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+    .meals-container .days-list{
+        width: 100%;
+        text-align: center;
+        .dayname{
+            margin-left: 10px;
+        }
+        label{
+            font-weight: 260;
+            font-size: 17px;
+        }
+    }
+
+    .meals-container h4{
+        font-size: 17px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 10px;
+        background-color: aliceblue;
+    }
+
+    .meals-container .box{
+        text-align: center;
+        width: 100%;
+
+        input{
+            width: 100%;
+            padding: 10px 0px;
+            margin-top: 5px;
+            height: 23px;
+        }
+        ::placeholder{
+            font-size: 17px;
+        }
+    }
+
+    .meals-container button{
+        -webkit-border-radius: 28;
+        -moz-border-radius: 28;
+        border-radius: 28px;
+        font-family: Arial;
+        color: #ffffff;
+        font-size: 17px;
+        background: #6439FF;
+        padding: 5px 20px 5px 20px;
+        margin-top: 14px;
+        margin-left: 35px;
+        text-decoration: none;
+    }
+    .meals-container button:hover{
+        background: #430094;
+        text-decoration: none;
+    }
 }
+
+
+
+
+
