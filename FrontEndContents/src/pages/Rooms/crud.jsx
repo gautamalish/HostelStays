@@ -101,7 +101,7 @@ const Crud = () => {
         <>
             {currentUser && currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
                 <div className="form_container">
-                    <h2> Add/Update Room</h2>
+                    <h2> Add / Update Room</h2>
                     <div className="box">
                         <input type='text' placeholder='Room Number' autoComplete='off' value={room} onChange={(e) => setRoom(e.target.value)}></input>
                     </div>
