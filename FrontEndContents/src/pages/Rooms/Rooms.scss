@@ -1,12 +1,138 @@
-.rooms{
-    display: flex;
-    .roomsContent{
-        flex: 6;    
+* {
+    margin:0;
+    padding:0;
+    font-family:Nunito;
+    box-sizing:border-box;
+  }
+
+
+  .rooms {
+    display:flex;
+    background-color:aliceblue;
+  }
+  .roomscontent {
+    flex: 6;    
         flex-direction: column;
     
         max-height: calc(100vh - 60px); 
         overflow-y: auto;
-    
-    }
-    background-color: aliceblue;
+
   }
+
+  .roomsmain{
+    .form_container {
+      background-color:#f9f9f9;
+      padding:20px 30px;
+      margin:50px auto;
+      width:325px;
+      border-radius:10px;
+      box-shadow:0 4px 8px rgba(0,0,0,0.1);
+      border-bottom:2px solid blue;
+    }
+    .form_container h2 {
+      text-align:center;
+      color:#333;
+      font-size:17px;
+      text-transform:uppercase;
+      font-weight:bold;
+      margin-bottom:20px;
+    }
+    .form_container .box {
+      margin-top:20px;
+      font-size:16px;
+    }
+    .form_container .box input {
+      width:100%;
+      padding:10px;
+      border:none;
+      border-bottom:2px solid #1b54e6;
+      outline:none;
+      font-size:15px;
+      transition:border-bottom 0.3s ease;
+    }
+    .form_container .box input:focus {
+      border-bottom:2px solid #2196f3;
+    }
+    .form_container button {
+      margin-top:30px;
+      margin-left:30px;
+      padding:10px 20px;
+      border:none;
+      outline:none;
+      background-color:#6439FF;
+      color:#fff;
+      font-size:13px;
+      font-weight:bold;
+      text-transform:uppercase;
+      cursor:pointer;
+      border-radius:28px;
+      transition:background-color 0.3s ease;
+    }
+    .form_container button:hover {
+      background-color:#430094;
+    }
+    .database {
+      padding:20px;
+      border-top:2px solid #dddddd;
+    }
+    .database h2 {
+      text-align:center;
+      color:#333;
+      font-size:17px;
+      text-transform:uppercase;
+      font-weight:bold;
+      margin-bottom:30px;
+    }
+    .database .container {
+      display:flex;
+      flex-wrap:wrap;
+      max-width:100%;
+    }
+    .database .container .box {
+      padding:20px;
+      margin:0 30px 30px;
+      background-color:#fff;
+      border-radius:10px;
+      box-shadow:0 4px 8px rgba(0,0,0,0.1);
+      transition:box-shadow 0.3s ease;
+      width:360px;
+      border:2px solid #ddd;
+    }
+    .database .container .box:hover {
+      box-shadow:0 10px 30px rgba(4,0,255,0.2);
+    }
+    .database .container .box h3 {
+      color:#333;
+      font-size:18px;
+      text-transform: none;
+      font-weight: normal;
+      margin-bottom:10px;
+    }
+
+    .database .container .box h2 {
+      color:#333;
+      font-size:17px;
+      text-transform: none;
+      font-weight: bold;
+      margin-bottom:10px;
+    }
+
+    .database .container .box button {
+      margin-top:15px;
+      padding:10px 20px;
+      background:#6439FF;
+      color:#fff;
+      outline:none;
+      border:none;
+      border-radius:28px;
+      cursor:pointer;
+      margin-left:40px;
+      font-size:13px;
+      transition:background-color 0.3s ease;
+    }
+    .database .container .box button:hover {
+      background-color:#430094;
+    }
+}
+
+  
