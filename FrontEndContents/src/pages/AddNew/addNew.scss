@@ -7,6 +7,9 @@
 
     .newContainer{
         flex: 6;
+        .top h1{
+            text-align: center;
+        }
 
         .top,.bottom{
             -webkit-box-shadow: 2px 4px 10px 1px rgba(0,0,0,0.47);
@@ -16,8 +19,11 @@
             display: flex;
             
             h1{
-                color: lightgray;
-                font-size: 20px;
+                color: black;
+                font-size: 18px;
+                font-weight: bold;
+                text-transform: uppercase;
+
             }
             .left{
                 flex: 1;
@@ -68,7 +74,7 @@
                         width: 150px;
                         padding: 10px;
                         border: none;
-                        background-color: rgba(0, 128, 128, 0.827);
+                        background-color: #6439FF;
                         color: white;
                         font-weight: bold;
                         cursor: pointer;

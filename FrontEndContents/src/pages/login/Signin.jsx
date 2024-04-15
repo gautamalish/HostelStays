@@ -55,7 +55,7 @@ export default function Signin(){
                     <div className="form-group">
                         <input type="password" name="password" className="form-control" id="exampleInputPassword1" value={formData.password} onChange={handleChange} placeholder="Password"/>
                     </div>
-                    <button type="submit" className="btn btn-primary" disabled={loading}>Sign In</button>
+                    <button type="submit" className="btnprimary" disabled={loading}>Sign In</button>
                 </form>
                 
                 <div className="w-100 text-center mt-2">
