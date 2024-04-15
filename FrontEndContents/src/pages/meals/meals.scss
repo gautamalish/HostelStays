@@ -7,33 +7,38 @@
 .meals{
     display: flex;
     background-color:aliceblue;
+    
     .mealscontext{
         flex: 6;
     }
-
+    
     .meals-container{
         background-color: white;
         padding: 20px 30px;
         margin: 0px auto;
         width: 350px;
-        margin-top: 50px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-bottom: 2px solid #6439FF;
     }
     .meals-container h2{
         text-align: center;
         color: #232323;
-        font-size: 26px;
+        font-size: 18px;
         text-transform: uppercase;
-        font-weight: 600;
+        font-weight: bold;
         margin-bottom: 10px;
     }
     .meals-container .days-list{
         width: 100%;
         text-align: center;
         .dayname{
-            margin-left: 10px;
+            margin-left: 5px;
         }
         label{
-            font-weight: 260;
+            font-weight: 300;
             font-size: 17px;
         }
     }
@@ -79,6 +84,70 @@
         text-decoration: none;
     }
 }
+
+.database{
+    padding: 20px 40px;
+    width: 100;
+}
+
+.database h3{
+    color: #232323;
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+}
+
+.database .container{
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+}
+
+.database .container .list{
+    padding: 10px 20px;
+    margin-top: 20px;
+    margin-left: 15px;
+    background-color: #ffffff;
+    border-radius: 5px;
+
+    h3{
+        margin-top: 5px;
+        font-size: 17px;
+        color: #232323;
+    }
+    h4{
+        margin-top: 5px;
+        font-size: 17px;
+        color: #232323;
+        text-align: center; 
+        font-weight: bold;
+        background-color: aliceblue;
+    }
+    h5{
+        margin-top: 5px;
+        font-size: 15px;
+        color: #232323;
+    }
+    button{
+        -webkit-border-radius: 28;
+        -moz-border-radius: 28;
+        border-radius: 28px;
+        font-family: Arial;
+        color: #ffffff;
+        font-size: 15px;
+        background: #6439FF;
+        padding: 5px 20px 5px 20px;
+        margin-top: 14px;
+        margin-left: 35px;
+        text-decoration: none;
+    }
+    button:hover{
+        background: #430094;
+        text-decoration: none;
+    }
+}
+
 
 
 

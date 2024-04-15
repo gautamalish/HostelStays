@@ -13,8 +13,9 @@ function Meals() {
           <h2>Add / Update Meals</h2>
           <div className='days-list'>
             <label>
-              Day: 
-            <select name="days" className='dayname'>
+              <strong>Day: </strong>
+              <select name="days" className='dayname'>
+              <option value="">Select Day</option>
               <option value="Sunday">Sunday</option>
               <option value="Monday">Monday</option>
               <option value="Tuesday">Tuesday</option>
@@ -22,32 +23,61 @@ function Meals() {
               <option value="Thursday">Thursday</option>
               <option value="Firday">Friday</option>
               <option value="Saturday">Saturday</option>
-            </select>
-          </label>
+              </select>
+            </label>
+          </div>
+          <h4>Vegeterian </h4>
+          <div className='box'>
+            <input type="text" placeholder='Breakfast' autoComplete='Off'/>
+          </div>
+          <div className='box'>
+            <input type="text" placeholder='Lunch' autoComplete='Off' />
+          </div>
+          <div className='box'>
+            <input type="text" placeholder='Dinner' autoComplete='Off' />
+          </div>
+          <h4>Non - Vegeterian</h4>
+          <div className='box'>
+            <input type="text" placeholder='Breakfast' autoComplete='Off' />
+          </div>
+          <div className='box'>
+            <input type="text" placeholder='Lunch' autoComplete='Off' />
+          </div>
+          <div className='box'>
+            <input type="text" placeholder='Dinner' autoComplete='Off' />
+          </div>
+          <button>Add</button>
+          <button>Update</button>
         </div>
-        <h4>Vegeterian</h4>
-        <div className='box'>
-          <input type="text" placeholder='Breakfast' autoComplete='Off'/>
+        <div className='database'>
+          <h3>Weekly Meals Plan</h3>
+          <div className='container'>
+          <div className='list'>
+              <h3>Sunday</h3>
+              <h4>Vegeterian</h4>
+              <h5>Breakfast: Sandwich, Coffeee or Tea</h5>
+              <h5>Lunch: Pasta</h5>
+              <h5>Dinner: Rice, Black Lentils, Paneer </h5>
+              <h4>Non - Vegeterian</h4>
+              <h5>Breakfast: Sandswich, Coffee or Tea</h5>
+              <h5>Lunch: Pasta</h5>
+              <h5>Dinner: Rice, Black Lentils, Chicken  </h5>
+              <button>Edit</button>
+            </div>
+            <div className='list'>
+              <h3>Sunday</h3>
+              <h4>Vegeterian</h4>
+              <h5>Breakfast: Pancake, Coffee or Tea</h5>
+              <h5>Lunch: Pasta</h5>
+              <h5>Dinner: Rice, Lentils, Pickle, Paneer </h5>
+              <h4>Non - Vegeterian</h4>
+              <h5>Breakfast: Pancake Coffee or Tea</h5>
+              <h5>Lunch: Pasta</h5>
+              <h5>Dinner: Rice, Black Lentils, Chicken</h5>
+              <button>Edit</button>
+            </div>
+          </div>
         </div>
-        <div className='box'>
-          <input type="text" placeholder='Lunch' autoComplete='Off'/>
-        </div>
-        <div className='box'>
-          <input type="text" placeholder='Dinner' autoComplete='Off'/>
-        </div>
-        <h4>Non - Vegeterian</h4>
-        <div className='box'>
-          <input type="text" placeholder='Breakfast' autoComplete='Off'/>
-        </div>
-        <div className='box'>
-          <input type="text" placeholder='Lunch' autoComplete='Off'/>
-        </div>
-        <div className='box'>
-          <input type="text" placeholder='Dinner' autoComplete='Off'/>
-        </div>
-        <button>Add</button>
-        <button>Update</button>
-      </div>
       </div>
     </div>
   )
