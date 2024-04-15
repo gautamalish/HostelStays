@@ -20,10 +20,10 @@ function Logout() {
   }
   return (
     <div className='logoutModal'>
-      <p>Do you wish to logout?</p>
+      <p>Are you sure you want to log out?</p>
       <div className='buttons'>
-        <button onClick={handleLogout}>Yes</button>
-        <button onClick={handleNoClick}>No</button>
+        <button onClick={handleLogout}>Logout</button>
+        <button onClick={handleNoClick}>Cancel</button>
       </div>
     </div>
   )

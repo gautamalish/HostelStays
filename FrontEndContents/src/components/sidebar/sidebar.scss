@@ -3,19 +3,19 @@
     padding: 0;
 }
 .sidebar{
-    height: 100vh;
+    height: 150vh;
     border: 1px solid rgb(214, 212, 212);
     padding-left: 5px;
 
     .top{
         padding: 9px 10px;
-
         h1{
             font-size: 27px;
             color: #6439ff;
         }
         .logo{
             text-decoration: none;
+            
         }
     }
     .bottom{

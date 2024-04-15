@@ -12,13 +12,13 @@
         flex: 6;    
         flex-direction: column;
     
-        max-height: calc(100vh - 60px); 
+        max-height: calc(100vh - 10px); 
         overflow-y: auto;
 
     }
     
     .meals-container{
-        background-color: white;
+        background-color: #f9f9f9;
         padding: 20px 30px;
         margin: 0px auto;
         width: 350px;
@@ -59,6 +59,7 @@
     .meals-container .box{
         text-align: center;
         width: 100%;
+        box-shadow: gray;
 
         input{
             width: 100%;
