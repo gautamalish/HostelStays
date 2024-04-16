@@ -9,12 +9,11 @@
     background-color:aliceblue;
     
     .mealscontext{
-        flex: 6;    
+        flex: 6;
         flex-direction: column;
     
         max-height: calc(100vh - 10px); 
         overflow-y: auto;
-
     }
     
     .meals-container{
@@ -94,6 +93,7 @@
 .database{
     padding: 20px 40px;
     width: 100;
+    border-top: 2px solid #dddddd;
 }
 
 .database h3{

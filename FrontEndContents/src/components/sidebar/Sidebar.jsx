@@ -44,7 +44,7 @@ function Sidebar({ setShowLogout }) {
           <NavLink to="/tenants" className="navlink">
             <li>
               <PeopleOutlineOutlinedIcon className="icon"/>
-              <span>Residents</span>
+              <span>Tenants</span>
               </li>
           </NavLink>
           <NavLink to="/staffs" className="navlink">
