@@ -2,7 +2,6 @@ import React from "react";
 import "./widgets.scss";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
 import BedroomChildOutlinedIcon from "@mui/icons-material/BedroomChildOutlined";
 import { Link } from "react-router-dom";
@@ -15,9 +14,17 @@ function Widget({ type }) {
   switch (type) {
     case "user":
       data = {
-        title: "Total Students",
+        title: "Total Tenants",
         isMoney: false,
-        link: <Link to="/tenants" className="tenantsLink" style={{textDecoration:"none"}}>See all Residents</Link>,
+        link: (
+          <Link
+            to="/tenants"
+            className="tenantsLink"
+            style={{ textDecoration: "none" }}
+          >
+            See all Residents
+          </Link>
+        ),
         icon: (
           <PersonOutlineOutlinedIcon
             className="icon"
@@ -29,7 +36,7 @@ function Widget({ type }) {
       break;
     case "balance":
       data = {
-        title: "Total Paid students",
+        title: "Total Paid Tenants",
         isMoney: false,
         link: "See details",
         icon: (
@@ -45,7 +52,15 @@ function Widget({ type }) {
       data = {
         title: "Total Rooms",
         isMoney: false,
-        link: <Link to="/rooms" className="roomsLink" style={{textDecoration:"none"}}>View all Rooms</Link>,
+        link: (
+          <Link
+            to="/rooms"
+            className="roomsLink"
+            style={{ textDecoration: "none" }}
+          >
+            View all Rooms
+          </Link>
+        ),
         icon: (
           <BedroomChildOutlinedIcon
             className="icon"
