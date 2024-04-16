@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import Navbar from '../../components/navbar/Navbar'
 import Sidebar from '../../components/sidebar/Sidebar' 
 import "./meals.scss";
-import { db } from "../../context/firebase";
+import { db, auth} from "../../context/firebase";
 import { doc, addDoc, collection, updateDoc, deleteDoc, getDocs } from 'firebase/firestore';
 
 function Meals() {
@@ -15,6 +15,7 @@ function Meals() {
   const [dinnern, setDinnern] = useState("");
   const [fetchData, setFetchData] = useState([]);
   const [id, setId] = useState("");
+  const [currentUser, setCurrentUser] = useState(auth.currentUser);
 
   const dbref = collection(db, "MEALS");
 
@@ -77,54 +78,55 @@ function Meals() {
         <Sidebar/>
         <div className="mealscontext">
           <Navbar/>
-          <div className='meals-container'>
-            <h2>Add / Update Meals</h2>
-            <div className='days-list'>
-              <label>
-                <strong>Day: </strong>
-                <select name="days" className='dayname' value={day} onChange={(e) => setDay(e.target.value || "")}>
-                  <option value="">Select Day</option>
-                  <option value="Sunday">Sunday</option>
-                  <option value="Monday">Monday</option>
-                  <option value="Tuesday">Tuesday</option>
-                  <option value="Wednesday">Wednesday</option>
-                  <option value="Thursday">Thursday</option>
-                  <option value="Friday">Friday</option>
-                  <option value="Saturday">Saturday</option>
-                </select>
-              </label>
+          {currentUser && currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
+            <div className='meals-container'>
+              <h2>Add / Update Meals</h2>
+              <div className='days-list'>
+                <label>
+                  <strong>Day: </strong>
+                  <select name="days" className='dayname' value={day} onChange={(e) => setDay(e.target.value || "")}>
+                    <option value="">Select Day</option>
+                    <option value="Sunday">Sunday</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                  </select>
+                </label>
+              </div>
+              <h4>Vegetarian</h4>
+              <div className='box'>
+                <input type="text" placeholder='Breakfast' autoComplete='Off' value={breakfastv} onChange={(e) => setBreakfastv(e.target.value)} />
+              </div>
+
+              <div className='box'>
+                <input type="text" placeholder='Lunch' autoComplete='Off' value={lunchv} onChange={(e) => setLunchv(e.target.value)} />
+              </div>
+
+              <div className='box'>
+                <input type="text" placeholder='Dinner' autoComplete='Off' value={dinnerv} onChange={(e) => setDinnerv(e.target.value)} />
+              </div>
+
+              <h4>Non-Vegetarian</h4>
+
+              <div className='box'>
+                <input type="text" placeholder='Breakfast' autoComplete='Off' value={breakfastn} onChange={(e) => setBreakfastn(e.target.value)} />
+              </div>
+
+              <div className='box'>
+                <input type="text" placeholder='Lunch' autoComplete='Off' value={lunchn} onChange={(e) => setLunchn(e.target.value)} />
+              </div>
+
+              <div className='box'>
+                <input type="text" placeholder='Dinner' autoComplete='Off' value={dinnern} onChange={(e) => setDinnern(e.target.value)} />
+              </div>
+
+              <button onClick={add}>Add</button>
+              <button onClick={update}>Update</button>
             </div>
-            <h4>Vegetarian</h4>
-            <div className='box'>
-              <input type="text" placeholder='Breakfast' autoComplete='Off' value={breakfastv} onChange={(e) => setBreakfastv(e.target.value)} />
-            </div>
-
-            <div className='box'>
-              <input type="text" placeholder='Lunch' autoComplete='Off' value={lunchv} onChange={(e) => setLunchv(e.target.value)} />
-            </div>
-
-            <div className='box'>
-              <input type="text" placeholder='Dinner' autoComplete='Off' value={dinnerv} onChange={(e) => setDinnerv(e.target.value)} />
-            </div>
-
-            <h4>Non-Vegetarian</h4>
-
-            <div className='box'>
-              <input type="text" placeholder='Breakfast' autoComplete='Off' value={breakfastn} onChange={(e) => setBreakfastn(e.target.value)} />
-            </div>
-
-            <div className='box'>
-              <input type="text" placeholder='Lunch' autoComplete='Off' value={lunchn} onChange={(e) => setLunchn(e.target.value)} />
-            </div>
-
-            <div className='box'>
-              <input type="text" placeholder='Dinner' autoComplete='Off' value={dinnern} onChange={(e) => setDinnern(e.target.value)} />
-            </div>
-
-            <button onClick={add}>Add</button>
-            <button onClick={update}>Update</button>
-          </div>
-
+          )}
           <div className='database'>
             <h3>Weekly Meals Plan</h3>
             <div className='container'>
@@ -139,7 +141,9 @@ function Meals() {
                   <h5>Breakfast: {item.BreakfastN}</h5>
                   <h5>Lunch: {item.LunchN}</h5>
                   <h5>Dinner: {item.DinnerN}</h5>
-                  <button onClick={() => passData(item.id)}>Edit</button>
+                  {currentUser && currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
+                    <button onClick={() => passData(item.id)}>Edit</button>
+                  )}
                 </div>
               ))}
             </div>

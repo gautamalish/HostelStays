@@ -50,7 +50,7 @@ function DataTable() {
     <div className='dataTable'>
       {deleteModal && <DeleteModel id={idToDelete} setData={setData} setDeleteModal={setDeleteModal} data={data}/>}
       <div className="dataTableTitle">
-        Staffs
+        STAFFS LIST
         {currentUser.email=="np03cs4a220120@heraldcollege.edu.np" && <Link to="/newstaff" style={{textDecoration:"none"}} className='link'>Add New</Link>}
       </div>
       <DataGrid className='dataGrid'
