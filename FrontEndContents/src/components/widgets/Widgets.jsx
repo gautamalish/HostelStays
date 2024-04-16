@@ -5,7 +5,7 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
 import BedroomChildOutlinedIcon from "@mui/icons-material/BedroomChildOutlined";
-
+import { Link } from "react-router-dom";
 function Widget({ type }) {
   let data;
   let amount; // Define amount variable
@@ -17,7 +17,7 @@ function Widget({ type }) {
       data = {
         title: "Total Students",
         isMoney: false,
-        link: "See all Students",
+        link: <Link to="/tenants" className="tenantsLink" style={{textDecoration:"none"}}>See all Residents</Link>,
         icon: (
           <PersonOutlineOutlinedIcon
             className="icon"
@@ -45,7 +45,7 @@ function Widget({ type }) {
       data = {
         title: "Total Rooms",
         isMoney: false,
-        link: "View all Rooms",
+        link: <Link to="/rooms" className="roomsLink" style={{textDecoration:"none"}}>View all Rooms</Link>,
         icon: (
           <BedroomChildOutlinedIcon
             className="icon"

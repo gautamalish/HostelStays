@@ -10,12 +10,12 @@ import {
   ResponsiveContainer,
 } from "recharts";
 const data = [
-  { name: "January", Total: 1200 },
-  { name: "February", Total: 2100 },
-  { name: "March", Total: 1100 },
-  { name: "April", Total: 2200 },
-  { name: "May", Total: 900 },
-  { name: "June", Total: 1600 },
+  { name: "January", Total: 20 },
+  { name: "February", Total: 37 },
+  { name: "March", Total: 40 },
+  { name: "April", Total: 63},
+  { name: "May", Total: 72 },
+  { name: "June", Total: 80 },
 ];
 const Chart = ({ aspect, title }) => {
   return (
