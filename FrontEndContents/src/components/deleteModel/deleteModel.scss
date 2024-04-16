@@ -36,10 +36,12 @@
             justify-content: center;
             align-items: center;
             margin-top: 0px;
-            background-color: rgba(220, 20, 60, 0.839);
-            width: 30px;
+            width: 40px;
+            height: 40px;
             border-radius: 5px;
-            padding-bottom: 3px;
+            padding: 3px;
+            text-align: center;
+            background-color: rgba(220, 20, 60, 0.839);
             button {
                 background-color: transparent;
                 border: none;
@@ -48,7 +50,10 @@
                 cursor: pointer;
                 width: 30px;
                 height: 30px;
-                
+                margin: 0px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
               }
           }
           .footer {
