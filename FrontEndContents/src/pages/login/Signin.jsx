@@ -13,8 +13,11 @@ export default function Signin(){
     useEffect(()=>{
         emailRef.current.focus()
     },[])
+    // function which gets called when signin is clicked
     async function handleSubmit(e) {
+        // preventing the page reload
         e.preventDefault()
+        // validating email and password fields
         if(!formData.email || !formData.password){
             setError("Please fill up all the fields")
             return
@@ -22,13 +25,17 @@ export default function Signin(){
         try {
           setError("")
           setLoading(true)
+        //   calling the firebase login function
           await login(formData.email, formData.password)
+        //   navigating to home
           navigate("/home",{replace:true})
         } catch(error) {
             console.log(error.code)
+            // setting error if user is not found
             if (error.code === "auth/invalid-credential") {
                 setError("User not found. Please use correct username and password");
             } else {
+                // setting error if other errors are found
                 setError("Failed to log in. Please try again later.");
             }
         }

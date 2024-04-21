@@ -16,15 +16,18 @@ import Logout from "./pages/Logout/Logout";
 import React from "react";
 import New from "./pages/AddNew/AddNewResident";
 import NewStaff from "./pages/AddNew/AddNewStaff";
-import { productInputs, userInputs } from "./formSource";
+import { userInputs } from "./formSource";
 function App() {
+  // taking the currentUser from useAuth function
   const { currentUser } = useAuth();
+  // require auth to check if the user is logged in and can only navigate to pages when logged in
   const RequireAuth = ({ children }) => {
     return currentUser ? children : <Navigate to="/" />;
   };
 
   return (
     <div className="mainContainer">
+      {/* adding the routes */}
       <Routes>
         <Route path="/">
           <Route index element={<Signin />} />

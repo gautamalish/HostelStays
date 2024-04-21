@@ -28,6 +28,7 @@ function New({ inputs, title }) {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   useEffect(() => {
+    // function to run when image is selected
     const uploadFile = () => {
       const name = new Date().getTime() + file.name;
       const storageRef = ref(storage, file.name);
@@ -71,33 +72,42 @@ function New({ inputs, title }) {
     };
     file && uploadFile();
   }, [file]);
+  // function to run when the input fields changes
   const handleInput = (e) => {
     const id = e.target.id;
     const value = e.target.value;
     setData({ ...data, [id]: value });
   };
   async function handleSubmit(e) {
+    // preventing the default page reload
     e.preventDefault();
+    // checking if fields are empty
     if (!data.password || !data.email || !data.phone || !data.address || !data.country || !data.username || !data.displayName) {
       setError("Please fill up all the fields")
       return;
     }
+    // checking if password length is less than 6
     else if(data.password.length<6){
       setError("Password must be of atleast 6 characters long")
       return
     }
     try {
+      // when it passes all the tests set the error to blank
       setError("")
+      // creating user
       const res = await createUserWithEmailAndPassword(
         auth,
         data.email,
         data.password
       );
+      // setting it in the residents collection in firestore
       await setDoc(doc(db, "residents", res.user.uid), {
         ...data,
         timeStamp: serverTimestamp(),
       });
+      // navigating back when the user is added
       navigate(-1);
+      // generating the success toast
       toast.success('New user added', {
         position: "top-right",
         autoClose: 5000,
@@ -110,6 +120,7 @@ function New({ inputs, title }) {
         transition: Bounce,
         });
     } catch (error) {
+      // setting the errors if the adding fails
       if(error.code=="auth/invalid-email"){
         setError("Please use a valid email")
       }

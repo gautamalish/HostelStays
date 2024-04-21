@@ -6,11 +6,15 @@ function Logout() {
     const {logout}=useAuth()
   const navigate=useNavigate()
   const homeNavigate=useNavigate()
+  // called when logout is clicked
   async function handleLogout(){
     try{
+      // calling the firebase logout function
       await logout()
+      // navigating to sign in page
       navigate("/")
     }
+    // if there is an error,log it in the console
     catch(error){
       console.log(error)
     }
