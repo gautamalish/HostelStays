@@ -6,15 +6,21 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 function DeleteModel({id,setData,setDeleteModal,data}) {
+  // function called when delete is clicked
     async function handleDeleteClick(){
         try{
+          // calling the firebase deleteDoc function to delete the staff from staffs collection
             await deleteDoc(doc(db, "staffs", id));
+            // fetching the deletion response
             const response = await fetch(`http://localhost:3000/api/users/${id}`, {
             method: 'DELETE'
           })
+          // check if response was ok
           if (response.ok) {
             console.log('User deleted successfully');
+            // do not display the modal
             setDeleteModal(false)
+            // bring in the react success toast
             toast.success('Deleted the user', {
                 position: "top-right",
                 autoClose: 5000,
@@ -32,8 +38,10 @@ function DeleteModel({id,setData,setDeleteModal,data}) {
           }
         }
           catch(error){
+            // log if any error occured
             console.log("Error deleting user",error)
           }
+          // remove the deleted user from data
           setData(data.filter(item=>item.id!==id))
     }
   return (

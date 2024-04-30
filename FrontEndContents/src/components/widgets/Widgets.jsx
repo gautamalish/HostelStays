@@ -1,21 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./widgets.scss";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
 import BedroomChildOutlinedIcon from "@mui/icons-material/BedroomChildOutlined";
 import { Link } from "react-router-dom";
+import {collection, query,where, getDocs} from "firebase/firestore"
+import {db} from "../../context/firebase.js"
 function Widget({ type }) {
   let data;
-  let amount; // Define amount variable
+  const [amount,setAmount]=React.useState(null)
 
-  const diff = 20;
+  const [diff,setDiff]=React.useState(null)
 
   switch (type) {
     case "user":
       data = {
         title: "Total Tenants",
         isMoney: false,
+        query:"residents",
         link: (
           <Link
             to="/tenants"
@@ -32,7 +35,7 @@ function Widget({ type }) {
           />
         ),
       };
-      amount = 35;
+      // amount = 35;
       break;
     case "balance":
       data = {
@@ -46,12 +49,13 @@ function Widget({ type }) {
           />
         ),
       };
-      amount = 20;
+      // amount = 20;
       break;
     case "order":
       data = {
         title: "Total Rooms",
         isMoney: false,
+        query:"Room",
         link: (
           <Link
             to="/rooms"
@@ -71,7 +75,7 @@ function Widget({ type }) {
           />
         ),
       };
-      amount = 25;
+      // amount = 25;
       break;
     case "earning":
       data = {
@@ -85,12 +89,41 @@ function Widget({ type }) {
           />
         ),
       };
-      amount = 10;
+      // amount = 10;
       break;
     default:
       break;
   }
-
+  useEffect(()=>{
+    const fetchData=async()=>{
+      const today=new Date()
+      const lastMonth=new Date(new Date().setMonth(today.getMonth()-1))
+      const prevMonth=new Date(new Date().setMonth(today.getMonth()-2))
+      const lastMonthQuery=query(
+        collection(db,data.query),
+        where("timeStamp","<=",today),
+        where("timeStamp",">",lastMonth)
+      )
+      const prevMonthQuery=query(
+        collection(db,data.query),
+        where("timeStamp","<=",lastMonth),
+        where("timeStamp",">",prevMonth)
+      )
+      const lastMonthUsersData=await getDocs(lastMonthQuery)
+      const prevMonthUsersData=await getDocs(prevMonthQuery)
+      const totalUsers=query(collection(db,data.query))
+      const totalUsersData=await getDocs(totalUsers)
+      setAmount(totalUsersData.docs.length)
+      if(prevMonthUsersData.docs.length!=0){
+        setDiff(((lastMonthUsersData.docs.length-prevMonthUsersData.docs.length)/prevMonthUsersData.docs.length)*100)
+      }
+      else{
+        setDiff(((lastMonthUsersData.docs.length-prevMonthUsersData.docs.length))*100)
+      }
+      
+    }
+    fetchData()
+  },[])
   return (
     <div className="widget">
       <div className="left">
