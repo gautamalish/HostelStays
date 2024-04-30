@@ -40,7 +40,9 @@
                     align-items: center;
                     gap: 7px;
 
-                    
+                    &:active{
+                        background-color: #ece8ff;
+                    }
                     .icon{
                         font-size: 18px;
                         color: #7451f8;
@@ -68,4 +70,7 @@
         margin-top: 15px;
         margin-bottom: 5px;
     }
+}
+.active{
+    background-color: #ece8ff;
 }

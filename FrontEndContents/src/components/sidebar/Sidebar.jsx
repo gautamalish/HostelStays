@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Nav } from "react-bootstrap";
 import { Link, NavLink } from "react-router-dom";
 import Logout from "../../pages/Logout/Logout";
@@ -10,6 +10,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom" 
 import "./sidebar.scss";
 function Sidebar({ setShowLogout }) {
+  const [clicked,setClicked]=useState(false)
   return (
     <div className="sidebar">
       <div className="top">
@@ -27,7 +28,7 @@ function Sidebar({ setShowLogout }) {
               <span>Dashboard</span>
             </li>
           </NavLink>
-          <p className="title">MENU</p>
+          <p className="title">SERVICE</p>
           <NavLink to="/rooms" className="navlink">
               <li>
                 <MeetingRoomIcon className="icon"/>
