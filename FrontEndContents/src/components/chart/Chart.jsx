@@ -63,7 +63,7 @@ const Chart = ({ aspect, title }) => {
       const prevMonthUsersCount = prevMonthUsersData.docs.length;
       const prevPrevMonthUsersCount = prevPrevMonthUsersData.docs.length;
       const data = [
-        { name: months[today.getMonth()], Total:totalUsersCount.docs.length },
+        { name: "Today", Total:totalUsersCount.docs.length },
         { name: months[lastMonth.getMonth()], Total: lastMonthUsersCount },
         { name: months[prevMonth.getMonth()], Total: prevMonthUsersCount },
         { name: months[prevPrevMonth.getMonth()], Total: prevPrevMonthUsersCount },
