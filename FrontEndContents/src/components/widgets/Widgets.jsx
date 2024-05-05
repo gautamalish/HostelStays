@@ -41,6 +41,7 @@ function Widget({ type }) {
       data = {
         title: "Total Paid Tenants",
         isMoney: false,
+        query:"Room",
         link: "See details",
         icon: (
           <AccountBalanceOutlinedIcon
@@ -81,6 +82,7 @@ function Widget({ type }) {
       data = {
         title: "Available Rooms",
         isMoney: false,
+        query:"Room",
         link: "View Available Rooms",
         icon: (
           <BedroomChildOutlinedIcon
