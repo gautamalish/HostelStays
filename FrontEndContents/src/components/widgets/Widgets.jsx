@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "./widgets.scss";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
+import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
 import BedroomChildOutlinedIcon from "@mui/icons-material/BedroomChildOutlined";
@@ -142,8 +143,9 @@ function Widget({ type }) {
         <span className="link">{data.link}</span>
       </div>
       <div className="right">
-        <div className="percentage positive">
-          <KeyboardArrowUpOutlinedIcon />
+        <div className={`percentage ${diff<0?"negative":"positive"}`}>
+          {diff<0?<KeyboardArrowDownOutlinedIcon/>:<KeyboardArrowUpOutlinedIcon />}
+          
           {`${diff}%`}
         </div>
         {data.icon}
