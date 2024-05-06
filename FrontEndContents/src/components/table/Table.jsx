@@ -39,9 +39,9 @@ const Tablefunc = () => {
   }, []);
 
   const handleAddClick = async () => {
-    // Check if any field is empty
-    const isAnyFieldEmpty = Object.values(formData).some(
-      (value) => value === ""
+    // Check if any field except partialAmount is empty
+    const isAnyFieldEmpty = Object.entries(formData).some(
+      ([key, value]) => key !== "partialAmount" && value === ""
     );
 
     // If any field is empty, show an alert and don't proceed further
@@ -53,6 +53,11 @@ const Tablefunc = () => {
     try {
       const docRef = await addDoc(collection(db, "Transaction"), formData);
       console.log("Document written with ID: ", docRef.id);
+
+      // Update the rows state to include the newly added document
+      setRows((prevRows) => [...prevRows, { id: docRef.id, ...formData }]);
+
+      // Reset the form data
       setFormData({
         id: "",
         Name: "",
@@ -63,7 +68,6 @@ const Tablefunc = () => {
         status: "",
         partialAmount: "",
       });
-      fetchData(); // Assuming fetchData is defined elsewhere
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -193,9 +197,15 @@ const Tablefunc = () => {
                 <TableCell className="tableCell">{row.id}</TableCell>
                 <TableCell className="tableCell">{row.Name}</TableCell>
                 <TableCell className="tableCell">{row.RoomNo}</TableCell>
-                <TableCell className="tableCell">{row.date}</TableCell>
+                <TableCell className="tableCell">
+                  {/* Conditionally render "-----" if status is "Pending", otherwise render the date */}
+                  {row.status === "Pending" ? "-----" : row.date}
+                </TableCell>
                 <TableCell className="tableCell">{row.amount}</TableCell>
-                <TableCell className="tableCell">{row.method}</TableCell>
+                <TableCell className="tableCell">
+                  {/* Conditionally render "-----" if status is "Pending", otherwise render the method */}
+                  {row.status === "Pending" ? "-----" : row.method}
+                </TableCell>
                 <TableCell className="tableCell">
                   <span className={`status ${row.status}`}>{row.status}</span>
                 </TableCell>
