@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { collection, getDocs, addDoc } from "firebase/firestore";
+import { db } from "../../context/firebase";
+import { Link } from "react-router-dom"; // Import Link from React Router
+
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,8 +12,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { collection, getDocs, addDoc } from "firebase/firestore";
-import { db } from "../../context/firebase";
 import "./Table.scss";
 
 const Tablefunc = () => {
@@ -39,10 +41,12 @@ const Tablefunc = () => {
   }, []);
 
   const handleAddClick = async () => {
+    // Check if any field except partialAmount is empty
     const isAnyFieldEmpty = Object.entries(formData).some(
       ([key, value]) => key !== "partialAmount" && value === ""
     );
 
+    // If any field is empty, show an alert and don't proceed further
     if (isAnyFieldEmpty) {
       alert("Please fill in all fields");
       return;
@@ -50,7 +54,12 @@ const Tablefunc = () => {
 
     try {
       const docRef = await addDoc(collection(db, "Transaction"), formData);
+      console.log("Document written with ID: ", docRef.id);
+
+      // Update the rows state to include the newly added document
       setRows((prevRows) => [...prevRows, { id: docRef.id, ...formData }]);
+
+      // Reset the form data
       setFormData({
         id: "",
         Name: "",
@@ -69,7 +78,9 @@ const Tablefunc = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
+    // Check if the status field is being changed
     if (name === "status") {
+      // If status is "Pending", set Date and Payment Method to "-----"
       if (value === "Pending") {
         setFormData((prevData) => ({
           ...prevData,
@@ -78,6 +89,7 @@ const Tablefunc = () => {
           [name]: value,
         }));
       } else {
+        // If status is not "Pending", reset Date and Payment Method
         setFormData((prevData) => ({
           ...prevData,
           date: "",
@@ -86,6 +98,7 @@ const Tablefunc = () => {
         }));
       }
     } else {
+      // For other fields, update normally
       setFormData((prevData) => ({
         ...prevData,
         [name]: value,
@@ -96,17 +109,33 @@ const Tablefunc = () => {
   return (
     <div>
       <div className="top-bar">
-        <Button variant="contained" color="primary" onClick={handleAddClick}>
-          Add
-        </Button>
+        <div className="top-bar-left">
+          {/* Back arrow icon */}
+          <Link to="/home">
+            {" "}
+            {/* Assuming this is your home page route */}
+            <ArrowBackIcon style={{ marginRight: "10px", cursor: "pointer" }} />
+          </Link>
+        </div>
+        <div className="top-bar-right" style={{ marginRight: "10px" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleAddClick}
+            className="add-button"
+          >
+            Add
+          </Button>
+        </div>
       </div>
-      <div className="form-container">
+      <div className="form-container" style={{ padding: "10px" }}>
         <input
           type="text"
           name="id"
           value={formData.id}
           placeholder="ID"
           onChange={handleInputChange}
+          style={{ marginBottom: "10px" }}
         />
         <input
           type="text"
@@ -114,6 +143,7 @@ const Tablefunc = () => {
           value={formData.Name}
           placeholder="Name"
           onChange={handleInputChange}
+          style={{ marginBottom: "10px" }}
         />
         <input
           type="text"
@@ -121,6 +151,7 @@ const Tablefunc = () => {
           value={formData.RoomNo}
           placeholder="Room No"
           onChange={handleInputChange}
+          style={{ marginBottom: "10px" }}
         />
         <input
           type="text"
@@ -128,6 +159,7 @@ const Tablefunc = () => {
           value={formData.date}
           placeholder="Date"
           onChange={handleInputChange}
+          style={{ marginBottom: "10px" }}
         />
         <input
           type="text"
@@ -135,23 +167,22 @@ const Tablefunc = () => {
           value={formData.amount}
           placeholder="Amount"
           onChange={handleInputChange}
+          style={{ marginBottom: "10px" }}
         />
-        {/* Select dropdown for Payment Method */}
-        <select
+        <input
+          type="text"
           name="method"
           value={formData.method}
+          placeholder="Method"
           onChange={handleInputChange}
-        >
-          <option value="">Select Payment Method</option>
-          <option value="Cash">Cash</option>
-          <option value="Cheque">Cheque</option>
-          <option value="Online">Online</option>
-        </select>
+          style={{ marginBottom: "10px" }}
+        />
         {/* Select dropdown for status */}
         <select
           name="status"
           value={formData.status}
           onChange={handleInputChange}
+          style={{ marginBottom: "10px" }}
         >
           <option value="">Select Status</option>
           <option value="Paid">Paid</option>
@@ -166,6 +197,7 @@ const Tablefunc = () => {
             value={formData.partialAmount}
             placeholder="Partial Amount"
             onChange={handleInputChange}
+            style={{ marginBottom: "10px" }}
           />
         )}
       </div>

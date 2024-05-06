@@ -43,8 +43,8 @@ function Widget({ type }) {
         isMoney: false,
         link: (
           <Link
-            to="/table" // Adjust the path accordingly
-            className="tenantsLink" // You can use the same class as "tenantsLink" or create a new one
+            to="/table"
+            className="tenantsLink"
             style={{ textDecoration: "none" }}
           >
             See details
