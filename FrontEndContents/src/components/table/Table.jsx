@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -12,6 +11,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../../context/firebase";
 import "./Table.scss";
+
 const Tablefunc = () => {
   const [rows, setRows] = useState([]);
   const [formData, setFormData] = useState({
@@ -39,12 +39,10 @@ const Tablefunc = () => {
   }, []);
 
   const handleAddClick = async () => {
-    // Check if any field except partialAmount is empty
     const isAnyFieldEmpty = Object.entries(formData).some(
       ([key, value]) => key !== "partialAmount" && value === ""
     );
 
-    // If any field is empty, show an alert and don't proceed further
     if (isAnyFieldEmpty) {
       alert("Please fill in all fields");
       return;
@@ -52,12 +50,7 @@ const Tablefunc = () => {
 
     try {
       const docRef = await addDoc(collection(db, "Transaction"), formData);
-      console.log("Document written with ID: ", docRef.id);
-
-      // Update the rows state to include the newly added document
       setRows((prevRows) => [...prevRows, { id: docRef.id, ...formData }]);
-
-      // Reset the form data
       setFormData({
         id: "",
         Name: "",
@@ -76,9 +69,7 @@ const Tablefunc = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    // Check if the status field is being changed
     if (name === "status") {
-      // If status is "Pending", set Date and Payment Method to "-----"
       if (value === "Pending") {
         setFormData((prevData) => ({
           ...prevData,
@@ -87,7 +78,6 @@ const Tablefunc = () => {
           [name]: value,
         }));
       } else {
-        // If status is not "Pending", reset Date and Payment Method
         setFormData((prevData) => ({
           ...prevData,
           date: "",
@@ -96,7 +86,6 @@ const Tablefunc = () => {
         }));
       }
     } else {
-      // For other fields, update normally
       setFormData((prevData) => ({
         ...prevData,
         [name]: value,
@@ -147,13 +136,17 @@ const Tablefunc = () => {
           placeholder="Amount"
           onChange={handleInputChange}
         />
-        <input
-          type="text"
+        {/* Select dropdown for Payment Method */}
+        <select
           name="method"
           value={formData.method}
-          placeholder="Method"
           onChange={handleInputChange}
-        />
+        >
+          <option value="">Select Payment Method</option>
+          <option value="Cash">Cash</option>
+          <option value="Cheque">Cheque</option>
+          <option value="Online">Online</option>
+        </select>
         {/* Select dropdown for status */}
         <select
           name="status"
