@@ -164,13 +164,13 @@ function Meals() {
                 <div key={item.id} className='list'>
                   <h3>{item.Day}</h3>
                   <h4>Vegetarian</h4>
-                  <h5>Breakfast: {item.BreakfastV}</h5>
-                  <h5>Lunch: {item.LunchV}</h5>
-                  <h5>Dinner: {item.DinnerV}</h5>
+                  <h5><strong>Breakfast: </strong>{item.BreakfastV}</h5>
+                  <h5><strong>Lunch: </strong>{item.LunchV}</h5>
+                  <h5><strong>Dinner: </strong>{item.DinnerV}</h5>
                   <h4>Non-Vegetarian</h4>
-                  <h5>Breakfast: {item.BreakfastN}</h5>
-                  <h5>Lunch: {item.LunchN}</h5>
-                  <h5>Dinner: {item.DinnerN}</h5>
+                  <h5><strong>Breakfast: </strong>{item.BreakfastN}</h5>
+                  <h5><strong>Lunch: </strong>{item.LunchN}</h5>
+                  <h5><strong>Dinner: </strong>{item.DinnerN}</h5>
                   {currentUser && currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
                     <button onClick={() => passData(item.id)}>Edit</button>
                   )}
