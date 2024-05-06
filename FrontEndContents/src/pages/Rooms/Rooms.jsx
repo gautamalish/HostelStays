@@ -4,7 +4,7 @@ import Navbar from '../../components/navbar/Navbar';
 import Sidebar from '../../components/sidebar/Sidebar';
 import { userColumns } from '../../dataTableSrc';
 import './Rooms.scss';
-import { doc, addDoc, collection, updateDoc, deleteDoc, getDocs } from 'firebase/firestore';
+import { doc, addDoc, collection, updateDoc, deleteDoc, getDocs, query, where } from 'firebase/firestore';
 
 const Rooms = () => {
     const [room, setRoom] = useState("");
@@ -14,9 +14,11 @@ const Rooms = () => {
     const [id, setId] = useState();
     const [currentUser, setCurrentUser] = useState(auth.currentUser);
     const [residentNames, setResidentNames] = useState([]);
+    const [roomNumberError, setRoomNumberError] = useState("");
+    const [roomExistsError, setRoomExistsError] = useState(""); // Add this state for room existence check
 
-    // Fetch resident names from Firestore
-    useEffect(() => {
+     // Fetch resident names from Firestore
+     useEffect(() => {
         const fetchResidentNames = async () => {
             try {
                 const residentsRef = collection(db, "residents");
@@ -31,12 +33,31 @@ const Rooms = () => {
         fetchResidentNames();
     }, []);
 
-
     //creating databaseref
     const dbref = collection(db, "Room");
 
+    // Check if room number already exists
+    const isRoomNumberExists = async (roomNumber) => {
+        const q = query(dbref, where("Room", "==", roomNumber));
+        const querySnapshot = await getDocs(q);
+        return !querySnapshot.empty;
+    };
+
     //storing data to database
     const add = async () => {
+        // Check if room number is empty
+        if (!room.trim()) {
+            alert("Room number should not be empty");
+            return;
+        }
+
+        // Check if room number already exists
+        const roomExists = await isRoomNumberExists(room);
+        if (roomExists) {
+            alert("Room already exists!");
+            return;
+        }
+
         // Check authorization
         if (!currentUser || currentUser.email !== "np03cs4a220120@heraldcollege.edu.np") {
             alert("You are not authorized to perform this action.");
@@ -119,12 +140,12 @@ const Rooms = () => {
     };
 
     // Handler to automatically set status based on "Occupied by" field
-const handleOccupiedChange = (e) => {
-    const value = e.target.value;
-    setOccby(value);
-    // Automatically set status based on "Occupied by" field
-    setStatus(value.trim() !== "" ? "Occupied" : "Not Occupied");
-};
+    const handleOccupiedChange = (e) => {
+        const value = e.target.value;
+        setOccby(value);
+        // Automatically set status based on "Occupied by" field
+        setStatus(value.trim() !== "" ? "Occupied" : "Not Occupied");
+    };
 
 
     return (
@@ -140,22 +161,21 @@ const handleOccupiedChange = (e) => {
                     <h2> Add / Update Room</h2>
                     <div className="box">
                         <input className='roomno' type='text' placeholder='Room Number' autoComplete='off' value={room} onChange={(e) => setRoom(e.target.value)}></input>
+                        {roomNumberError && <p className="error">{roomNumberError}</p>}
+                        {roomExistsError && <p className="error">{roomExistsError}</p>}
                     </div>
                     <div className="box">
-                                <label htmlFor="occupiedBy">Occupied by:</label>
-                                <select id="occupiedBy" value={occby} onChange={handleOccupiedChange}>
-                                    <option value="">Select tenant</option>
-                                    {residentNames.map(name => (
-                                        <option key={name} value={name}>{name}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className="box">
-                            <label htmlFor="status">Status: <span className="status-text">{status ? status : "Fill occupied by"}</span></label>
-
-                                
-                            </div>
-
+                        <label htmlFor="occupiedBy">Occupied by:</label>
+                        <select id="occupiedBy" value={occby} onChange={handleOccupiedChange}>
+                            <option value="">Select tenant</option>
+                            {residentNames.map(name => (
+                                <option key={name} value={name}>{name}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="box">
+                        <label htmlFor="status">Status: <span className="status-text">{status ? status : "Fill occupied by"}</span></label>
+                    </div>
 
                     <button onClick={add}>ADD</button>
                     <button onClick={confirmUpdate}>UPDATE</button>
