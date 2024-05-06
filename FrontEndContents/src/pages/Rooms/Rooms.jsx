@@ -54,41 +54,53 @@ const Rooms = () => {
         const querySnapshot = await getDocs(q);
         return !querySnapshot.empty;
     };
+// Check if the user is already occupied in another room
+const isUserAlreadyOccupied = async (tenantName) => {
+    const q = query(dbref, where("Occupied", "==", tenantName));
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
+};
 
-    //storing data to database
-    const add = async () => {
-        // Check if room number is empty
-        if (!room.trim()) {
-            alert("Room number should not be empty");
-            return;
-        }
+const add = async () => {
+    // Check if room number is empty
+    if (!room.trim()) {
+        alert("Room number should not be empty");
+        return;
+    }
 
-        // Check if room number already exists
-        const roomExists = await isRoomNumberExists(room);
-        if (roomExists) {
-            alert("Room already exists!");
-            return;
-        }
+    // Check if room number already exists
+    const roomExists = await isRoomNumberExists(room);
+    if (roomExists) {
+        alert("Room already exists!");
+        return;
+    }
 
-        // Check authorization
-        if (!currentUser || currentUser.email !== "np03cs4a220120@heraldcollege.edu.np") {
-            alert("You are not authorized to perform this action.");
-            return;
-        }
+    // Check if the selected tenant is already occupied in another room
+    if (occby.trim() !== "" && await isUserAlreadyOccupied(occby)) {
+        alert(`${occby} is already occupied in another room!`);
+        return;
+    }
 
-        const adddata = await addDoc(dbref, { 
-            Room: room, 
-            Status: status, 
-            Occupied: occby,
-            JoinedDate: joinedDate,
-            ExpireDate: expireDate
-        });
-        if (adddata) {
-            alert("Room Added Successfully");
-        } else {
-            alert("Error occurred while adding room");
-        }
-    };
+    // Check authorization
+    if (!currentUser || currentUser.email !== "np03cs4a220120@heraldcollege.edu.np") {
+        alert("You are not authorized to perform this action.");
+        return;
+    }
+
+    const adddata = await addDoc(dbref, { 
+        Room: room, 
+        Status: status, 
+        Occupied: occby,
+        JoinedDate: joinedDate,
+        ExpireDate: expireDate
+    });
+    if (adddata) {
+        alert("Room Added Successfully");
+    } else {
+        alert("Error occurred while adding room");
+    }
+};
+
 
     //pass update the data
     const passData = async (id) => {
