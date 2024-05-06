@@ -6,14 +6,14 @@ import { userColumns } from '../../dataTableSrc';
 import './Rooms.scss';
 import { doc, addDoc, collection, updateDoc, deleteDoc, getDocs, query, where, onSnapshot } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // import necessary storage functions
-
+import { useAuth } from "../../context/AuthContext";
 const Rooms = () => {
     const [room, setRoom] = useState("");
     const [status, setStatus] = useState("");
     const [occby, setOccby] = useState("");
     const [fetchData, setFetchData] = useState([]);
     const [id, setId] = useState("");
-    const [currentUser, setCurrentUser] = useState(auth.currentUser);
+    const {currentUser}=useAuth();
     const [residentNames, setResidentNames] = useState([]);
     const [roomNumberError, setRoomNumberError] = useState("");
     const [roomExistsError, setRoomExistsError] = useState("");
@@ -182,7 +182,7 @@ const Rooms = () => {
                 <Navbar/>
 
                 <div className='roomsmain'>
-                    {currentUser && currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
+                    {currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
                         <div className="form_container">
                             <h2> Add / Update Room</h2>
                             <div className="box">
