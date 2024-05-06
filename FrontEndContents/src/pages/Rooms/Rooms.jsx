@@ -138,7 +138,7 @@ const handleOccupiedChange = (e) => {
                 <h2>Room Details: </h2>
                 <div className='container'>
                     {fetchData
-                        .sort((a, b) => a.Room.localeCompare(b.Room)) // Sort rooms in ascending order
+                        .sort((a, b) => parseInt(a.Room) - parseInt(b.Room)) // Sort rooms in ascending order
                         .map((data) => (
                             <div className='box' key={data.id}>
                                 <h2>Room Number: {data.Room}</h2>
