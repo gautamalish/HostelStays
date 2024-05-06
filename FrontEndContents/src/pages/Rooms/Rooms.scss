@@ -21,60 +21,126 @@
 
   .roomsmain{
     .form_container {
-      background-color:#f9f9f9;
-      padding:20px 30px;
-      margin:50px auto;
-      width:325px;
-      border-radius:10px;
-      box-shadow:0 4px 8px rgba(0,0,0,0.1);
-      border-bottom:2px solid blue;
+      background-color: #f9f9f9;
+      padding: 20px 30px;
+      margin: 50px auto;
+      width: 325px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-bottom: 2px solid blue;
     }
+    
     .form_container h2 {
-      text-align:center;
-      color:#333;
-      font-size:17px;
-      text-transform:uppercase;
-      font-weight:bold;
-      margin-bottom:20px;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #333;
+      font-size: 17px;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 20px;
     }
+    
     .form_container .box {
-      margin-top:20px;
-      font-size:16px;
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      font-size: 10px;
     }
-    .form_container label{
+    
+    .form_container label {
       margin-right: 10px;
-      font-size: 20px;
+      font-size: 16px;
     }
+
+    .form_container .box input::placeholder {
+      font-size: 16px; /* Adjust the font size as needed */
+    }
+    
+    
+    .form_container .box select,
+    .form_container .box .status-text {
+      padding: 5px 2px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 15px;
+    }
+    
     .form_container .box input {
-      width:100%;
-      padding:10px;
-      border:none;
-      border-bottom:2px solid #1b54e6;
-      outline:none;
-      font-size:15px;
-      transition:border-bottom 0.3s ease;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-bottom: 2px solid #1b54e6;
+      outline: none;
+      font-size: 15px;
+      transition: border-bottom 0.3s ease;
     }
+    
     .form_container .box input:focus {
-      border-bottom:2px solid #2196f3;
+      border-bottom: 2px solid #2196f3;
     }
+    
+    .form_container .box select {
+      flex: 1; /* Take remaining space */
+      background-color: #fff;
+      cursor: pointer;
+    }
+    
+    .form_container .box .status-text {
+      color: #333;
+      cursor: pointer;
+    }
+    
+    .form_container .box .status-text:hover {
+      text-decoration: underline;
+    }
+    
+    .form_container .box select:focus,
+    .form_container .box .status-text:focus {
+      outline: none;
+      border-color: #2196f3;
+    }
+    
+    .form_container .box select option {
+      color: #333;
+    }
+    
+    .form_container .box select option:first-child {
+      color: #888;
+    }
+    
+    .form_container .box select option:hover {
+      background-color: #f0f0f0;
+    }
+    
+    .form_container .box select option[value=""] {
+      color: #888;
+    }
+    
+    .form_container .box select option[value=""]:hover {
+      background-color: transparent;
+    }
+    
     .form_container button {
-      margin-top:30px;
-      margin-left:30px;
-      padding:10px 20px;
-      border:none;
-      outline:none;
-      background-color:#6439FF;
-      color:#fff;
-      font-size:13px;
-      font-weight:bold;
-      text-transform:uppercase;
-      cursor:pointer;
-      border-radius:28px;
-      transition:background-color 0.3s ease;
+      margin-top: 30px;
+      margin-left: 30px;
+      padding: 10px 20px;
+      border: none;
+      outline: none;
+      background-color: #6439ff;
+      color: #fff;
+      font-size: 13px;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 28px;
+      transition: background-color 0.3s ease;
     }
+    
     .form_container button:hover {
-      background-color:#430094;
+      background-color: #430094;
     }
+    
 
 
 

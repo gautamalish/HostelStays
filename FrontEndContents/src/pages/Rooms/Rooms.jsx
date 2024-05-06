@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { db, auth } from '../../context/firebase';
 import Navbar from '../../components/navbar/Navbar';
 import Sidebar from '../../components/sidebar/Sidebar';
+import { userColumns } from '../../dataTableSrc';
 import './Rooms.scss';
 import { doc, addDoc, collection, updateDoc, deleteDoc, getDocs } from 'firebase/firestore';
 
@@ -12,6 +13,24 @@ const Rooms = () => {
     const [fetchData, setFetchData] = useState([]);
     const [id, setId] = useState();
     const [currentUser, setCurrentUser] = useState(auth.currentUser);
+    const [residentNames, setResidentNames] = useState([]);
+
+    // Fetch resident names from Firestore
+    useEffect(() => {
+        const fetchResidentNames = async () => {
+            try {
+                const residentsRef = collection(db, "residents");
+                const residentsSnapshot = await getDocs(residentsRef);
+                const names = residentsSnapshot.docs.map(doc => doc.data().displayName);
+                setResidentNames(names);
+            } catch (error) {
+                console.error("Error fetching resident names:", error);
+            }
+        };
+
+        fetchResidentNames();
+    }, []);
+
 
     //creating databaseref
     const dbref = collection(db, "Room");
@@ -120,14 +139,23 @@ const handleOccupiedChange = (e) => {
                 <div className="form_container">
                     <h2> Add / Update Room</h2>
                     <div className="box">
-                        <input type='text' placeholder='Room Number' autoComplete='off' value={room} onChange={(e) => setRoom(e.target.value)}></input>
+                        <input className='roomno' type='text' placeholder='Room Number' autoComplete='off' value={room} onChange={(e) => setRoom(e.target.value)}></input>
                     </div>
                     <div className="box">
-                        <input type='text' placeholder='Occupied by' autoComplete='off' value={occby} onChange={handleOccupiedChange}></input>
-                    </div>
-                    <div className="box">
-                        <label className="status" htmlFor="status">Status:{status}</label>
-                    </div>
+                                <label htmlFor="occupiedBy">Occupied by:</label>
+                                <select id="occupiedBy" value={occby} onChange={handleOccupiedChange}>
+                                    <option value="">Select tenant</option>
+                                    {residentNames.map(name => (
+                                        <option key={name} value={name}>{name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="box">
+                            <label htmlFor="status">Status: <span className="status-text">{status ? status : "Fill occupied by"}</span></label>
+
+                                
+                            </div>
+
 
                     <button onClick={add}>ADD</button>
                     <button onClick={confirmUpdate}>UPDATE</button>
