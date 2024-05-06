@@ -17,6 +17,8 @@ import React from "react";
 import New from "./pages/AddNew/AddNewResident";
 import NewStaff from "./pages/AddNew/AddNewStaff";
 import { userInputs } from "./formSource";
+import Tablefunc from "./components/table/Table"; // Import Tablefunc component
+
 function App() {
   // taking the currentUser from useAuth function
   const { currentUser } = useAuth();
@@ -93,6 +95,14 @@ function App() {
             element={
               <RequireAuth>
                 <Logout />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="table" // Define path for Tablefunc component
+            element={
+              <RequireAuth>
+                <Tablefunc />
               </RequireAuth>
             }
           />

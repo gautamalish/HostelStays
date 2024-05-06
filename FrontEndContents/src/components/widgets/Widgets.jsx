@@ -41,7 +41,15 @@ function Widget({ type }) {
       data = {
         title: "Total Paid Tenants",
         isMoney: false,
-        link: "See details",
+        link: (
+          <Link
+            to="/table" // Adjust the path accordingly
+            className="tenantsLink" // You can use the same class as "tenantsLink" or create a new one
+            style={{ textDecoration: "none" }}
+          >
+            See details
+          </Link>
+        ),
         icon: (
           <AccountBalanceOutlinedIcon
             className="icon"
@@ -49,7 +57,6 @@ function Widget({ type }) {
           />
         ),
       };
-      // amount = 20;
       break;
     case "order":
       data = {
