@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { db, auth } from '../../context/firebase';
 import Navbar from '../../components/navbar/Navbar';
 import Sidebar from '../../components/sidebar/Sidebar';
+import { userColumns } from '../../dataTableSrc';
 import './Rooms.scss';
-import { doc, addDoc, collection, updateDoc, deleteDoc, getDocs } from 'firebase/firestore';
+import { doc, addDoc, collection, updateDoc, deleteDoc, getDocs, query, where } from 'firebase/firestore';
 
 const Rooms = () => {
     const [room, setRoom] = useState("");
@@ -12,12 +13,51 @@ const Rooms = () => {
     const [fetchData, setFetchData] = useState([]);
     const [id, setId] = useState();
     const [currentUser, setCurrentUser] = useState(auth.currentUser);
+    const [residentNames, setResidentNames] = useState([]);
+    const [roomNumberError, setRoomNumberError] = useState("");
+    const [roomExistsError, setRoomExistsError] = useState(""); // Add this state for room existence check
+
+     // Fetch resident names from Firestore
+     useEffect(() => {
+        const fetchResidentNames = async () => {
+            try {
+                const residentsRef = collection(db, "residents");
+                const residentsSnapshot = await getDocs(residentsRef);
+                const names = residentsSnapshot.docs.map(doc => doc.data().displayName);
+                setResidentNames(names);
+            } catch (error) {
+                console.error("Error fetching resident names:", error);
+            }
+        };
+
+        fetchResidentNames();
+    }, []);
 
     //creating databaseref
     const dbref = collection(db, "Room");
 
+    // Check if room number already exists
+    const isRoomNumberExists = async (roomNumber) => {
+        const q = query(dbref, where("Room", "==", roomNumber));
+        const querySnapshot = await getDocs(q);
+        return !querySnapshot.empty;
+    };
+
     //storing data to database
     const add = async () => {
+        // Check if room number is empty
+        if (!room.trim()) {
+            alert("Room number should not be empty");
+            return;
+        }
+
+        // Check if room number already exists
+        const roomExists = await isRoomNumberExists(room);
+        if (roomExists) {
+            alert("Room already exists!");
+            return;
+        }
+
         // Check authorization
         if (!currentUser || currentUser.email !== "np03cs4a220120@heraldcollege.edu.np") {
             alert("You are not authorized to perform this action.");
@@ -99,6 +139,15 @@ const Rooms = () => {
         }
     };
 
+    // Handler to automatically set status based on "Occupied by" field
+    const handleOccupiedChange = (e) => {
+        const value = e.target.value;
+        setOccby(value);
+        // Automatically set status based on "Occupied by" field
+        setStatus(value.trim() !== "" ? "Occupied" : "Not Occupied");
+    };
+
+
     return (
         <>
         <div className='rooms'>
@@ -111,18 +160,21 @@ const Rooms = () => {
                 <div className="form_container">
                     <h2> Add / Update Room</h2>
                     <div className="box">
-                        <input type='text' placeholder='Room Number' autoComplete='off' value={room} onChange={(e) => setRoom(e.target.value)}></input>
+                        <input className='roomno' type='text' placeholder='Room Number' autoComplete='off' value={room} onChange={(e) => setRoom(e.target.value)}></input>
+                        {roomNumberError && <p className="error">{roomNumberError}</p>}
+                        {roomExistsError && <p className="error">{roomExistsError}</p>}
                     </div>
                     <div className="box">
-                        <input type='text' placeholder='Occupied by' autoComplete='off' value={occby} onChange={(e) => setOccby(e.target.value)}></input>
-                    </div>
-                    <div className="box">
-                        <label htmlFor="status">Status:</label>
-                        <select id="status" value={status} onChange={(e) => setStatus(e.target.value || "")}>
-                            <option value="">Select Room Status</option>
-                            <option value="Occupied">Occupied</option>
-                            <option value="Not Occupied">Not Occupied</option>
+                        <label htmlFor="occupiedBy">Occupied by:</label>
+                        <select id="occupiedBy" value={occby} onChange={handleOccupiedChange}>
+                            <option value="">Select tenant</option>
+                            {residentNames.map(name => (
+                                <option key={name} value={name}>{name}</option>
+                            ))}
                         </select>
+                    </div>
+                    <div className="box">
+                        <label htmlFor="status">Status: <span className="status-text">{status ? status : "Fill occupied by"}</span></label>
                     </div>
 
                     <button onClick={add}>ADD</button>
@@ -134,12 +186,16 @@ const Rooms = () => {
                 <h2>Room Details: </h2>
                 <div className='container'>
                     {fetchData
-                        .sort((a, b) => a.Room.localeCompare(b.Room)) // Sort rooms in ascending order
+                        .sort((a, b) => parseInt(a.Room) - parseInt(b.Room)) // Sort rooms in ascending order
                         .map((data) => (
                             <div className='box' key={data.id}>
                                 <h2>Room Number: {data.Room}</h2>
                                 <h3>Room status: {data.Status}</h3>
-                                <h3>Occupied by: {data.Occupied}</h3>
+                                {data.Occupied.trim() !== "" ? (
+                                    <h3>Occupied by: {data.Occupied}</h3>
+                                ) : (
+                                    <h3>Occupied by: None</h3>
+                                )}
                                 {currentUser && currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
                                     <>
                                         <button onClick={() => passData(data.id)}>UPDATE</button>
