@@ -99,6 +99,15 @@ const Rooms = () => {
         }
     };
 
+    // Handler to automatically set status based on "Occupied by" field
+const handleOccupiedChange = (e) => {
+    const value = e.target.value;
+    setOccby(value);
+    // Automatically set status based on "Occupied by" field
+    setStatus(value.trim() !== "" ? "Occupied" : "Not Occupied");
+};
+
+
     return (
         <>
         <div className='rooms'>
@@ -114,15 +123,10 @@ const Rooms = () => {
                         <input type='text' placeholder='Room Number' autoComplete='off' value={room} onChange={(e) => setRoom(e.target.value)}></input>
                     </div>
                     <div className="box">
-                        <input type='text' placeholder='Occupied by' autoComplete='off' value={occby} onChange={(e) => setOccby(e.target.value)}></input>
+                        <input type='text' placeholder='Occupied by' autoComplete='off' value={occby} onChange={handleOccupiedChange}></input>
                     </div>
                     <div className="box">
-                        <label htmlFor="status">Status:</label>
-                        <select id="status" value={status} onChange={(e) => setStatus(e.target.value || "")}>
-                            <option value="">Select Room Status</option>
-                            <option value="Occupied">Occupied</option>
-                            <option value="Not Occupied">Not Occupied</option>
-                        </select>
+                        <label className="status" htmlFor="status">Status:{status}</label>
                     </div>
 
                     <button onClick={add}>ADD</button>
@@ -139,7 +143,11 @@ const Rooms = () => {
                             <div className='box' key={data.id}>
                                 <h2>Room Number: {data.Room}</h2>
                                 <h3>Room status: {data.Status}</h3>
-                                <h3>Occupied by: {data.Occupied}</h3>
+                                {data.Occupied.trim() !== "" ? (
+                                    <h3>Occupied by: {data.Occupied}</h3>
+                                ) : (
+                                    <h3>Occupied by: None</h3>
+                                )}
                                 {currentUser && currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
                                     <>
                                         <button onClick={() => passData(data.id)}>UPDATE</button>
