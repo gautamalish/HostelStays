@@ -59,9 +59,13 @@ function Meals() {
     try {
       const snapshot = await getDocs(dbref);
       const fetchedData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setFetchData(fetchedData);
+      const sortedData = fetchedData.sort((a, b) => {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        return days.indexOf(a.Day) - days.indexOf(b.Day);
+      });
+      setFetchData(sortedData);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
     }
   };
 
