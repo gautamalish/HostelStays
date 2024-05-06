@@ -4,11 +4,25 @@
     border-radius: 50%;
     cursor: pointer;
 }
+.SettImg{
+  width: 28px;
+  height: 28px;
+  margin-right: 10px;
+}
+.EditImg{
+    width: 28px;
+    height: 28px;
+    margin-right: 10px;
+  }
+.logoutImg{
+  width: 28px;
+  height: 28px;
+  margin-right: 10px;
+}
 .bellIcon{
     font-size: 35px;
     color: #111;
     margin-right: 17px;
-    border-radius: 100%;
 }
 .navContainer{
     display: flex;
@@ -23,3 +37,36 @@
     justify-content: center;
     align-items: center;
 }
+.right {
+    position: relative; 
+  }
+  
+  .hostelImgWrapper {
+    display: inline-block; 
+    position: relative;
+  }
+  
+  .popover {
+    margin-top: 3px;
+    position: absolute;
+    top: 100%; 
+    right: 0;
+    background-color: aliceblue; 
+    border-radius: 8px;
+    width: 300px; 
+    z-index: 10; 
+    font-size: medium;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+    .popover-item {
+      padding: 10px;
+      &:hover {
+        background-color: #D8DADF;
+      }
+
+    }
+    .icon {
+        margin-right: 8px; 
+      }
+  }
