@@ -3,6 +3,7 @@ import Navbar from '../../components/navbar/Navbar'
 import Sidebar from '../../components/sidebar/Sidebar' 
 import "./meals.scss";
 import { db, auth} from "../../context/firebase";
+import { useAuth } from '../../context/AuthContext';
 import { doc, addDoc, collection, updateDoc, deleteDoc, getDocs } from 'firebase/firestore';
 
 function Meals() {
@@ -15,7 +16,7 @@ function Meals() {
   const [dinnern, setDinnern] = useState("");
   const [fetchData, setFetchData] = useState([]);
   const [id, setId] = useState("");
-  const [currentUser, setCurrentUser] = useState(auth.currentUser);
+  const {currentUser}=useAuth();
 
   const dbref = collection(db, "MEALS");
 
@@ -78,7 +79,7 @@ function Meals() {
         <Sidebar/>
         <div className="mealscontext">
           <Navbar/>
-          {currentUser && currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
+          {currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
             <div className='meals-container'>
               <h2>Add / Update Meals</h2>
               <div className='days-list'>
