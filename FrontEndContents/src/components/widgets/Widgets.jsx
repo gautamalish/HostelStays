@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import "./widgets.scss";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
-import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
 import BedroomChildOutlinedIcon from "@mui/icons-material/BedroomChildOutlined";
@@ -42,7 +41,6 @@ function Widget({ type }) {
       data = {
         title: "Total Paid Tenants",
         isMoney: false,
-<<<<<<< HEAD
         link: (
           <Link
             to="/table" // Adjust the path accordingly
@@ -52,10 +50,6 @@ function Widget({ type }) {
             See details
           </Link>
         ),
-=======
-        query:"Room",
-        link: "See details",
->>>>>>> 95b7b43484283077e89435497065e603c5a9d2d0
         icon: (
           <AccountBalanceOutlinedIcon
             className="icon"
@@ -64,6 +58,7 @@ function Widget({ type }) {
         ),
       };
       break;
+
     case "order":
       data = {
         title: "Total Rooms",
@@ -94,7 +89,6 @@ function Widget({ type }) {
       data = {
         title: "Available Rooms",
         isMoney: false,
-        query:"Room",
         link: "View Available Rooms",
         icon: (
           <BedroomChildOutlinedIcon
@@ -154,9 +148,8 @@ function Widget({ type }) {
         <span className="link">{data.link}</span>
       </div>
       <div className="right">
-        <div className={`percentage ${diff<0?"negative":"positive"}`}>
-          {diff<0?<KeyboardArrowDownOutlinedIcon/>:<KeyboardArrowUpOutlinedIcon />}
-          
+        <div className="percentage positive">
+          <KeyboardArrowUpOutlinedIcon />
           {`${diff}%`}
         </div>
         {data.icon}
