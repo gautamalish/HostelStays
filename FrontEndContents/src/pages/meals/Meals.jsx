@@ -2,9 +2,9 @@ import React, { useState, useEffect} from 'react';
 import Navbar from '../../components/navbar/Navbar'
 import Sidebar from '../../components/sidebar/Sidebar' 
 import "./meals.scss";
-import { db, auth} from "../../context/firebase";
+import { db } from "../../context/firebase";
 import { useAuth } from '../../context/AuthContext';
-import { doc, addDoc, collection, updateDoc, deleteDoc, getDocs } from 'firebase/firestore';
+import { doc, addDoc, collection, updateDoc, getDocs } from 'firebase/firestore';
 
 function Meals() {
   const [day, setDay] = useState("");
@@ -16,17 +16,22 @@ function Meals() {
   const [dinnern, setDinnern] = useState("");
   const [fetchData, setFetchData] = useState([]);
   const [id, setId] = useState("");
-  const {currentUser}=useAuth();
+  const { currentUser } = useAuth();
 
   const dbref = collection(db, "MEALS");
 
   const add = async () => {
     try {
+      if (!validateFields()) {
+        alert("Please fill in all fields");
+        return;
+      }
+
       const snapshot = await getDocs(collection(db, "MEALS"));
       const existingDay = snapshot.docs.find(doc => doc.data().Day === day);
       if (existingDay) {
-        const id = existingDay.id;
-        await updateDoc(doc(db, "MEALS", id), {
+        const existingId = existingDay.id;
+        await updateDoc(doc(db, "MEALS", existingId), {
           Day: day,
           BreakfastV: breakfastv,
           LunchV: lunchv,
@@ -89,17 +94,35 @@ function Meals() {
 
   const update = async () =>{
     try {
-      if(!id){
+      if (!validateFields()) {
+        alert("Please fill in all fields");
+        return;
+      }
+
+      if (!id){
         throw new Error("Document ID is empty or undefined.");
       }
-      const updateref = doc(dbref, id)
-      await updateDoc(updateref, {Day: day, BreakfastV: breakfastv, LunchV: lunchv, DinnerV: dinnerv, BreakfastN: breakfastn, LunchN: lunchn, DinnerN: dinnern })
-      alert("Update successfully.")
+
+      const updateref = doc(dbref, id);
+      await updateDoc(updateref, {Day: day, BreakfastV: breakfastv, LunchV: lunchv, DinnerV: dinnerv, BreakfastN: breakfastn, LunchN: lunchn, DinnerN: dinnern });
+      alert("Update successfully.");
       window.location.reload();
     } catch (error) {
       console.error("Error updating room:", error);
       alert("Failed to update room: " + error.message);
     }
+  };
+
+  const validateFields = () => {
+    return (
+      day.trim() !== "" &&
+      breakfastv.trim() !== "" &&
+      lunchv.trim() !== "" &&
+      dinnerv.trim() !== "" &&
+      breakfastn.trim() !== "" &&
+      lunchn.trim() !== "" &&
+      dinnern.trim() !== ""
+    );
   };
 
   return (
