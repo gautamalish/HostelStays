@@ -53,13 +53,6 @@ function Sidebar({ setShowLogout }) {
             <PersonIcon className="icon"/>
               <span>Staffs</span></li>
           </NavLink>
-          <p className="title">EXIT</p>
-          <NavLink to="/logout" className="navlink">
-            <li>
-              <ExitToAppIcon className="icon"/>
-              <span>Logout</span>
-            </li>
-          </NavLink>
         </ul>
       </div>
     </div>
