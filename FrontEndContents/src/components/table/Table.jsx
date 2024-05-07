@@ -18,7 +18,6 @@ import { serverTimestamp } from "firebase/firestore";
 const Tablefunc = () => {
   const [rows, setRows] = useState([]);
   const [formData, setFormData] = useState({
-    id: "",
     Name: "",
     RoomNo: "",
     date: "",
@@ -64,7 +63,6 @@ const Tablefunc = () => {
 
       // Reset the form data
       setFormData({
-        id: "",
         Name: "",
         RoomNo: "",
         date: "",
@@ -81,32 +79,11 @@ const Tablefunc = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    // Check if the status field is being changed
-    if (name === "status") {
-      // If status is "Pending", set Date and Payment Method to "-----"
-      if (value === "Pending") {
-        setFormData((prevData) => ({
-          ...prevData,
-          date: "-----",
-          method: "-----",
-          [name]: value,
-        }));
-      } else {
-        // If status is not "Pending", reset Date and Payment Method
-        setFormData((prevData) => ({
-          ...prevData,
-          date: "",
-          method: "",
-          [name]: value,
-        }));
-      }
-    } else {
-      // For other fields, update normally
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    }
+    // For all fields except ID, update normally
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   return (
@@ -132,14 +109,7 @@ const Tablefunc = () => {
         </div>
       </div>
       <div className="form-container" style={{ padding: "10px" }}>
-        <input
-          type="text"
-          name="id"
-          value={formData.id}
-          placeholder="ID"
-          onChange={handleInputChange}
-          style={{ marginBottom: "10px" }}
-        />
+        {/* Removed input for ID */}
         <input
           type="text"
           name="Name"
@@ -220,9 +190,10 @@ const Tablefunc = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {rows.map((row, index) => (
               <TableRow key={row.id}>
-                <TableCell className="tableCell">{row.id}</TableCell>
+                <TableCell className="tableCell">{index + 1}</TableCell>{" "}
+                {/* Display sequential numbers */}
                 <TableCell className="tableCell">{row.Name}</TableCell>
                 <TableCell className="tableCell">{row.RoomNo}</TableCell>
                 <TableCell className="tableCell">
