@@ -22,7 +22,6 @@ function Home() {
           <FeaturedChart />
           <Chart aspect={2 / 1} title="Last 3 Months (Tenants)" />
         </div>
-        {/* Tablefunc component removed from here */}
       </div>
     </div>
   );

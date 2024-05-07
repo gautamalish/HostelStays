@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../../context/firebase";
-import { Link } from "react-router-dom"; // Import Link from React Router
+import { Link } from "react-router-dom";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -13,6 +13,7 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import "./Table.scss";
+import { serverTimestamp } from "firebase/firestore";
 
 const Tablefunc = () => {
   const [rows, setRows] = useState([]);
@@ -53,7 +54,9 @@ const Tablefunc = () => {
     }
 
     try {
-      const docRef = await addDoc(collection(db, "Transaction"), formData);
+      const timestamp = serverTimestamp(); // Get server timestamp here
+      const docData = { ...formData, timeStamp: timestamp };
+      const docRef = await addDoc(collection(db, "Transaction"), docData);
       console.log("Document written with ID: ", docRef.id);
 
       // Update the rows state to include the newly added document
