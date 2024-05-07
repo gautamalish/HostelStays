@@ -92,7 +92,15 @@ function Widget({ type }) {
         title: "Available Rooms",
         isMoney: false,
         query: "Room",
-        link: "View Available Rooms",
+        link: (
+          <Link
+            to="/rooms"
+            className="roomsLink"
+            style={{ textDecoration: "none" }}
+          >
+            View Available Rooms
+          </Link>
+        ),
         icon: (
           <BedroomChildOutlinedIcon
             className="icon"
@@ -159,7 +167,6 @@ function Widget({ type }) {
         <span className="counter">
           {data.isMoney && "$"}
           {data.query == "Transaction" ? totalPaid:data.title=="Available Rooms"?emptyRooms:amount}
-          {/* Use the amount variable here */}
         </span>
         <span className="link">{data.link}</span>
       </div>
