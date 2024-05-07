@@ -17,6 +17,7 @@ function Notify({ onClose }) {
           timestamp: new Date(),
         });
         console.log("Note added with ID: ", docRef.id);
+        setMessage("Saved!");
         setNote(""); // Clear the input field after saving
         // Automatically close the Notify component after 2 seconds
         setTimeout(() => {

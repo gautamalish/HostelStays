@@ -45,9 +45,9 @@
   border-bottom: 1px solid rgb(214, 212, 212);
 }
 
-.navContainer .left {
+.navContainer {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end; /* Align items to the right side */
   align-items: center;
 }
 
