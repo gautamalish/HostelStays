@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { db, auth } from '../../context/firebase';
+import { db, auth, storage } from '../../context/firebase'; // assuming you have storage imported from firebase
 import Navbar from '../../components/navbar/Navbar';
 import Sidebar from '../../components/sidebar/Sidebar';
 import { userColumns } from '../../dataTableSrc';
 import './Rooms.scss';
 import { doc, addDoc, collection, updateDoc, deleteDoc, getDocs, query, where, onSnapshot } from 'firebase/firestore';
-
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // import necessary storage functions
+import { useAuth } from "../../context/AuthContext";
 const Rooms = () => {
     const [room, setRoom] = useState("");
     const [status, setStatus] = useState("");
     const [occby, setOccby] = useState("");
     const [fetchData, setFetchData] = useState([]);
     const [id, setId] = useState("");
-    const [currentUser, setCurrentUser] = useState(auth.currentUser);
+    const {currentUser}=useAuth();
     const [residentNames, setResidentNames] = useState([]);
     const [roomNumberError, setRoomNumberError] = useState("");
     const [roomExistsError, setRoomExistsError] = useState("");
     const [joinedDate, setJoinedDate] = useState("");
     const [expireDate, setExpireDate] = useState("");
+    const [roomImage, setRoomImage] = useState(null); // State for room image
 
     // Fetch resident names from Firestore
     useEffect(() => {
@@ -54,53 +56,60 @@ const Rooms = () => {
         const querySnapshot = await getDocs(q);
         return !querySnapshot.empty;
     };
-// Check if the user is already occupied in another room
-const isUserAlreadyOccupied = async (tenantName) => {
-    const q = query(dbref, where("Occupied", "==", tenantName));
-    const querySnapshot = await getDocs(q);
-    return !querySnapshot.empty;
-};
 
-const add = async () => {
-    // Check if room number is empty
-    if (!room.trim()) {
-        alert("Room number should not be empty");
-        return;
-    }
+    //storing data to database
+    const add = async () => {
+        // Check if room number is empty
+        if (!room.trim()) {
+            alert("Room number should not be empty");
+            return;
+        }
 
-    // Check if room number already exists
-    const roomExists = await isRoomNumberExists(room);
-    if (roomExists) {
-        alert("Room already exists!");
-        return;
-    }
+        // Check if room number already exists
+        const roomExists = await isRoomNumberExists(room);
+        if (roomExists) {
+            alert("Room already exists!");
+            return;
+        }
 
-    // Check if the selected tenant is already occupied in another room
-    if (occby.trim() !== "" && await isUserAlreadyOccupied(occby)) {
-        alert(`${occby} is already occupied in another room!`);
-        return;
-    }
+        // Check authorization
+        if (!currentUser || currentUser.email !== "np03cs4a220120@heraldcollege.edu.np") {
+            alert("You are not authorized to perform this action.");
+            return;
+        }
 
-    // Check authorization
-    if (!currentUser || currentUser.email !== "np03cs4a220120@heraldcollege.edu.np") {
-        alert("You are not authorized to perform this action.");
-        return;
-    }
+        // Upload image to Firestore Storage
+        const storageRef = ref(storage, `room_images/${roomImage.name}`);
+        const uploadTask = uploadBytes(storageRef, roomImage);
 
-    const adddata = await addDoc(dbref, { 
-        Room: room, 
-        Status: status, 
-        Occupied: occby,
-        JoinedDate: joinedDate,
-        ExpireDate: expireDate
-    });
-    if (adddata) {
-        alert("Room Added Successfully");
-    } else {
-        alert("Error occurred while adding room");
-    }
-};
+        uploadTask.then((snapshot) => {
+            console.log('File uploaded successfully');
+            // Get the download URL after upload completion
+            getDownloadURL(snapshot.ref).then((downloadURL) => {
+                // Add room data to Firestore with image URL
+                addRoomToFirestore(downloadURL);
+            });
+        }).catch((error) => {
+            // Handle unsuccessful uploads
+            console.error("Error uploading image:", error);
+        });
 
+        const addRoomToFirestore = async (imageUrl) => {
+            const adddata = await addDoc(dbref, { 
+                Room: room, 
+                Status: status, 
+                Occupied: occby,
+                JoinedDate: joinedDate,
+                ExpireDate: expireDate,
+                RoomImageURL: imageUrl // Store image URL in Firestore
+            });
+            if (adddata) {
+                alert("Room Added Successfully");
+            } else {
+                alert("Error occurred while adding room");
+            }
+        };
+    };
 
     //pass update the data
     const passData = async (id) => {
@@ -159,92 +168,97 @@ const add = async () => {
 
     // Handler to automatically set status based on "Occupied by" field
     const handleOccupiedChange = (e) => {
-    const value = e.target.value;
-    setOccby(value);
-    // Automatically set status based on "Occupied by" field
-    setStatus(value.trim() !== "" ? "Occupied" : "Not Occupied");
-};
-
-
+        const value = e.target.value;
+        setOccby(value);
+        // Automatically set status based on "Occupied by" field
+        setStatus(value.trim() !== "" ? "Occupied" : "Not Occupied");
+    };
 
     return (
         <>
         <div className='rooms'>
-        <Sidebar/>
-        <div className="roomscontent">
-          <Navbar/>
+            <Sidebar/>
+            <div className="roomscontent">
+                <Navbar/>
 
-          <div className='roomsmain'>
-            {currentUser && currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
-                <div className="form_container">
-                    <h2> Add / Update Room</h2>
-                    <div className="box">
-                        <input className='roomno' type='text' placeholder='Room Number' autoComplete='off' value={room} onChange={(e) => setRoom(e.target.value)}></input>
-                        {roomNumberError && <p className="error">{roomNumberError}</p>}
-                        {roomExistsError && <p className="error">{roomExistsError}</p>}
-                    </div>
-                    <div className="box">
-                        <label htmlFor="occupiedBy">Occupied by:</label>
-                        <select id="occupiedBy" value={occby} onChange={handleOccupiedChange}>
-                            <option value="">Select tenant</option>
-                            <option value="">None</option>
-                            {   residentNames.map(name => (
-                                <option key={name} value={name}>{name}</option>
-                            ))}
-                        </select>
-                    </div>
-                    {status === "Occupied" && (
-                        <>
+                <div className='roomsmain'>
+                    {currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
+                        <div className="form_container">
+                            <h2> Add / Update Room</h2>
                             <div className="box">
-                                <label htmlFor="joinedDate">Join Date:</label>
-                                <input type="date" id="joinedDate" value={joinedDate} onChange={(e) => setJoinedDate(e.target.value)} />
+                                <input className='roomno' type='text' placeholder='Room Number' autoComplete='off' value={room} onChange={(e) => setRoom(e.target.value)}></input>
+                                {roomNumberError && <p className="error">{roomNumberError}</p>}
+                                {roomExistsError && <p className="error">{roomExistsError}</p>}
                             </div>
                             <div className="box">
-                                <label htmlFor="expireDate">Expire Date:</label>
-                                <input type="date" id="expireDate" value={expireDate} onChange={(e) => setExpireDate(e.target.value)} />
+                                <label htmlFor="roomImage">Image:</label>
+                                <input type="file" id="roomImage" onChange={(e) => setRoomImage(e.target.files[0])} />
                             </div>
-                        </>
+                            <div className="box">
+                                <label htmlFor="occupiedBy">Occupied by:</label>
+                                <select id="occupiedBy" value={occby} onChange={handleOccupiedChange}>
+                                    <option value="">Select tenant</option>
+                                    <option value="">None</option>
+                                    {residentNames.map(name => (
+                                        <option key={name} value={name}>{name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            {status === "Occupied" && (
+                                <>
+                                    <div className="box">
+                                        <label htmlFor="joinedDate">Join Date:</label>
+                                        <input type="date" id="joinedDate" value={joinedDate} onChange={(e) => setJoinedDate(e.target.value)} />
+                                    </div>
+                                    <div className="box">
+                                        <label htmlFor="expireDate">Expire Date:</label>
+                                        <input type="date" id="expireDate" value={expireDate} onChange={(e) => setExpireDate(e.target.value)} />
+                                    </div>
+                                </>
+                            )}
+                            <div className="box">
+                                <label htmlFor="status">Status: <span className="status-text">{status ? status : "Fill occupied by"}</span></label>
+                            </div>
+                            <button onClick={add}>ADD</button>
+                            <button onClick={confirmUpdate}>UPDATE</button>
+                        </div>
                     )}
-                    <div className="box">
-                        <label htmlFor="status">Status: <span className="status-text">{status ? status : "Fill occupied by"}</span></label>
-                    </div>
-                    <button onClick={add}>ADD</button>
-                    <button onClick={confirmUpdate}>UPDATE</button>
-                </div>
-            )}
 
-            <div className='database'>
-                <h2>Room Details: </h2>
-                <div className='container'>
-                    {fetchData
-                        .sort((a, b) => parseInt(a.Room) - parseInt(b.Room)) // Sort rooms in ascending order
-                        .map((data) => (
-                            <div className='box' key={data.id}>
-                                <h2>Room Number: {data.Room}</h2>
-                                <h3>Room status: {data.Status}</h3>
-                                {data.Occupied.trim() !== "" ? (
-                                    <h3>Occupied by: {data.Occupied}</h3>
-                                ) : (
-                                    <h3>Occupied by: None</h3>
-                                )}
-                                {data.Status === "Occupied" && (
-                                    <>
-                                        <h3>Joined Date: {data.JoinedDate}</h3>
-                                        <h3>Expire Date: {data.ExpireDate}</h3>
-                                    </>
-                                )}
-                                {currentUser && currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
-                                    <>
-                                        <button onClick={() => passData(data.id)}>UPDATE</button>
-                                        <button onClick={() => confirmDelete(data.id)}>DELETE</button>
-                                    </>
-                                )}
-                            </div>
-                        ))}
+                    <div className='database'>
+                        <h2>Room Details: </h2>
+                        <div className='container'>
+                            {fetchData
+                                .sort((a, b) => parseInt(a.Room) - parseInt(b.Room)) // Sort rooms in ascending order
+                                .map((data) => (
+                                    <div className='box' key={data.id}>
+                                        <h2>Room Number: {data.Room}</h2>
+                                        {data.RoomImageURL && (
+                                            <img src={data.RoomImageURL} alt={`Room ${data.Room}`} />
+                                        )}
+                                        <h3>Room status: {data.Status}</h3>
+                                        {data.Occupied.trim() !== "" ? (
+                                            <h3>Occupied by: {data.Occupied}</h3>
+                                        ) : (
+                                            <h3>Occupied by: None</h3>
+                                        )}
+                                        {data.Status === "Occupied" && (
+                                            <>
+                                                <h3>Joined Date: {data.JoinedDate}</h3>
+                                                <h3>Expire Date: {data.ExpireDate}</h3>
+                                            </>
+                                        )}
+                                        {currentUser && currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
+                                            <>
+                                                <button onClick={() => passData(data.id)}>UPDATE</button>
+                                                <button onClick={() => confirmDelete(data.id)}>DELETE</button>
+                                            </>
+                                        )}
+                                    </div>
+                                ))}
+                        </div>
+                    </div>
                 </div>
             </div>
-          </div>
-        </div>
         </div>
         </>
     );

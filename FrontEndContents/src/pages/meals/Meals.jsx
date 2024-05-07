@@ -3,6 +3,7 @@ import Navbar from '../../components/navbar/Navbar'
 import Sidebar from '../../components/sidebar/Sidebar' 
 import "./meals.scss";
 import { db, auth} from "../../context/firebase";
+import { useAuth } from '../../context/AuthContext';
 import { doc, addDoc, collection, updateDoc, deleteDoc, getDocs } from 'firebase/firestore';
 
 function Meals() {
@@ -15,17 +16,42 @@ function Meals() {
   const [dinnern, setDinnern] = useState("");
   const [fetchData, setFetchData] = useState([]);
   const [id, setId] = useState("");
-  const [currentUser, setCurrentUser] = useState(auth.currentUser);
+  const {currentUser}=useAuth();
 
   const dbref = collection(db, "MEALS");
 
   const add = async () => {
-    const adddata = await addDoc(dbref, { Day: day, BreakfastV: breakfastv, LunchV: lunchv, DinnerV: dinnerv, BreakfastN: breakfastn, LunchN: lunchn, DinnerN: dinnern });
-    if (adddata) {
-      alert("Data Added Successfully");
+    try {
+      const snapshot = await getDocs(collection(db, "MEALS"));
+      const existingDay = snapshot.docs.find(doc => doc.data().Day === day);
+      if (existingDay) {
+        const id = existingDay.id;
+        await updateDoc(doc(db, "MEALS", id), {
+          Day: day,
+          BreakfastV: breakfastv,
+          LunchV: lunchv,
+          DinnerV: dinnerv,
+          BreakfastN: breakfastn,
+          LunchN: lunchn,
+          DinnerN: dinnern
+        });
+        alert("Data Updated Successfully");
+      } else {
+        await addDoc(dbref, {
+          Day: day,
+          BreakfastV: breakfastv,
+          LunchV: lunchv,
+          DinnerV: dinnerv,
+          BreakfastN: breakfastn,
+          LunchN: lunchn,
+          DinnerN: dinnern
+        });
+        alert("Data Added Successfully");
+      }
       window.location.reload();
-    } else {
-      alert("Error occurred while adding data");
+    } catch (error) {
+      console.error("Error occurred while adding/updating data:", error);
+      alert("Error occurred while adding/updating data");
     }
   };
 
@@ -33,9 +59,13 @@ function Meals() {
     try {
       const snapshot = await getDocs(dbref);
       const fetchedData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setFetchData(fetchedData);
+      const sortedData = fetchedData.sort((a, b) => {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        return days.indexOf(a.Day) - days.indexOf(b.Day);
+      });
+      setFetchData(sortedData);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
     }
   };
 
@@ -78,7 +108,7 @@ function Meals() {
         <Sidebar/>
         <div className="mealscontext">
           <Navbar/>
-          {currentUser && currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
+          {currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
             <div className='meals-container'>
               <h2>Add / Update Meals</h2>
               <div className='days-list'>
@@ -134,13 +164,13 @@ function Meals() {
                 <div key={item.id} className='list'>
                   <h3>{item.Day}</h3>
                   <h4>Vegetarian</h4>
-                  <h5>Breakfast: {item.BreakfastV}</h5>
-                  <h5>Lunch: {item.LunchV}</h5>
-                  <h5>Dinner: {item.DinnerV}</h5>
+                  <h5><strong>Breakfast: </strong>{item.BreakfastV}</h5>
+                  <h5><strong>Lunch: </strong>{item.LunchV}</h5>
+                  <h5><strong>Dinner: </strong>{item.DinnerV}</h5>
                   <h4>Non-Vegetarian</h4>
-                  <h5>Breakfast: {item.BreakfastN}</h5>
-                  <h5>Lunch: {item.LunchN}</h5>
-                  <h5>Dinner: {item.DinnerN}</h5>
+                  <h5><strong>Breakfast: </strong>{item.BreakfastN}</h5>
+                  <h5><strong>Lunch: </strong>{item.LunchN}</h5>
+                  <h5><strong>Dinner: </strong>{item.DinnerN}</h5>
                   {currentUser && currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
                     <button onClick={() => passData(item.id)}>Edit</button>
                   )}

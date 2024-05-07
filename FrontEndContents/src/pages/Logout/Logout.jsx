@@ -2,7 +2,9 @@ import React from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import "./logout.scss"
+import { useNewAuth } from '../../context/AnotherContext'
 function Logout() {
+  const {logoutDisplay,setLogoutDisplay}=useNewAuth();
     const {logout}=useAuth()
   const navigate=useNavigate()
   const homeNavigate=useNavigate()
@@ -10,6 +12,7 @@ function Logout() {
   async function handleLogout(){
     try{
       // calling the firebase logout function
+      setLogoutDisplay(false)
       await logout()
       // navigating to sign in page
       navigate("/")
@@ -20,7 +23,7 @@ function Logout() {
     }
   }
   function handleNoClick(){
-    homeNavigate("/home")
+    setLogoutDisplay(false)
   }
   return (
     <div className='logoutModal'>

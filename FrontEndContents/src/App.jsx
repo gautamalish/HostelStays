@@ -18,8 +18,10 @@ import New from "./pages/AddNew/AddNewResident";
 import NewStaff from "./pages/AddNew/AddNewStaff";
 import { userInputs } from "./formSource";
 import Tablefunc from "./components/table/Table"; // Import Tablefunc component
-
+import { useNewAuth } from "./context/AnotherContext";
+import Settings from "./pages/Settings/Settings";
 function App() {
+  const {logoutDisplay,setLogoutDisplay}=useNewAuth();
   // taking the currentUser from useAuth function
   const { currentUser } = useAuth();
   // require auth to check if the user is logged in and can only navigate to pages when logged in
@@ -29,7 +31,7 @@ function App() {
 
   return (
     <div className="mainContainer">
-      {/* adding the routes */}
+      {logoutDisplay && <Logout/>}
       <Routes>
         <Route path="/">
           <Route index element={<Signin />} />
@@ -46,6 +48,14 @@ function App() {
             element={
               <RequireAuth>
                 <Rooms />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="settings"
+            element={
+              <RequireAuth>
+                <Settings/>
               </RequireAuth>
             }
           />
@@ -90,14 +100,6 @@ function App() {
             }
           />
           <Route path="forgot-password" element={<ForgotPassword />} />
-          <Route
-            path="logout"
-            element={
-              <RequireAuth>
-                <Logout />
-              </RequireAuth>
-            }
-          />
           <Route
             path="table" // Define path for Tablefunc component
             element={

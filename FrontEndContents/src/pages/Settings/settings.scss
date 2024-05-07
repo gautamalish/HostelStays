@@ -1,0 +1,31 @@
+.settings{
+    display: flex;
+    .settingsContainer{
+        flex: 6;
+
+        .settingsContents{
+            margin: 1rem;
+
+            .nameDiv{
+                display: flex;
+                flex-direction: column;
+                #name{
+                    width: 30vw;
+                    padding: 5px;
+                    border-radius: 7px;
+                    border: 1px solid gray;
+                }
+            }
+            .currentPasswordDiv{
+                display: flex;
+                flex-direction: column;
+            }
+            #password{
+                width: 30vw;
+                padding: 5px;
+                border-radius: 7px;
+                border: 1px solid gray;
+            }
+        }
+    }
+}
