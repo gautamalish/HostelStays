@@ -56,7 +56,6 @@ const Chart = ({ aspect, title }) => {
       const lastMonthUsersData = await getDocs(lastMonthQuery);
       const prevMonthUsersData = await getDocs(prevMonthQuery);
       const prevPrevMonthUsersData = await getDocs(prevPrevMonthQuery);
-      console.log(lastMonthUsersData.docs.length);
       const totalUsers = query(collection(db, "residents"));
       const totalUsersCount = await getDocs(totalUsers);
       const lastMonthUsersCount = lastMonthUsersData.docs.length;

@@ -12,6 +12,7 @@ function Widget({ type }) {
   const [amount, setAmount] = React.useState(null);
   const [totalPaid, setTotalPaid] = useState(null);
   const [diff, setDiff] = React.useState(null);
+  const[emptyRooms,setEmptyRooms]=useState(null);
 
   switch (type) {
     case "user":
@@ -90,6 +91,7 @@ function Widget({ type }) {
       data = {
         title: "Available Rooms",
         isMoney: false,
+        query: "Room",
         link: "View Available Rooms",
         icon: (
           <BedroomChildOutlinedIcon
@@ -125,9 +127,15 @@ function Widget({ type }) {
         collection(db, data.query),
         where("status", "==", "Paid")
       );
+      const availableRooms = query(
+        collection(db, data.query),
+        where("Status", "==", "Not Occupied")
+      );
+      const totalAvailableRooms=await getDocs(availableRooms)
       const totalUsersData = await getDocs(totalUsers);
       const totalPaidData = await getDocs(totalPaid);
-      setTotalPaid(totalPaidData);
+      setEmptyRooms(totalAvailableRooms.docs.length)
+      setTotalPaid(totalPaidData.docs.length);
       setAmount(totalUsersData.docs.length);
       if (prevMonthUsersData.docs.length != 0) {
         setDiff(
@@ -150,14 +158,15 @@ function Widget({ type }) {
         <span className="title">{data.title}</span>
         <span className="counter">
           {data.isMoney && "$"}
-          {amount} {/* Use the amount variable here */}
+          {data.query == "Transaction" ? totalPaid:data.title=="Available Rooms"?emptyRooms:amount}
+          {/* Use the amount variable here */}
         </span>
         <span className="link">{data.link}</span>
       </div>
       <div className="right">
         <div className="percentage positive">
-          <KeyboardArrowUpOutlinedIcon />
-          {`${diff}%`}
+          {(data.query!="Room" && data.query!="Transaction") && <KeyboardArrowUpOutlinedIcon />}
+          {(data.query!="Room" && data.query!="Transaction") && `${diff}%`}
         </div>
         {data.icon}
       </div>
