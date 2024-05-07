@@ -29,13 +29,13 @@ export function AuthProvider({ children }) {
     return sendPasswordResetEmail(auth,email)
   }
 
-  function updateEmail(email) {
-    return currentUser.updateEmail(email)
-  }
+  // function updateEmail(email) {
+  //   return currentUser.updateEmail(email)
+  // }
 
-  function updatePassword(password) {
-    return currentUser.updatePassword(password)
-  }
+  // function updatePassword(password) {
+  //   return currentUser.updatePassword(password)
+  // }
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
@@ -57,8 +57,8 @@ export function AuthProvider({ children }) {
     login,
     logout,
     resetPassword,
-    updateEmail,
-    updatePassword,
+    // updateEmail,
+    // updatePassword,
   }
   return (
     <AuthContext.Provider value={value}>
