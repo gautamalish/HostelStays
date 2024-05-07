@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./widgets.scss";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
@@ -10,7 +10,7 @@ import { db } from "../../context/firebase.js";
 function Widget({ type }) {
   let data;
   const [amount, setAmount] = React.useState(null);
-
+  const [totalPaid, setTotalPaid] = useState(null);
   const [diff, setDiff] = React.useState(null);
 
   switch (type) {
@@ -41,6 +41,7 @@ function Widget({ type }) {
       data = {
         title: "Total Paid Tenants",
         isMoney: false,
+        query: "Transaction",
         link: (
           <Link
             to="/table"
@@ -120,7 +121,13 @@ function Widget({ type }) {
       const lastMonthUsersData = await getDocs(lastMonthQuery);
       const prevMonthUsersData = await getDocs(prevMonthQuery);
       const totalUsers = query(collection(db, data.query));
+      const totalPaid = query(
+        collection(db, data.query),
+        where("status", "==", "Paid")
+      );
       const totalUsersData = await getDocs(totalUsers);
+      const totalPaidData = await getDocs(totalPaid);
+      setTotalPaid(totalPaidData);
       setAmount(totalUsersData.docs.length);
       if (prevMonthUsersData.docs.length != 0) {
         setDiff(
