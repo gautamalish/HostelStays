@@ -63,7 +63,7 @@ function FeaturedChart() {
             strokeWidth={5}
           />
         </div>
-        <p className="title">Total Amount of Last Month</p>
+        <p className="title">Last Month's Transaction</p>
         <p className="amount">Rs {lastMonthRevenue}</p>
       </div>
     </div>
