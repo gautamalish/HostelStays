@@ -5,7 +5,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import FeaturedChart from "../../components/featuredChart/FeaturedChart";
 import Widget from "../../components/widgets/Widgets";
 import Chart from "../../components/chart/Chart";
-import Notify from "../../components/notify/Notify"; // Import Notify component
+import Notify from "../../components/notify/Notify";
 
 function Home() {
   const [showNotify, setShowNotify] = useState(false); // State to manage visibility of Notify
