@@ -19,6 +19,7 @@ import NewStaff from "./pages/AddNew/AddNewStaff";
 import { userInputs } from "./formSource";
 import Tablefunc from "./components/table/Table"; // Import Tablefunc component
 import { useNewAuth } from "./context/AnotherContext";
+import Settings from "./pages/Settings/Settings";
 function App() {
   const {logoutDisplay,setLogoutDisplay}=useNewAuth();
   // taking the currentUser from useAuth function
@@ -47,6 +48,14 @@ function App() {
             element={
               <RequireAuth>
                 <Rooms />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="settings"
+            element={
+              <RequireAuth>
+                <Settings/>
               </RequireAuth>
             }
           />

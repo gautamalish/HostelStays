@@ -8,8 +8,8 @@ import { IoNotifications } from "react-icons/io5";
 import { IoMdSettings } from "react-icons/io";
 import { MdLogout } from "react-icons/md";
 import "./navbar.scss";
-import { NavLink } from "react-bootstrap";
 import { useNewAuth } from "../../context/AnotherContext";
+import { NavLink } from "react-router-dom";
 function Navbar() {
   const [showPopover, setShowPopover] = useState(false);
   const {logoutDisplay,setLogoutDisplay}=useNewAuth();
@@ -48,10 +48,12 @@ function Navbar() {
               <CgProfile className="EditImg" color="#7451f8"/>
               Edit Profile
             </div>
+            <NavLink to="/settings" style={{color:"black", textDecoration:"none"}}>
             <div className="popover-item">
               <IoMdSettings className="SettImg" color="#7451f8"/>
               Settings
             </div>
+            </NavLink>
             <div className="popover-item" onClick={toggleLogout}>
               <MdLogout className="logoutImg" color="#7451f8"/>
               Log Out
