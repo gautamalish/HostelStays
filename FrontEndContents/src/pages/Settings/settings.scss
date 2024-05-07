@@ -5,7 +5,38 @@
 
         .settingsContents{
             margin: 1rem;
+            .userInputs{
+                display: flex;
+                gap: 20vw;
 
+                .right{
+                    display: flex;
+                    gap: 10px;
+                    flex-direction: column;
+                    align-items: center;
+
+                    .fileInputDiv{
+                        .editLabel{
+                            background-color: #6439FF;
+                            color: white;
+                            width: 8rem;
+                            padding: 10px;
+                            border-radius: 28px;
+                            text-align: center;
+                            font-size: 18px;
+                            cursor: pointer;
+
+                            &:active{
+                                background-color: #7110E8;
+                            }
+                        }
+
+                    }
+                }
+            }
+            input{
+                background-color: #f6f8fa;
+            }
             .nameDiv{
                 display: flex;
                 flex-direction: column;
@@ -16,15 +47,62 @@
                     border: 1px solid gray;
                 }
             }
+            .profileImg{
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
             .currentPasswordDiv{
                 display: flex;
                 flex-direction: column;
+                margin-top: 0.5rem;
             }
-            #password{
+            .password{
                 width: 30vw;
                 padding: 5px;
                 border-radius: 7px;
                 border: 1px solid gray;
+            }
+            .newPasswordDiv{
+                display: flex;
+                flex-direction: column;
+            }
+            .countryDiv{
+                display: flex;
+                flex-direction: column;
+                margin-top: 2rem;
+                #country{
+                    width: 30vw;
+                    padding: 5px;
+                    border-radius: 7px;
+                    border: 1px solid gray;
+                }
+            }
+            .addressDiv{
+                display: flex;
+                flex-direction: column;
+                margin-top: 2rem;
+
+                #address{
+                    width: 30vw;
+                    padding: 5px;
+                    border-radius: 7px;
+                    border: 1px solid gray;
+                }
+            }
+            .submitDiv{
+                margin-top: 1.5rem;
+                // border: 2px solid green;
+                width: 30vw;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .submitBtn{
+                    padding: 10px;
+                    width: 7rem;
+                }
             }
         }
     }
