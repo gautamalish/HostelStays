@@ -19,8 +19,12 @@ function Home() {
     <div className="home">
       <Sidebar />
       <div className="homeContainer">
-        <Navbar toggleNotify={toggleNotify} />{" "}
-        {/* Pass toggleNotify function as prop */}
+        <Navbar />{" "}
+        <div className="right">
+          <button className="notifyButton" onClick={toggleNotify}>
+            Notify
+          </button>
+        </div>
         <div className="widgets">
           <Widget type="user" />
           <Widget type="order" />
