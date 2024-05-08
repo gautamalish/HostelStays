@@ -6,7 +6,7 @@ import FeaturedChart from "../../components/featuredChart/FeaturedChart";
 import Widget from "../../components/widgets/Widgets";
 import Chart from "../../components/chart/Chart";
 import Notify from "../../components/notify/Notify";
-
+import { ToastContainer } from "react-toastify";
 function Home() {
   const [showNotify, setShowNotify] = useState(false); // State to manage visibility of Notify
 
@@ -34,6 +34,7 @@ function Home() {
       </div>
       {/* Render Notify component as overlay in center */}
       {showNotify && <Notify />}
+      <ToastContainer/>
     </div>
   );
 }

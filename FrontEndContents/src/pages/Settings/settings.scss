@@ -7,13 +7,15 @@
             margin: 1rem;
             .userInputs{
                 display: flex;
-                gap: 20vw;
+                gap: 15vw;
 
                 .right{
                     display: flex;
                     gap: 10px;
                     flex-direction: column;
                     align-items: center;
+                    width: 30vw;
+                    // border: 2px solid green;
 
                     .fileInputDiv{
                         .editLabel{
@@ -52,6 +54,9 @@
                 height: 200px;
                 border-radius: 50%;
                 object-fit: cover;
+            }
+            .left{
+                // border: 2px solid red;
             }
             .currentPasswordDiv{
                 display: flex;
@@ -105,5 +110,8 @@
                 }
             }
         }
+    }
+    .labelAndErrorDiv{
+        display: flex;
     }
 }
