@@ -4,6 +4,8 @@ import Navbar from "../../components/navbar/Navbar";
 import "./settings.scss";
 import { useNavigate } from "react-router-dom";
 import { updatePassword } from "firebase/auth";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { uploadBytesResumable } from "firebase/storage";
 import {
   collection,
   query,
@@ -13,7 +15,7 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "../../context/firebase.js";
+import { db,storage } from "../../context/firebase.js";
 import { useAuth } from "../../context/AuthContext";
 import { Alert } from "react-bootstrap";
 function Settings() {
@@ -26,6 +28,7 @@ function Settings() {
   const [passwords,setPasswords]=useState({currentPassword:"",newPassword:"",retypedNewPassword:""})
   const [firebasePassword,setFirebasePassword]=useState("")
   const [error,setError]=useState("")
+  const [userImage,setUserImage]=useState("")
   const navigate=useNavigate()
   // console.log(updatePassword(passwords.currentPassword,passwords.newPassword))
   
@@ -38,6 +41,7 @@ function Settings() {
         setCountry(userDocSnapshot.data().country)
         setAddress(userDocSnapshot.data().address)
         setFirebasePassword(userDocSnapshot.data().password)
+        setUserImage(userDocSnapshot.data().img)
       } else {
         const staffDocRef=doc(db,"staffs",currentUser.uid)
         const staffDocSnapshot=await getDoc(staffDocRef)
@@ -46,6 +50,7 @@ function Settings() {
           setCountry(staffDocSnapshot.data().country)
           setAddress(staffDocSnapshot.data().address)
           setFirebasePassword(userDocSnapshot.data().password)
+          setUserImage(staffDocSnapshot.data().img)
         }
         else {
           console.log("User document not found");
@@ -71,12 +76,12 @@ function Settings() {
       }
       else{
         try{
-          // await updatePassword(passwords.newPassword)
           await updatePassword(currentUser, passwords.newPassword)
           const userRef=doc(db,"residents",currentUser.uid)
           const staffRef=doc(db,"staffs",currentUser.uid)
           const residentSnapshot = await getDoc(userRef);
           const staffSnapshot = await getDoc(staffRef);
+          handleImageEdit()
           if(residentSnapshot.exists()){
             await updateDoc(userRef,{password:passwords.newPassword,username:username,country:country,address:address})
             navigate(-1)
@@ -97,10 +102,70 @@ function Settings() {
         }
       }
     }
+    else if(passwords.newPassword==""){
+      try{
+        await updatePassword(currentUser, passwords.newPassword)
+        const userRef=doc(db,"residents",currentUser.uid)
+        const staffRef=doc(db,"staffs",currentUser.uid)
+        const residentSnapshot = await getDoc(userRef);
+        const staffSnapshot = await getDoc(staffRef);
+        handleImageEdit()
+        if(residentSnapshot.exists()){
+          await updateDoc(userRef,{username:username,country:country,address:address})
+          navigate(-1)
+        }
+        else if(staffSnapshot.exists()){
+          await updateDoc(staffRef,{username:username,country:country,address:address})
+          navigate(-1)
+        }
+        else {
+          setError("User document not found.");
+          console.log("User document not found.");
+          return;
+        }
+      }
+      catch(error){
+        setError("Error updating")
+        console.log(error)
+      }
+    }
     else{
       navigate(-1)
     }
-    
+     function handleImageEdit(){
+      if(file){
+
+        const storageRef = ref(storage, file.name);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            
+                },
+                (error) => {
+                  switch (error.code) {
+                    case "storage/unauthorized":
+                      break;
+                      case "storage/canceled":
+                        break;
+                        case "storage/unknown":
+                          break;
+                        }
+                      },
+                      () => {
+                        getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
+                          const userRef = doc(db, "residents", currentUser.uid);
+                          await updateDoc(userRef, { img: downloadURL });
+            
+                          // Update the img field in staffs collection
+                          const staffRef = doc(db, "staffs", currentUser.uid);
+                          await updateDoc(staffRef, { img: downloadURL });
+                        });
+                      }
+                    );
+                  }
+    }
   }
   function handlePassword(event){
     setPasswords((prevPasswords)=>{
@@ -195,7 +260,7 @@ function Settings() {
                 src={
                   file
                     ? URL.createObjectURL(file)
-                    : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
+                    : userImage
                 }
                 className="profileImg"
                 alt="No image icon"
@@ -209,6 +274,7 @@ function Settings() {
                   className="fileInput"
                   id="fileInput"
                   style={{ display: "none" }}
+                  onChange={(e) => setFile(e.target.files[0])}
                 />
               </div>
               {error && <Alert variant="danger" className="alert">{error}</Alert>}
