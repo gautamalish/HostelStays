@@ -11,8 +11,7 @@ import "./navbar.scss";
 import { useNewAuth } from "../../context/AnotherContext";
 import { NavLink } from "react-router-dom";
 
-function Navbar({ toggleNotify }) {
-  // Accept toggleNotify function as prop
+function Navbar() {
   const [showPopover, setShowPopover] = useState(false);
   const { logoutDisplay, setLogoutDisplay } = useNewAuth();
   const imgRef = useRef(null);
@@ -36,11 +35,6 @@ function Navbar({ toggleNotify }) {
 
   return (
     <div className="navContainer">
-      <div className="left">
-        <button className="notifyButton" onClick={toggleNotify}>
-          Notify
-        </button>
-      </div>
       <div className="right">
         <IoNotifications className="bellIcon" />
         <img
