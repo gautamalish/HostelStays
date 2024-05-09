@@ -2,14 +2,15 @@ import { initializeApp } from "firebase/app";
 import {getAuth} from "firebase/auth"
 import {getFirestore} from "firebase/firestore"
 import { getStorage } from "firebase/storage";
+
 const firebaseConfig = {
-  apiKey: "AIzaSyC6exE5SKrCwwdXS15N5TrZDUu7ayuLVrU",
-  authDomain: "hostelstays-55bc1.firebaseapp.com",
-  projectId: "hostelstays-55bc1",
-  storageBucket: "hostelstays-55bc1.appspot.com",
-  messagingSenderId: "399271882267",
-  appId: "1:399271882267:web:81cb86188e58f16a8d92be",
-  measurementId: "G-B32WNCZN9M"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);
