@@ -81,3 +81,45 @@ button:active{
     color: black;
     font-family: Arial, Helvetica, sans-serif;
 }
+
+/* media queries */
+@media all and (max-width:1024px){
+    .signinContainer{
+        width: 60vw;
+        margin-top: 15vh;
+    }
+}
+@media all and (max-width:768px){
+    .signinContainer{
+        width: 80vw;
+        margin-top: 15vh;
+    }
+}
+@media all and (max-width:480px){
+    .signinContainer{
+        width: 80vw;
+        margin-top: 15vh;
+    }
+    ::placeholder{
+        font-size: 15px;
+    }
+    .mainTitle{
+        font-size: 23px;
+        font-weight: bold;
+    }
+}
+@media all and (max-width:298px){
+    .signinContainer{
+        width: 80vw;
+        min-height: 50vh;
+        margin-top: 18vh;
+        padding: 10px;
+    }
+    ::placeholder{
+        font-size: 15px;
+    }
+    .mainTitle{
+        font-size: 19px;
+        font-weight: bold;
+    }
+}
