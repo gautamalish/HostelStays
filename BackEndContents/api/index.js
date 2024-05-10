@@ -4,7 +4,7 @@ require("dotenv").config()
 const express = require('express');
 const admin = require("firebase-admin");
 const cors=require('cors')
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 // Import the service account credentials
 // console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS)
 const serviceAccount = JSON.parse(
@@ -33,7 +33,9 @@ app.delete('/api/users/:uid', async (req, res) => {
     res.status(500).send('Internal server error');
   }
 });
-
+app.get('/', (req, res) => {
+  res.send('Welcome to the Firebase Admin API!');
+});
 // Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
