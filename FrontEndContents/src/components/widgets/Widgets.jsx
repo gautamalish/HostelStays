@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./widgets.scss";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
+import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
 import BedroomChildOutlinedIcon from "@mui/icons-material/BedroomChildOutlined";
@@ -171,8 +172,8 @@ function Widget({ type }) {
         <span className="link">{data.link}</span>
       </div>
       <div className="right">
-        <div className="percentage positive">
-          {(data.query!="Room" && data.query!="Transaction") && <KeyboardArrowUpOutlinedIcon />}
+        <div className="percentage positive" style={{color:diff>=0?"green":"red"}}>
+          {(data.query!="Room" && data.query!="Transaction") && (diff>0?<KeyboardArrowUpOutlinedIcon />:<KeyboardArrowDownOutlinedIcon/>)}
           {(data.query!="Room" && data.query!="Transaction") && `${diff}%`}
         </div>
         {data.icon}
