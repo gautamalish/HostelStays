@@ -4,7 +4,7 @@ require("dotenv").config()
 const express = require('express');
 const admin = require("firebase-admin");
 const cors=require('cors')
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 // Import the service account credentials
 // console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS)
 const serviceAccount = JSON.parse(

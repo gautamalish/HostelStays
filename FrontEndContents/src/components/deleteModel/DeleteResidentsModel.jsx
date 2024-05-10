@@ -11,7 +11,10 @@ function DeleteModel({id,setData,setDeleteModal,data}) {
             await deleteDoc(doc(db, "residents", id));
             const response = await fetch(`http://localhost:3000/api/users/${id}`, {
             method: 'DELETE'
-          })
+            
+          }
+          )
+          setDeleteModal(false);
           if (response.ok) {
             console.log('User deleted successfully');
             setDeleteModal(false)
