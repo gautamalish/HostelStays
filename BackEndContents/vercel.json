@@ -2,5 +2,6 @@
     "version":2,
     "builds":[{"src":"./firebaseAdmin.js","use":
     "@vercel/node"}],
-    "routes":[{"src":"/(.*)","dest":"/"}]
+    // "routes":[{"src":"/(.*)","dest":"/"}],
+    "rewrites": [{ "source": "/(.*)", "destination": "/" }] 
 }
