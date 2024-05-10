@@ -6,10 +6,12 @@ const admin = require("firebase-admin");
 const cors=require('cors')
 const port = process.env.PORT || 3000;
 // Import the service account credentials
-console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS)
-const serviceAccount = require((process.env.GOOGLE_APPLICATION_CREDENTIALS));
+// console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS)
+const serviceAccount = JSON.parse(
+  String(process.env.FIREBASE_SERVICE_ACCOUNT_KEY)
+);
 
-// Initialize the Firebase Admin SDK
+// // Initialize the Firebase Admin SDK
 admin.initializeApp({
   credential: admin.credential.cert((serviceAccount))
 });
