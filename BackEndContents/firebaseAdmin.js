@@ -4,7 +4,7 @@ require("dotenv").config()
 const express = require('express');
 const admin = require("firebase-admin");
 const cors=require('cors')
-const port = 3000;
+const port = process.env.PORT || 3000;
 // Import the service account credentials
 console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS)
 const serviceAccount = require((process.env.GOOGLE_APPLICATION_CREDENTIALS));
@@ -37,3 +37,4 @@ app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
 
+module.exports=app
