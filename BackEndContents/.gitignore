@@ -1,2 +1,3 @@
 node_modules
 ServiceSecurityKey.json
+.env.local

@@ -1,21 +1,25 @@
+
+require("dotenv").config()
 // Import the firebase-admin package
 const express = require('express');
 const admin = require("firebase-admin");
 const cors=require('cors')
 const port = 3000;
 // Import the service account credentials
-const serviceAccount = require("./ServiceSecurityKey.json");
+process.env.GOOGLE_APPLICATION_CREDENTIALS
+"./ServiceSecurityKey.json"
+const serviceAccount = require((process.env.GOOGLE_APPLICATION_CREDENTIALS));
 
 // Initialize the Firebase Admin SDK
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert((serviceAccount))
 });
 
 // Create Express app
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173' // Replace this with your client's origin
+  origin: 'http://localhost:5173' 
 }));
 // API endpoint to delete user by UID
 app.delete('/api/users/:uid', async (req, res) => {
