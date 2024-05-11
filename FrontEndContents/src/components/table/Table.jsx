@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { collection, getDocs, addDoc, query, where, doc, deleteDoc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc, query, where, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../context/firebase";
 import { Link } from "react-router-dom";
 
@@ -162,6 +162,7 @@ const Tablefunc = () => {
           value={formData.Name}
           onChange={handleInputChange}
           style={{ marginBottom: "10px" }}
+          className="select-name"
         >
           <option value="">Select Name</option>
           {residentNames.map((name, index) => (
@@ -175,9 +176,10 @@ const Tablefunc = () => {
           type="text"
           name="RoomNo"
           value={formData.RoomNo}
-          placeholder="Room No"
+          placeholder="Room Number"
           onChange={handleInputChange}
           style={{ marginBottom: "10px" }}
+          className="input-room"
         />
         <input
           type="date"
@@ -185,6 +187,7 @@ const Tablefunc = () => {
           value={formData.date}
           onChange={handleInputChange}
           style={{ marginBottom: "10px" }}
+          className="input-date"
         />
         <input
           type="text"
@@ -193,21 +196,29 @@ const Tablefunc = () => {
           placeholder="Amount"
           onChange={handleInputChange}
           style={{ marginBottom: "10px" }}
+          className="input-amount"
         />
-        <input
-          type="text"
+        {/* Dropdown for selecting payment method */}
+        <select
           name="method"
           value={formData.method}
-          placeholder="Method"
           onChange={handleInputChange}
           style={{ marginBottom: "10px" }}
-        />
+          className="select-method"
+        >
+          <option value="">Select Method</option>
+          <option value="Cash">Cash</option>
+          <option value="Cheque">Cheque</option>
+          <option value="Mobile Banking">Mobile Banking</option>
+          <option value="Others">Others</option>
+        </select>
         {/* Select dropdown for status */}
         <select
           name="status"
           value={formData.status}
           onChange={handleInputChange}
           style={{ marginBottom: "10px" }}
+          className="select-status"
         >
           <option value="">Select Status</option>
           <option value="Paid">Paid</option>
@@ -223,6 +234,7 @@ const Tablefunc = () => {
             placeholder="Partial Amount"
             onChange={handleInputChange}
             style={{ marginBottom: "10px" }}
+            className="input-partial"
           />
         )}
 
@@ -235,52 +247,47 @@ const Tablefunc = () => {
           Add
         </Button>
       </div>
-      <TableContainer component={Paper} className="table">
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <TableContainer component={Paper} className="table-container">
+        <Table sx={{ minWidth: 650 }} aria-label="simple table" className="mui-table">
           <TableHead>
             <TableRow>
-              <TableCell className="tableCell">Tenants ID</TableCell>
-              <TableCell className="tableCell">Name</TableCell>
-              <TableCell className="tableCell">Room No.</TableCell>
-              <TableCell className="tableCell">Date</TableCell>
-              <TableCell className="tableCell">Amount</TableCell>
-              <TableCell className="tableCell">Payment Method</TableCell>
-              <TableCell className="tableCell">Status</TableCell>
-              <TableCell className="tableCell">Pending</TableCell>
-              <TableCell className="tableCell">Action</TableCell>
+              <TableCell className="table-cell">Tenants ID</TableCell>
+              <TableCell className="table-cell">Name</TableCell>
+              <TableCell className="table-cell">Room No.</TableCell>
+              <TableCell className="table-cell">Date</TableCell>
+              <TableCell className="table-cell">Amount</TableCell>
+              <TableCell className="table-cell">Payment Method</TableCell>
+              <TableCell className="table-cell">Status</TableCell>
+              <TableCell className="table-cell">Pending</TableCell>
+              <TableCell className="table-cell">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map((row, index) => (
               <TableRow key={row.id}>
-                <TableCell className="tableCell">{index + 1}</TableCell>
-                <TableCell className="tableCell">{row.Name}</TableCell>
-                <TableCell className="tableCell">{row.RoomNo}</TableCell>
-                <TableCell className="tableCell">
+                <TableCell className="table-cell">{index + 1}</TableCell>
+                <TableCell className="table-cell">{row.Name}</TableCell>
+                <TableCell className="table-cell">{row.RoomNo}</TableCell>
+                <TableCell className="table-cell">
                   {row.status === "Pending" ? "-----" : row.date}
                 </TableCell>
-                <TableCell className="tableCell">{row.amount}</TableCell>
-                <TableCell className="tableCell">
+                <TableCell className="table-cell">{row.amount}</TableCell>
+                <TableCell className="table-cell">
                   {row.status === "Pending" ? "-----" : row.method}
                 </TableCell>
-                <TableCell className="tableCell">
+                <TableCell className="table-cell">
                   <span className={`status ${row.status}`}>{row.status}</span>
                 </TableCell>
-                <TableCell className="tableCell">{row.partialAmount}</TableCell>
-                <TableCell className="tableCell">
+                <TableCell className="table-cell">{row.partialAmount}</TableCell>
+                <TableCell className="table-cell">
                   {/* Update button */}
-                  <Button
-                    variant="contained"
-                    color="primary"
+                  <Button className="updateb"
                     onClick={() => handleUpdateClick(row.id)}
-                    style={{ marginRight: "5px" }}
                   >
                     Update
                   </Button>
                   {/* Delete button */}
-                  <Button
-                    variant="contained"
-                    color="secondary"
+                  <Button className="deleteb"
                     onClick={() => handleDeleteClick(row.id)}
                   >
                     Delete

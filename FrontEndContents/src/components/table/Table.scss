@@ -1,93 +1,68 @@
-.table {
-  border-collapse: collapse;
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.tableCell {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-
 .top-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #f0f0f0;
   padding: 10px;
-  background-color: #f2f2f2;
-  margin-bottom: 20px;
   border-radius: 5px;
 }
 
 .top-bar-left {
-  margin-right: 10px;
+  display: flex;
+  align-items: center;
 }
 
-.top-bar-right {
-  margin-left: auto;
-}
-
-.add-button {
-  background-color: #4caf50;
-  color: white;
-  transition: all 0.3s ease;
-  border: none;
-  border-radius: 5px;
-  padding: 10px;
-
-  &:hover {
-    background-color: #45a049;
-  }
+.top-bar-right h1 {
+  margin: 0;
 }
 
 .form-container {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
-input,
-select {
-  width: calc(25% - 20px);
-  padding: 10px;
-  margin: 5px 10px;
+.input-room,
+.input-date,
+.input-amount,
+.input-method,
+.input-partial,
+.select-name,
+.select-method,
+.select-status {
+  flex: 1 1 20px; /* Adjust width based on your preference */
+  padding: 8px;
+  margin: 5px;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  transition: all 0.3s ease;
-
-  &:focus {
-    outline: none;
-    border-color: #4caf50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
-  }
+  border-radius: 4px;
 }
 
-select {
-  appearance: none;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23838f9e' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E") no-repeat right 10px center/15px auto;
-  padding-right: 35px;
-  cursor: pointer;
+.table-container {
+  margin-top: 20px;
+}
+
+.mui-table {
+  width: 100%;
+}
+
+.table-cell {
+  padding: 8px;
 }
 
 .status {
-  padding: 5px;
-  border-radius: 5px;
-  font-weight: bold;
-}
-
-.status.Paid {
-  color: green;
-  background-color: rgba(0, 128, 0, 0.153);
-}
-
-.status.Partial {
-  color: goldenrod;
-  background-color: rgba(189, 189, 3, 0.103);
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #fff;
 }
 
 .status.Pending {
-  color: #ff9800;
-  background-color: rgba(255, 152, 0, 0.153);
+  background-color: #ffcc00;
+}
+
+.status.Partial {
+  background-color: #ff6600;
+}
+
+.status.Paid {
+  background-color: #00cc66;
 }
