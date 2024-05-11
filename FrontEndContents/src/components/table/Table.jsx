@@ -27,7 +27,6 @@ const Tablefunc = () => {
     partialAmount: "",
   });
   const [residentNames, setResidentNames] = useState([]);
-  const [selectedRowId, setSelectedRowId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,29 +65,11 @@ const Tablefunc = () => {
     try {
       const timestamp = serverTimestamp(); // Get server timestamp here
       const docData = { ...formData, timeStamp: timestamp };
-      
-      if (selectedRowId) {
-        // Update the document in the database
-        await updateDoc(doc(db, "Transaction", selectedRowId), docData);
-        
-        // Update the row in the local state
-        setRows((prevRows) => {
-          const updatedRows = prevRows.map(row => {
-            if (row.id === selectedRowId) {
-              return { ...row, ...formData };
-            }
-            return row;
-          });
-          return updatedRows;
-        });
-      } else {
-        // Add a new document to the database
-        const docRef = await addDoc(collection(db, "Transaction"), docData);
-        console.log("Document written with ID: ", docRef.id);
-        
-        // Update the rows state to include the newly added document
-        setRows((prevRows) => [...prevRows, { id: docRef.id, ...formData }]);
-      }
+      const docRef = await addDoc(collection(db, "Transaction"), docData);
+      console.log("Document written with ID: ", docRef.id);
+
+      // Update the rows state to include the newly added document
+      setRows((prevRows) => [...prevRows, { id: docRef.id, ...formData }]);
 
       // Reset the form data
       setFormData({
@@ -100,10 +81,8 @@ const Tablefunc = () => {
         status: "",
         partialAmount: "",
       });
-      
-      setSelectedRowId(null); // Reset selected row id
     } catch (error) {
-      console.error("Error adding/updating document: ", error);
+      console.error("Error adding document: ", error);
     }
   };
 
@@ -151,7 +130,7 @@ const Tablefunc = () => {
     const rowToUpdate = rows.find((row) => row.id === id);
     if (!rowToUpdate) return;
 
-    // Set form data with the values from the selected row
+    // Fill the form with the data from the row to update
     setFormData({
       Name: rowToUpdate.Name,
       RoomNo: rowToUpdate.RoomNo,
@@ -161,9 +140,6 @@ const Tablefunc = () => {
       status: rowToUpdate.status,
       partialAmount: rowToUpdate.partialAmount,
     });
-    
-    // Set the selected row id
-    setSelectedRowId(id);
   };
 
   return (
@@ -172,8 +148,6 @@ const Tablefunc = () => {
         <div className="top-bar-left">
           {/* Back arrow icon */}
           <Link to="/home">
-            {" "}
-            {/* Assuming this is your home page route */}
             <ArrowBackIcon style={{ marginRight: "10px", cursor: "pointer" }} />
           </Link>
         </div>
@@ -258,7 +232,7 @@ const Tablefunc = () => {
           onClick={handleAddClick}
           className="add-button"
         >
-          {selectedRowId ? "Update" : "Add"}
+          Add
         </Button>
       </div>
       <TableContainer component={Paper} className="table">
@@ -274,47 +248,46 @@ const Tablefunc = () => {
               <TableCell className="tableCell">Status</TableCell>
               <TableCell className="tableCell">Pending</TableCell>
               <TableCell className="tableCell">Action</TableCell>
-              {/* New column */}
             </TableRow>
           </TableHead>
           <TableBody>
-          {rows.map((row, index) => (
-            <TableRow key={row.id}>
-              <TableCell className="tableCell">{index + 1}</TableCell>
-              <TableCell className="tableCell">{row.Name}</TableCell>
-              <TableCell className="tableCell">{row.RoomNo}</TableCell>
-              <TableCell className="tableCell">
-                {row.status === "Pending" ? "-----" : row.date}
-              </TableCell>
-              <TableCell className="tableCell">{row.amount}</TableCell>
-              <TableCell className="tableCell">
-                {row.status === "Pending" ? "-----" : row.method}
-              </TableCell>
-              <TableCell className="tableCell">
-                <span className={`status ${row.status}`}>{row.status}</span>
-              </TableCell>
-              <TableCell className="tableCell">{row.partialAmount}</TableCell>
-              <TableCell className="tableCell">
-                {/* Update button */}
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => handleUpdateClick(row.id)}
-                  style={{ marginRight: "5px" }}
-                >
-                  Update
-                </Button>
-                {/* Delete button */}
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={() => handleDeleteClick(row.id)}
-                >
-                  Delete
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
+            {rows.map((row, index) => (
+              <TableRow key={row.id}>
+                <TableCell className="tableCell">{index + 1}</TableCell>
+                <TableCell className="tableCell">{row.Name}</TableCell>
+                <TableCell className="tableCell">{row.RoomNo}</TableCell>
+                <TableCell className="tableCell">
+                  {row.status === "Pending" ? "-----" : row.date}
+                </TableCell>
+                <TableCell className="tableCell">{row.amount}</TableCell>
+                <TableCell className="tableCell">
+                  {row.status === "Pending" ? "-----" : row.method}
+                </TableCell>
+                <TableCell className="tableCell">
+                  <span className={`status ${row.status}`}>{row.status}</span>
+                </TableCell>
+                <TableCell className="tableCell">{row.partialAmount}</TableCell>
+                <TableCell className="tableCell">
+                  {/* Update button */}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => handleUpdateClick(row.id)}
+                    style={{ marginRight: "5px" }}
+                  >
+                    Update
+                  </Button>
+                  {/* Delete button */}
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => handleDeleteClick(row.id)}
+                  >
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
