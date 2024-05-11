@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { collection, getDocs, addDoc, query, where } from "firebase/firestore";
+import { collection, getDocs, addDoc, query, where, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../context/firebase";
 import { Link } from "react-router-dom";
 
@@ -27,6 +27,7 @@ const Tablefunc = () => {
     partialAmount: "",
   });
   const [residentNames, setResidentNames] = useState([]);
+  const [selectedRowId, setSelectedRowId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,11 +66,29 @@ const Tablefunc = () => {
     try {
       const timestamp = serverTimestamp(); // Get server timestamp here
       const docData = { ...formData, timeStamp: timestamp };
-      const docRef = await addDoc(collection(db, "Transaction"), docData);
-      console.log("Document written with ID: ", docRef.id);
-
-      // Update the rows state to include the newly added document
-      setRows((prevRows) => [...prevRows, { id: docRef.id, ...formData }]);
+      
+      if (selectedRowId) {
+        // Update the document in the database
+        await updateDoc(doc(db, "Transaction", selectedRowId), docData);
+        
+        // Update the row in the local state
+        setRows((prevRows) => {
+          const updatedRows = prevRows.map(row => {
+            if (row.id === selectedRowId) {
+              return { ...row, ...formData };
+            }
+            return row;
+          });
+          return updatedRows;
+        });
+      } else {
+        // Add a new document to the database
+        const docRef = await addDoc(collection(db, "Transaction"), docData);
+        console.log("Document written with ID: ", docRef.id);
+        
+        // Update the rows state to include the newly added document
+        setRows((prevRows) => [...prevRows, { id: docRef.id, ...formData }]);
+      }
 
       // Reset the form data
       setFormData({
@@ -81,8 +100,10 @@ const Tablefunc = () => {
         status: "",
         partialAmount: "",
       });
+      
+      setSelectedRowId(null); // Reset selected row id
     } catch (error) {
-      console.error("Error adding document: ", error);
+      console.error("Error adding/updating document: ", error);
     }
   };
 
@@ -113,6 +134,38 @@ const Tablefunc = () => {
     }));
   };
 
+  const handleDeleteClick = async (id) => {
+    const confirmation = window.confirm("Are you sure you want to delete this transaction?");
+    if (!confirmation) return;
+
+    try {
+      await deleteDoc(doc(db, "Transaction", id));
+      setRows(rows.filter((row) => row.id !== id));
+    } catch (error) {
+      console.error("Error deleting document:", error);
+    }
+  };
+
+  const handleUpdateClick = async (id) => {
+    // Find the row with the given id
+    const rowToUpdate = rows.find((row) => row.id === id);
+    if (!rowToUpdate) return;
+
+    // Set form data with the values from the selected row
+    setFormData({
+      Name: rowToUpdate.Name,
+      RoomNo: rowToUpdate.RoomNo,
+      date: rowToUpdate.date,
+      amount: rowToUpdate.amount,
+      method: rowToUpdate.method,
+      status: rowToUpdate.status,
+      partialAmount: rowToUpdate.partialAmount,
+    });
+    
+    // Set the selected row id
+    setSelectedRowId(id);
+  };
+
   return (
     <div>
       <div className="top-bar">
@@ -125,7 +178,7 @@ const Tablefunc = () => {
           </Link>
         </div>
         <div className="top-bar-right" style={{ marginRight: "10px" }}>
-          <h1>Transation Detials</h1>
+          <h1>Transaction Details</h1>
         </div>
       </div>
       <div className="form-container" style={{ padding: "10px" }}>
@@ -153,10 +206,9 @@ const Tablefunc = () => {
           style={{ marginBottom: "10px" }}
         />
         <input
-          type="text"
+          type="date"
           name="date"
           value={formData.date}
-          placeholder="Date"
           onChange={handleInputChange}
           style={{ marginBottom: "10px" }}
         />
@@ -200,14 +252,14 @@ const Tablefunc = () => {
           />
         )}
 
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleAddClick}
-            className="add-button"
-          >
-            Add
-          </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddClick}
+          className="add-button"
+        >
+          {selectedRowId ? "Update" : "Add"}
+        </Button>
       </div>
       <TableContainer component={Paper} className="table">
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -220,33 +272,49 @@ const Tablefunc = () => {
               <TableCell className="tableCell">Amount</TableCell>
               <TableCell className="tableCell">Payment Method</TableCell>
               <TableCell className="tableCell">Status</TableCell>
-              <TableCell className="tableCell"></TableCell>
+              <TableCell className="tableCell">Pending</TableCell>
+              <TableCell className="tableCell">Action</TableCell>
               {/* New column */}
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, index) => (
-              <TableRow key={row.id}>
-                <TableCell className="tableCell">{index + 1}</TableCell>{" "}
-                {/* Display sequential numbers */}
-                <TableCell className="tableCell">{row.Name}</TableCell>
-                <TableCell className="tableCell">{row.RoomNo}</TableCell>
-                <TableCell className="tableCell">
-                  {/* Conditionally render "-----" if status is "Pending", otherwise render the date */}
-                  {row.status === "Pending" ? "-----" : row.date}
-                </TableCell>
-                <TableCell className="tableCell">{row.amount}</TableCell>
-                <TableCell className="tableCell">
-                  {/* Conditionally render "-----" if status is "Pending", otherwise render the method */}
-                  {row.status === "Pending" ? "-----" : row.method}
-                </TableCell>
-                <TableCell className="tableCell">
-                  <span className={`status ${row.status}`}>{row.status}</span>
-                </TableCell>
-                <TableCell className="tableCell">{row.partialAmount}</TableCell>
-                {/* New cell */}
-              </TableRow>
-            ))}
+          {rows.map((row, index) => (
+            <TableRow key={row.id}>
+              <TableCell className="tableCell">{index + 1}</TableCell>
+              <TableCell className="tableCell">{row.Name}</TableCell>
+              <TableCell className="tableCell">{row.RoomNo}</TableCell>
+              <TableCell className="tableCell">
+                {row.status === "Pending" ? "-----" : row.date}
+              </TableCell>
+              <TableCell className="tableCell">{row.amount}</TableCell>
+              <TableCell className="tableCell">
+                {row.status === "Pending" ? "-----" : row.method}
+              </TableCell>
+              <TableCell className="tableCell">
+                <span className={`status ${row.status}`}>{row.status}</span>
+              </TableCell>
+              <TableCell className="tableCell">{row.partialAmount}</TableCell>
+              <TableCell className="tableCell">
+                {/* Update button */}
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleUpdateClick(row.id)}
+                  style={{ marginRight: "5px" }}
+                >
+                  Update
+                </Button>
+                {/* Delete button */}
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => handleDeleteClick(row.id)}
+                >
+                  Delete
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
           </TableBody>
         </Table>
       </TableContainer>
