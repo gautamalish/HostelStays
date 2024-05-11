@@ -1,11 +1,11 @@
 .tenants{
     display: flex;
     .tenantsContent{
-        flex: 6;
+        width: 100vw;
+        // flex: 6;
 
         .tenantsMain{
             margin: 10px;
-
             .top{
                 display: flex;
                 justify-content: space-between;

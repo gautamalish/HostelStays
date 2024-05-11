@@ -5,6 +5,7 @@
   display: flex;
   .homeContainer {
     flex: 6;
+    overflow: auto;
     .widgets,
     .charts {
       display: flex;
