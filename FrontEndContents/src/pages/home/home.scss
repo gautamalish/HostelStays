@@ -1,16 +1,10 @@
+*{
+  box-sizing: border-box;
+}
 .home {
   display: flex;
   .homeContainer {
     flex: 6;
-    .notifyButton{
-      background-color: #6439ff;
-      color: white;
-      font-size: 20px;
-      padding: 10px 10px;
-      width: 7rem;
-      margin-top: 0;
-      margin-bottom: -2.8vh ;
-    }
     .widgets,
     .charts {
       display: flex;
@@ -34,12 +28,20 @@
       }
     }
 
-    .right {
-      flex: 1;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 10px;
+    .homeRight {
+      padding: 5px;
+      // border: 2px solid green;
+      width: fit-content;
+      margin-left: auto;
+      margin-bottom: -14px;
+
+      .notifyBut{
+        font-size: 20px;
+        padding: 10px 10px;
+        width: 7rem;
+        margin-top: 0;
+        // border: 2px solid red;
+      }
     }
   }
 

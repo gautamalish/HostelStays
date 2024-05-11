@@ -12,16 +12,16 @@ function Home() {
 
   // Function to toggle visibility of Notify
   function toggleNotify() {
-    setShowNotify(!showNotify);
+    setShowNotify((prevNotify)=>!prevNotify);
   }
 
   return (
     <div className="home">
       <Sidebar />
       <div className="homeContainer">
-        <Navbar />{" "}
-        <div className="right">
-          <button className="notifyButton" onClick={toggleNotify}>
+        <Navbar />
+        <div className="homeRight">
+          <button className="notifyBut" onClick={toggleNotify}>
             Notify
           </button>
         </div>
