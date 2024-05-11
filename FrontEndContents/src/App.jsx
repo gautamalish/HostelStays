@@ -21,7 +21,31 @@ import Tablefunc from "./components/table/Table"; // Import Tablefunc component
 import { useNewAuth } from "./context/AnotherContext";
 import Settings from "./pages/Settings/Settings";
 function App() {
-  const {logoutDisplay,setLogoutDisplay}=useNewAuth();
+const [showHamSidebar,setShowHamSidebar]=useState(false)
+const [showHamIcon,setShowHamIcon]=useState(false)
+const [isWideScreen,setIsWideScreen]=useState(window.innerWidth>700)
+
+
+
+useEffect(()=>{
+  function handleResize(){
+    setIsWideScreen(window.innerWidth>700)
+    if(window.innerWidth<700){
+      setShowHamIcon(true)
+    }
+    else{
+      setShowHamIcon(false)
+    }
+  }
+  window.addEventListener("resize",handleResize)
+  handleResize()
+
+  return ()=>window.removeEventListener("resize",handleResize)
+},[])
+
+
+
+  const { logoutDisplay, setLogoutDisplay } = useNewAuth();
   // taking the currentUser from useAuth function
   const { currentUser } = useAuth();
   // require auth to check if the user is logged in and can only navigate to pages when logged in
@@ -31,7 +55,7 @@ function App() {
 
   return (
     <div className="mainContainer">
-      {logoutDisplay && <Logout/>}
+      {logoutDisplay && <Logout />}
       <Routes>
         <Route path="/">
           <Route index element={<Signin />} />
@@ -39,7 +63,7 @@ function App() {
             path="home"
             element={
               <RequireAuth>
-                <Home />
+                <Home isWideScreen={isWideScreen} showHamIcon={showHamIcon} setShowHamIcon={setShowHamIcon} setShowHamSidebar={setShowHamSidebar} showHamSidebar={showHamSidebar}/>
               </RequireAuth>
             }
           />
@@ -55,7 +79,7 @@ function App() {
             path="settings"
             element={
               <RequireAuth>
-                <Settings/>
+                <Settings />
               </RequireAuth>
             }
           />

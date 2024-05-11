@@ -1,93 +1,46 @@
 .table {
-  border-collapse: collapse;
-  width: 100%;
-  margin-bottom: 20px;
-}
+  .cellWrapper {
+    display: flex;
+    align-items: center;
 
-.tableCell {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
+    .image {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin-right: 10px;
+      object-fit: cover;
+    }
+  }
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 11500px;
+  }
 
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: #f2f2f2;
-  margin-bottom: 20px;
-  border-radius: 5px;
-}
+  .top-bar-left {
+    margin-right: 10px;
+  }
 
-.top-bar-left {
-  margin-right: 10px;
-}
+  .top-bar-right {
+    margin-right: 10px;
+  }
 
-.top-bar-right {
-  margin-left: auto;
-}
+  .add-button {
+    margin-left: 50px;
+  }
 
-.add-button {
-  background-color: #4caf50;
-  color: white;
-  transition: all 0.3s ease;
-  border: none;
-  border-radius: 5px;
-  padding: 10px;
+  .status {
+    padding: 5px;
+    border-radius: 5px;
 
-  &:hover {
-    background-color: #45a049;
+    &.Approved {
+      color: green;
+      background-color: rgba(0, 128, 0, 0.153);
+    }
+    &.Pending {
+      color: goldenrod;
+      background-color: rgba(189, 189, 3, 0.103);
+    }
   }
 }
-
-.form-container {
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
-
-input,
-select {
-  width: calc(25% - 20px);
-  padding: 10px;
-  margin: 5px 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  transition: all 0.3s ease;
-
-  &:focus {
-    outline: none;
-    border-color: #4caf50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
-  }
-}
-
-select {
-  appearance: none;
-  padding-right: 35px;
-  cursor: pointer;
-}
-
-.status {
-  padding: 5px;
-  border-radius: 5px;
-  font-weight: bold;
-}
-
-.status.Paid {
-  color: green;
-  background-color: rgba(0, 128, 0, 0.153);
-}
-
-.status.Partial {
-  color: goldenrod;
-  background-color: rgba(189, 189, 3, 0.103);
-}
-
-.status.Pending {
-  color: #ff9800;
-  background-color: rgba(255, 152, 0, 0.153);
-}
-

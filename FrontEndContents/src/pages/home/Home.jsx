@@ -7,7 +7,10 @@ import Widget from "../../components/widgets/Widgets";
 import Chart from "../../components/chart/Chart";
 import Notify from "../../components/notify/Notify";
 import { ToastContainer } from "react-toastify";
-function Home() {
+import { RxHamburgerMenu } from "react-icons/rx";
+import HamMenu from "../../components/hamburgerMenu/hamMenu";
+import HamSidebar from "../../components/sidebar copy/HamSidebar";
+function Home({isWideScreen,setShowHamIcon,showHamIcon,setShowHamSidebar,showHamSidebar}) {
   const [showNotify, setShowNotify] = useState(false); // State to manage visibility of Notify
 
   // Function to toggle visibility of Notify
@@ -17,7 +20,11 @@ function Home() {
 
   return (
     <div className="home">
-      <Sidebar />
+      {isWideScreen && <Sidebar />}
+      { !isWideScreen && showHamIcon && 
+        <HamMenu setShowHamSidebar={setShowHamSidebar}/>
+      }
+      {!isWideScreen && showHamIcon && showHamSidebar && <HamSidebar setShowHamSidebar={setShowHamSidebar}/>}
       <div className="homeContainer">
         <Navbar />
         <div className="homeRight">
