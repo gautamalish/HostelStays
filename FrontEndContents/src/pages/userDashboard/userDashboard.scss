@@ -1,6 +1,10 @@
+* {
+  font-family: Nunito; 
+}
+
 .userDashboard {
   display: flex;
-  height: 100vh;
+  height: 100%;
 }
 
 .userDashboardContents {
@@ -8,35 +12,55 @@
   padding: 20px;
   width: 100px;
 }
+
+// userDashboard.scss
+
+.Welcome {
+  margin-top: 20px; /* Adjust the top margin as needed */
+}
+
+.Welcome h1 {
+  color: #333; /* Adjust the color as needed */
+}
+
+
 .notificationList {
-  background-color: #d2dbee;
+  background-color: #f0f0f0; /* Light gray background */
   border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
   padding: 20px;
-  max-height: calc(100vh - 100px);
+  max-height: calc(100vh - 160px); /* Adjust according to your layout */
   overflow-y: auto; /* Enable vertical scrolling */
 }
 
 .notificationList h2 {
   font-size: 24px;
   margin-bottom: 20px;
+  color: #333; /* Dark text color */
 }
 
 .notification {
-  background-color: #fff;
-  border: 1px solid #dae7f5;
-  border-radius: 5px;
-  padding: 15px;
-  margin-bottom: 15px;
+  background-color: #ffffff; /* White background */
+  border: 1px solid #e0e0e0; /* Light border color */
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: box-shadow 0.3s ease; /* Smooth box shadow transition */
+}
+
+.notification:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle hover effect */
 }
 
 .notification h3 {
-  font-size: 18px;
+  font-size: 20px;
   margin-bottom: 10px;
+  color: #333; /* Dark text color */
 }
 
 .notification p {
   font-size: 16px;
-  color: #555;
+  color: #666; /* Medium gray text color */
 }
 
 .notification .note {
@@ -49,6 +73,7 @@
 .notification .time {
   font-style: italic;
   font-size: 12px;
-  opacity: 0.5;
+  opacity: 0.7; /* Slightly reduced opacity */
   text-align: right;
+  color: #999; /* Light gray text color */
 }

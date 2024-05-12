@@ -3,8 +3,7 @@ import hostel from "../../images/hostel.jpg";
 import profile from "../../images/profile.png";
 import { CgProfile } from "react-icons/cg";
 import settings from "../../images/settings.png";
-import logout from "../../images/logout.png";
-import { IoNotifications } from "react-icons/io5";
+import logout from "../../images/logout.png"; 
 import { IoMdSettings } from "react-icons/io";
 import { MdLogout } from "react-icons/md";
 import "./navbar.scss";
@@ -36,7 +35,6 @@ function Navbar() {
   return (
     <div className="navContainer">
       <div className="right">
-        <IoNotifications className="bellIcon" />
         <img
           src={hostel}
           className="hostelImg"
