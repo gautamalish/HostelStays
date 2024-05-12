@@ -64,8 +64,18 @@ useEffect(()=>{
             path="home"
             element={
               <RequireAuth>
-                {currentUser.email=="np03cs4a220120@heraldcollege.edu.np"?<Home isWideScreen={isWideScreen} showHamIcon={showHamIcon} setShowHamIcon={setShowHamIcon} setShowHamSidebar={setShowHamSidebar} showHamSidebar={showHamSidebar}/>:<UserDashboard/>}
-              </RequireAuth>
+              {currentUser && currentUser.email === "np03cs4a220120@heraldcollege.edu.np" ? (
+                <Home
+                  isWideScreen={isWideScreen}
+                  showHamIcon={showHamIcon}
+                  setShowHamIcon={setShowHamIcon}
+                  setShowHamSidebar={setShowHamSidebar}
+                  showHamSidebar={showHamSidebar}
+                />
+              ) : currentUser ? (
+                <UserDashboard />
+              ) : null}
+            </RequireAuth>
             }
           />
           <Route
