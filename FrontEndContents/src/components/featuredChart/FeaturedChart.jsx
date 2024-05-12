@@ -14,32 +14,35 @@ function FeaturedChart() {
     const fetchData = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "Transaction"));
-        let totalAmount = 0;
+        let totalPaidAmount = 0;
         let lastMonthAmount = 0;
         const today = new Date();
-        const lastMonth = new Date(
-          today.getFullYear(),
-          today.getMonth() - 1,
-          1
-        );
-        const lastMonthName = lastMonth.toLocaleString("default", {
-          month: "long",
-        });
+        const currentMonth = today.getMonth(); // Get current month
+        const currentYear = today.getFullYear(); // Get current year
+        const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1; // Calculate last month
+        const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear; // Adjust year if current month is January
 
         querySnapshot.forEach((doc) => {
           const transactionData = doc.data();
           const transactionAmount = parseFloat(transactionData.amount);
-          totalAmount += transactionAmount;
+          const transactionStatus = transactionData.status;
 
-          const transactionDate = transactionData.date.split(" ");
-          const transactionMonth = transactionDate[1];
+          // Check if the transaction is paid
+          if (transactionStatus === "Paid") {
+            totalPaidAmount += transactionAmount;
 
-          if (transactionMonth === lastMonthName) {
-            lastMonthAmount += transactionAmount;
+            const transactionDate = new Date(transactionData.date);
+            const transactionMonth = transactionDate.getMonth();
+            const transactionYear = transactionDate.getFullYear();
+
+            // Check if transaction occurred in last month
+            if (transactionMonth === lastMonth && transactionYear === lastMonthYear) {
+              lastMonthAmount += transactionAmount;
+            }
           }
         });
 
-        setTotalRevenue(totalAmount);
+        setTotalRevenue(totalPaidAmount);
         setLastMonthRevenue(lastMonthAmount);
       } catch (error) {
         console.error("Error fetching transaction data:", error);

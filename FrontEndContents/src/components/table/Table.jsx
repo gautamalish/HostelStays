@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { collection, getDocs, addDoc, query, where, doc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc, query, where, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../context/firebase";
 import { Link } from "react-router-dom";
 
@@ -27,6 +27,7 @@ const Tablefunc = () => {
     partialAmount: "",
   });
   const [residentNames, setResidentNames] = useState([]);
+  const [mode, setMode] = useState("add"); // Add a state variable to track mode
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,6 +50,14 @@ const Tablefunc = () => {
 
     fetchData();
   }, []);
+
+  const handleAddOrUpdateClick = async () => {
+    if (mode === "add") {
+      handleAddClick();
+    } else if (mode === "update") {
+      handleUpdateClick();
+    }
+  };
 
   const handleAddClick = async () => {
     // Check if any field except partialAmount is empty
@@ -83,6 +92,31 @@ const Tablefunc = () => {
       });
     } catch (error) {
       console.error("Error adding document: ", error);
+    }
+  };
+
+  const handleUpdateClick = async () => {
+    try {
+      await updateDoc(doc(db, "Transaction", formData.id), formData);
+      const updatedRows = rows.map(row => {
+        if (row.id === formData.id) {
+          return formData;
+        }
+        return row;
+      });
+      setRows(updatedRows);
+      setMode("add"); // Change mode back to add after update
+      setFormData({
+        Name: "",
+        RoomNo: "",
+        date: "",
+        amount: "",
+        method: "",
+        status: "",
+        partialAmount: "",
+      });
+    } catch (error) {
+      console.error("Error updating document: ", error);
     }
   };
 
@@ -125,21 +159,9 @@ const Tablefunc = () => {
     }
   };
 
-  const handleUpdateClick = async (id) => {
-    // Find the row with the given id
-    const rowToUpdate = rows.find((row) => row.id === id);
-    if (!rowToUpdate) return;
-
-    // Fill the form with the data from the row to update
-    setFormData({
-      Name: rowToUpdate.Name,
-      RoomNo: rowToUpdate.RoomNo,
-      date: rowToUpdate.date,
-      amount: rowToUpdate.amount,
-      method: rowToUpdate.method,
-      status: rowToUpdate.status,
-      partialAmount: rowToUpdate.partialAmount,
-    });
+  const handleEditClick = (row) => {
+    setMode("update"); // Set mode to update
+    setFormData(row); // Set form data to the row data
   };
 
   return (
@@ -241,10 +263,10 @@ const Tablefunc = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={handleAddClick}
+          onClick={handleAddOrUpdateClick}
           className="add-button"
         >
-          Add
+          {mode === "add" ? "Add" : "Update"}
         </Button>
       </div>
       <TableContainer component={Paper} className="table-container">
@@ -258,7 +280,7 @@ const Tablefunc = () => {
               <TableCell className="table-cell">Amount</TableCell>
               <TableCell className="table-cell">Payment Method</TableCell>
               <TableCell className="table-cell">Status</TableCell>
-              <TableCell className="table-cell">Pending</TableCell>
+              <TableCell className="table-cell">Remaining Amount</TableCell>
               <TableCell className="table-cell">Action</TableCell>
             </TableRow>
           </TableHead>
@@ -278,16 +300,18 @@ const Tablefunc = () => {
                 <TableCell className="table-cell">
                   <span className={`status ${row.status}`}>{row.status}</span>
                 </TableCell>
-                <TableCell className="table-cell">{row.partialAmount}</TableCell>
                 <TableCell className="table-cell">
-                  {/* Update button */}
-                  <Button className="updateb"
-                    onClick={() => handleUpdateClick(row.id)}
+                  {row.status === "Partial" ? row.partialAmount : ""}
+                </TableCell>
+                <TableCell className="table-cell">
+                  {/* Edit button */}
+                  <Button className="edit-button"
+                    onClick={() => handleEditClick(row)}
                   >
-                    Update
+                    Edit
                   </Button>
                   {/* Delete button */}
-                  <Button className="deleteb"
+                  <Button className="delete-button"
                     onClick={() => handleDeleteClick(row.id)}
                   >
                     Delete
