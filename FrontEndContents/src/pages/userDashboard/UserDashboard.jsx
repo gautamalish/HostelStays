@@ -1,11 +1,18 @@
 import React from 'react'
 import "./userDashboard.scss"
-function userDashboard() {
+import Sidebar from '../../components/sidebar/Sidebar'
+import Navbar from '../../components/navbar/Navbar'
+import { Nav } from 'react-bootstrap'
+function UserDashboard() {
   return (
-    <div>
-      
+    <div className='userDashboard'>
+      <Sidebar/>
+      <div className='userDashboardContents'>
+          <Navbar/>
+          userDashboard
+      </div>
     </div>
   )
 }
 
-export default userDashboard
+export default UserDashboard

@@ -20,6 +20,7 @@ import { userInputs } from "./formSource";
 import Tablefunc from "./components/table/Table"; // Import Tablefunc component
 import { useNewAuth } from "./context/AnotherContext";
 import Settings from "./pages/Settings/Settings";
+import UserDashboard from "./pages/userDashboard/UserDashboard";
 function App() {
 const [showHamSidebar,setShowHamSidebar]=useState(false)
 const [showHamIcon,setShowHamIcon]=useState(false)
@@ -52,7 +53,7 @@ useEffect(()=>{
   const RequireAuth = ({ children }) => {
     return currentUser ? children : <Navigate to="/" />;
   };
-
+  console.log(currentUser)
   return (
     <div className="mainContainer">
       {logoutDisplay && <Logout />}
@@ -63,7 +64,7 @@ useEffect(()=>{
             path="home"
             element={
               <RequireAuth>
-                <Home isWideScreen={isWideScreen} showHamIcon={showHamIcon} setShowHamIcon={setShowHamIcon} setShowHamSidebar={setShowHamSidebar} showHamSidebar={showHamSidebar}/>
+                {currentUser.email=="np03cs4a220120@heraldcollege.edu.np"?<Home isWideScreen={isWideScreen} showHamIcon={showHamIcon} setShowHamIcon={setShowHamIcon} setShowHamSidebar={setShowHamSidebar} showHamSidebar={showHamSidebar}/>:<UserDashboard/>}
               </RequireAuth>
             }
           />
