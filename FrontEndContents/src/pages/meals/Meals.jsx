@@ -26,6 +26,11 @@ function Meals() {
       return;
     }
 
+    if (!validateVegetarianFields()) {
+      alert("Please fill all fields in the Vegetarian section.");
+      return;
+    }
+
     const existingDay = fetchData.find(item => item.Day === day);
     if (existingDay) {
       const updateConfirmation = window.confirm("Meal plan for this day already exists. Do you want to update it?");
@@ -90,7 +95,10 @@ function Meals() {
         alert("Day field cannot be empty.");
         return;
       }
-
+      if (!validateVegetarianFields()) {
+        alert("Please fill all fields in the Vegetarian section.");
+        return;
+      }
       if (!validateFields()) {
         alert("Please fill in all fields");
         return;
@@ -124,6 +132,10 @@ function Meals() {
 
   const validateDay = () => {
     return day.trim() !== "";
+  };
+
+  const validateVegetarianFields = () => {
+    return breakfastv.trim() !== "" && lunchv.trim() !== "" && dinnerv.trim() !== "";
   };
 
   return (
