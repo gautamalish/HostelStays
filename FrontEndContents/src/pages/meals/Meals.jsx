@@ -108,8 +108,8 @@ function Meals() {
       alert("Update successfully.");
       window.location.reload();
     } catch (error) {
-      console.error("Error updating room:", error);
-      alert("Failed to update room: " + error.message);
+      console.error("Error updating meals:", error);
+      alert("Failed to update meals: " + error.message);
     }
   };
 
