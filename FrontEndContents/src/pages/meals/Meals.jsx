@@ -21,44 +21,31 @@ function Meals() {
   const dbref = collection(db, "MEALS");
 
   const add = async () => {
-    try {
-      if (!validateFields()) {
-        alert("Please fill in all fields");
-        return;
+    const existingDay = fetchData.find(item => item.Day === day);
+    if (existingDay) {
+      const updateConfirmation = window.confirm("Meal plan for this day already exists. Do you want to update it?");
+      if (updateConfirmation) {
+        setId(existingDay.id);
+        update();
       }
-
-      const snapshot = await getDocs(collection(db, "MEALS"));
-      const existingDay = snapshot.docs.find(doc => doc.data().Day === day);
-      if (existingDay) {
-        const existingId = existingDay.id;
-        await updateDoc(doc(db, "MEALS", existingId), {
-          Day: day,
-          BreakfastV: breakfastv,
-          LunchV: lunchv,
-          DinnerV: dinnerv,
-          BreakfastN: breakfastn,
-          LunchN: lunchn,
-          DinnerN: dinnern
-        });
-        alert("Data Updated Successfully");
-      } else {
-        await addDoc(dbref, {
-          Day: day,
-          BreakfastV: breakfastv,
-          LunchV: lunchv,
-          DinnerV: dinnerv,
-          BreakfastN: breakfastn,
-          LunchN: lunchn,
-          DinnerN: dinnern
-        });
+    } else {
+      const adddata = await addDoc(dbref, {
+        Day: day,
+        BreakfastV: breakfastv,
+        LunchV: lunchv,
+        DinnerV: dinnerv,
+        BreakfastN: breakfastn,
+        LunchN: lunchn,
+        DinnerN: dinnern
+      });
+      if (adddata) {
         alert("Data Added Successfully");
+        window.location.reload();
+      } else {
+        alert("Error occurred while adding data");
       }
-      window.location.reload();
-    } catch (error) {
-      console.error("Error occurred while adding/updating data:", error);
-      alert("Error occurred while adding/updating data");
     }
-  };
+  };  
 
   const fetchDataFromDB = async () => {
     try {

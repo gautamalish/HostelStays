@@ -11,7 +11,7 @@ function Uprofile() {
       <div className="uprofileContainer">
         <Navbar />
         <div className="uprofileContents">
-          <h1>Your Profile</h1>
+          <h1>Profile</h1>
         </div>
       </div>
     </div>
