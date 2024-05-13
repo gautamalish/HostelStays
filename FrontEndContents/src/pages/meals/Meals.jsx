@@ -26,10 +26,22 @@ function Meals() {
       return;
     }
 
+    if (!validateFields()) {
+      alert("Please fill in all fields");
+      return;
+    }
+
     if (!validateVegetarianFields()) {
       alert("Please fill all fields in the Vegetarian section.");
       return;
     }
+
+    if (!validateNonVegetarianFields()) {
+      alert("Please fill all fields in the Non-Vegetarian section.");
+      return;
+    }
+
+    
 
     const existingDay = fetchData.find(item => item.Day === day);
     if (existingDay) {
@@ -95,15 +107,22 @@ function Meals() {
         alert("Day field cannot be empty.");
         return;
       }
-      if (!validateVegetarianFields()) {
-        alert("Please fill all fields in the Vegetarian section.");
-        return;
-      }
+
       if (!validateFields()) {
         alert("Please fill in all fields");
         return;
       }
 
+      if (!validateVegetarianFields()) {
+        alert("Please fill all fields in the Vegetarian section.");
+        return;
+      }
+
+      if (!validateNonVegetarianFields()) {
+        alert("Please fill all fields in the Non-Vegetarian section.");
+        return;
+      }
+      
       if (!id){
         throw new Error("Document ID is empty or undefined.");
       }
@@ -120,7 +139,6 @@ function Meals() {
 
   const validateFields = () => {
     return (
-      day.trim() !== "" &&
       breakfastv.trim() !== "" &&
       lunchv.trim() !== "" &&
       dinnerv.trim() !== "" &&
@@ -136,6 +154,10 @@ function Meals() {
 
   const validateVegetarianFields = () => {
     return breakfastv.trim() !== "" && lunchv.trim() !== "" && dinnerv.trim() !== "";
+  };
+
+  const validateNonVegetarianFields = () => {
+    return breakfastn.trim() !== "" && lunchn.trim() !== "" && dinnern.trim() !== "";
   };
 
   return (
