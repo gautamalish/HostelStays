@@ -1,0 +1,10 @@
+.uprofile{
+    display: flex;
+    .uprofileContainer{
+        flex: 6;
+
+        .uprofileContents{
+            margin: 1rem;
+        }
+    }
+}

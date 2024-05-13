@@ -9,6 +9,7 @@ import Menu from "./pages/meals/Meals";
 import Rooms from "./pages/Rooms/Rooms";
 import Staffs from "./pages/staffs/Staffs";
 import Tenants from "./pages/tenants/Tenants";
+import Uprofile from "./pages/Uprofile/Uprofile";
 import Navbar from "./components/navbar/Navbar";
 import Sidebar from "./components/sidebar/Sidebar";
 import { useAuth } from "./context/AuthContext";
@@ -86,6 +87,16 @@ useEffect(()=>{
               </RequireAuth>
             }
           />
+
+          <Route
+            path="Uprofile"
+            element={
+              <RequireAuth>
+                <Uprofile />
+              </RequireAuth>
+            }
+          />
+          
           <Route
             path="settings"
             element={
