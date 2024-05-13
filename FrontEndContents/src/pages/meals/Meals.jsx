@@ -21,6 +21,11 @@ function Meals() {
   const dbref = collection(db, "MEALS");
 
   const add = async () => {
+    if (!validateDay()) {
+      alert("Day field cannot be empty.");
+      return;
+    }
+
     const existingDay = fetchData.find(item => item.Day === day);
     if (existingDay) {
       const updateConfirmation = window.confirm("Meal plan for this day already exists. Do you want to update it?");
@@ -81,6 +86,11 @@ function Meals() {
 
   const update = async () =>{
     try {
+      if (!validateDay()) {
+        alert("Day field cannot be empty.");
+        return;
+      }
+
       if (!validateFields()) {
         alert("Please fill in all fields");
         return;
@@ -110,6 +120,10 @@ function Meals() {
       lunchn.trim() !== "" &&
       dinnern.trim() !== ""
     );
+  };
+
+  const validateDay = () => {
+    return day.trim() !== "";
   };
 
   return (
