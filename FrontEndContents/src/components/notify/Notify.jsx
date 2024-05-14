@@ -48,7 +48,7 @@ function Notify({ onClose }) {
             ></textarea>
             <div className="button-group">
               <button className="saveButton" onClick={handleSave}>
-                Save
+                Send
               </button>
               <button className="cancelButton" onClick={handleCancel}>
                 Cancel
