@@ -173,7 +173,7 @@ function Widget({ type }) {
       </div>
       <div className="right">
         <div className="percentage positive" style={{color:diff>=0?"green":"red"}}>
-          {(data.query!="Room" && data.query!="Transaction") && (diff>=0?<KeyboardArrowUpOutlinedIcon />:<KeyboardArrowDownOutlinedIcon/>)}
+          {(data.query!="Room" && data.query!="Transaction") &&  (diff>=0?<KeyboardArrowUpOutlinedIcon />:<KeyboardArrowDownOutlinedIcon/>)}
           {(data.query!="Room" && data.query!="Transaction") && `${diff}%`}
         </div>
         {data.icon}
