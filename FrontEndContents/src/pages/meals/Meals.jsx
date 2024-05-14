@@ -41,14 +41,26 @@ function Meals() {
       return;
     }
 
+    const snapshot = await getDocs(collection(db, "MEALS"));
+    const existingDay = snapshot.docs.find(doc => doc.data().Day === day);
     
-
-    const existingDay = fetchData.find(item => item.Day === day);
     if (existingDay) {
+      const existingId = existingDay.id;
       const updateConfirmation = window.confirm("Meal plan for this day already exists. Do you want to update it?");
+      
       if (updateConfirmation) {
-        setId(existingDay.id);
-        update();
+        await updateDoc(doc(db, "MEALS", existingId), {
+          Day: day,
+          BreakfastV: breakfastv,
+          LunchV: lunchv,
+          DinnerV: dinnerv,
+          BreakfastN: breakfastn,
+          LunchN: lunchn,
+          DinnerN: dinnern
+        });
+        
+        alert("Data Updated Successfully"); 
+        window.location.reload();
       }
     } else {
       const adddata = await addDoc(dbref, {
@@ -60,6 +72,7 @@ function Meals() {
         LunchN: lunchn,
         DinnerN: dinnern
       });
+      
       if (adddata) {
         alert("Data Added Successfully");
         window.location.reload();
