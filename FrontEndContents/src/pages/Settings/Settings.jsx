@@ -34,7 +34,7 @@ function Settings() {
     retypedNewPassword: "",
   });
   const [firebasePassword, setFirebasePassword] = useState("");
-  const [error,setError]=useState("")
+  const [error, setError] = useState("");
   const [userImage, setUserImage] = useState("");
   const navigate = useNavigate();
 
@@ -56,7 +56,7 @@ function Settings() {
         setUsername(staffDocSnapshot.data().username);
         setCountry(staffDocSnapshot.data().country);
         setAddress(staffDocSnapshot.data().address);
-        setFirebasePassword(userDocSnapshot.data().password);
+        setFirebasePassword(staffDocSnapshot.data().password);
         setUserImage(staffDocSnapshot.data().img);
       } else if (adminDocSnapshot.exists()) {
         setUsername(adminDocSnapshot.data().username);
@@ -87,17 +87,24 @@ function Settings() {
         return;
       } else {
         try {
-          const credential = EmailAuthProvider.credential(currentUser.email, passwords.currentPassword);
+          const credential = EmailAuthProvider.credential(
+            currentUser.email,
+            passwords.currentPassword
+          );
           await reauthenticateWithCredential(currentUser, credential);
           await updatePassword(currentUser, passwords.newPassword);
-          const userRef = doc(db, "residents", currentUser.uid);
-          const staffRef = doc(db, "staffs", currentUser.uid);
+          let userRef;
+          if (residentSnapshot.exists()) {
+            userRef = doc(db, "residents", currentUser.uid);
+          } else if (staffSnapshot.exists()) {
+            userRef = doc(db, "staffs", currentUser.uid);
+          } else if (adminDocSnapshot.exists()) {
+            userRef = doc(db, "Admin", currentUser.uid);
+          }
           const residentSnapshot = await getDoc(userRef);
-          const staffSnapshot = await getDoc(staffRef);
-          const adminDocRef = doc(db, "Admin", currentUser.uid);
-          const adminDocSnapshot = await getDoc(adminDocRef);
-          setError("");
-          handleImageEdit();
+          const staffSnapshot = await getDoc(userRef);
+          const adminDocSnapshot = await getDoc(userRef);
+
           if (residentSnapshot.exists()) {
             await updateDoc(userRef, {
               password: passwords.newPassword,
@@ -105,7 +112,9 @@ function Settings() {
               country: country,
               address: address,
             });
-            toast.success('Saved Changes', {
+            setError("");
+            handleImageEdit();
+            toast.success("Saved Changes", {
               position: "top-right",
               autoClose: 5000,
               hideProgressBar: false,
@@ -115,16 +124,16 @@ function Settings() {
               progress: undefined,
               theme: "light",
               transition: Bounce,
-              });
+            });
             navigate(-1);
           } else if (staffSnapshot.exists()) {
-            await updateDoc(staffRef, {
+            await updateDoc(userRef, {
               password: passwords.newPassword,
               username: username,
               country: country,
               address: address,
             });
-            toast.success('Saved Changes', {
+            toast.success("Saved Changes", {
               position: "top-right",
               autoClose: 5000,
               hideProgressBar: false,
@@ -134,29 +143,28 @@ function Settings() {
               progress: undefined,
               theme: "light",
               transition: Bounce,
-              });
+            });
             navigate(-1);
-          } else if(adminDocSnapshot.exists()){
-              await updateDoc(adminDocRef,{
-                password: passwords.newPassword,
-                username: username,
-                country: country,
-                address: address,
-              })
-              toast.success('Saved Changes', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                transition: Bounce,
-                });
-              navigate(-1);
-          }
-          else {
+          } else if (adminDocSnapshot.exists()) {
+            await updateDoc(userRef, {
+              password: passwords.newPassword,
+              username: username,
+              country: country,
+              address: address,
+            });
+            toast.success("Saved Changes", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              transition: Bounce,
+            });
+            navigate(-1);
+          } else {
             setError("User document not found.");
             console.log("User document not found.");
             return;
@@ -168,7 +176,6 @@ function Settings() {
       }
     } else if (passwords.newPassword == "") {
       try {
-        // await updatePassword(currentUser, passwords.newPassword);
         const userRef = doc(db, "residents", currentUser.uid);
         const staffRef = doc(db, "staffs", currentUser.uid);
         const adminDocRef = doc(db, "Admin", currentUser.uid);
@@ -176,14 +183,14 @@ function Settings() {
         const residentSnapshot = await getDoc(userRef);
         const staffSnapshot = await getDoc(staffRef);
         handleImageEdit();
-        setError("")
+        setError("");
         if (residentSnapshot.exists()) {
           await updateDoc(userRef, {
             username: username,
             country: country,
             address: address,
           });
-          toast.success('Saved Changes', {
+          toast.success("Saved Changes", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -193,7 +200,7 @@ function Settings() {
             progress: undefined,
             theme: "light",
             transition: Bounce,
-            });
+          });
           navigate(-1);
         } else if (staffSnapshot.exists()) {
           await updateDoc(staffRef, {
@@ -201,7 +208,7 @@ function Settings() {
             country: country,
             address: address,
           });
-          toast.success('Saved Changes', {
+          toast.success("Saved Changes", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -211,28 +218,27 @@ function Settings() {
             progress: undefined,
             theme: "light",
             transition: Bounce,
-            });
+          });
           navigate(-1);
-        } else if(adminDocSnapshot.exists()){
-            await updateDoc(adminDocRef,{
-              username: username,
-              country: country,
-              address: address,
-            })
-            toast.success('Saved Changes', {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-              transition: Bounce,
-              });
-            navigate(-1);
-        }
-        else {
+        } else if (adminDocSnapshot.exists()) {
+          await updateDoc(adminDocRef, {
+            username: username,
+            country: country,
+            address: address,
+          });
+          toast.success("Saved Changes", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+          navigate(-1);
+        } else {
           setError("User document not found.");
           console.log("User document not found.");
           return;
@@ -253,29 +259,53 @@ function Settings() {
           "state_changed",
           (snapshot) => {},
           (error) => {
-            switch (error.code) {
-              case "storage/unauthorized":
-                break;
-              case "storage/canceled":
-                break;
-              case "storage/unknown":
-                break;
-            }
+            console.error("Error uploading image:", error);
+            // Display an error toast if there's an issue with the upload
+            toast.error("Error uploading image. Please try again.", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              transition: Bounce,
+            });
           },
-          () => {
-            getDownloadURL(uploadTask.snapshot.ref).then(
-              async (downloadURL) => {
-                const userRef = doc(db, "residents", currentUser.uid);
-                await updateDoc(userRef, { img: downloadURL });
-
-                // Update the img field in staffs collection
-                const staffRef = doc(db, "staffs", currentUser.uid);
-                await updateDoc(staffRef, { img: downloadURL });
-
-                const adminRef = doc(db, "Admin", currentUser.uid);
-                await updateDoc(adminRef, { img: downloadURL });
+          async () => {
+            try {
+              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+              const residentDocRef = doc(db, "residents", currentUser.uid);
+              const residentSnapshot = await getDoc(residentDocRef);
+              const staffDocRef = doc(db, "staffs", currentUser.uid);
+              const staffSnapshot = await getDoc(staffDocRef);
+              const adminDocRef = doc(db, "Admin", currentUser.uid);
+              const adminDocSnapshot = await getDoc(adminDocRef);
+              let userRef;
+              if (residentSnapshot.exists()) {
+                userRef = doc(db, "residents", currentUser.uid);
+              } else if (staffSnapshot.exists()) {
+                userRef = doc(db, "staffs", currentUser.uid);
+              } else if (adminDocSnapshot.exists()) {
+                userRef = doc(db, "Admin", currentUser.uid);
               }
-            );
+              await updateDoc(userRef, { img: downloadURL });
+            } catch (error) {
+              console.error("Error getting download URL:", error);
+              // Display an error toast if there's an issue with getting the download URL
+              toast.error("Error updating profile picture. Please try again.", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+              });
+            }
           }
         );
       }

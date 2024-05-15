@@ -3,7 +3,16 @@ import { db, auth } from "../../context/firebase";
 import "./userDashboard.scss";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
-import { onSnapshot, collection, doc, getDoc, query, where, getDocs } from "firebase/firestore";
+import {
+  onSnapshot,
+  collection,
+  doc,
+  getDoc,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
+import { ToastContainer } from "react-toastify";
 
 function UserDashboard() {
   const [notifications, setNotifications] = useState([]);
@@ -16,7 +25,9 @@ function UserDashboard() {
         const user = auth.currentUser;
         if (user) {
           const email = user.email;
-          const querySnapshot = await getDocs(query(collection(db, 'residents'), where('email', '==', email)));
+          const querySnapshot = await getDocs(
+            query(collection(db, "residents"), where("email", "==", email))
+          );
           if (!querySnapshot.empty) {
             const userData = querySnapshot.docs[0].data();
             setUserDisplayName(userData.displayName);
@@ -66,7 +77,7 @@ function UserDashboard() {
           );
           setNotifications(notificationData);
         });
-        return () => unsubscribe(); 
+        return () => unsubscribe();
       } catch (error) {
         console.error("Error fetching user data:", error);
         setError(error.message);
@@ -114,6 +125,7 @@ function UserDashboard() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 }
