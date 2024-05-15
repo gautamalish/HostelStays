@@ -22,6 +22,7 @@ import Tablefunc from "./components/table/Table"; // Import Tablefunc component
 import { useNewAuth } from "./context/AnotherContext";
 import Settings from "./pages/Settings/Settings";
 import UserDashboard from "./pages/userDashboard/UserDashboard";
+import Unauthorized from "./pages/MissingRoute/Unauthorized";
 function App() {
 const [showHamSidebar,setShowHamSidebar]=useState(false)
 const [showHamIcon,setShowHamIcon]=useState(false)
@@ -54,6 +55,10 @@ useEffect(()=>{
   const RequireAuth = ({ children }) => {
     return currentUser ? children : <Navigate to="/" />;
   };
+  const RequireAdmin = ({ children }) => {
+    const isAdmin = currentUser && currentUser.email === "np03cs4a220120@heraldcollege.edu.np";
+    return isAdmin ? children : <Navigate to="/" />;
+  };
   console.log(currentUser)
   return (
     <div className="mainContainer">
@@ -66,6 +71,7 @@ useEffect(()=>{
             element={
               <RequireAuth>
               {currentUser && currentUser.email === "np03cs4a220120@heraldcollege.edu.np" ? (
+              <RequireAdmin>
                 <Home
                   isWideScreen={isWideScreen}
                   showHamIcon={showHamIcon}
@@ -73,6 +79,7 @@ useEffect(()=>{
                   setShowHamSidebar={setShowHamSidebar}
                   showHamSidebar={showHamSidebar}
                 />
+                </RequireAdmin>
               ) : currentUser ? (
                 <UserDashboard />
               ) : null}
@@ -124,17 +131,17 @@ useEffect(()=>{
           <Route
             path="new"
             element={
-              <RequireAuth>
+              <RequireAdmin>
                 <New inputs={userInputs} title="Add New Resident" />
-              </RequireAuth>
+              </RequireAdmin>
             }
           />
           <Route
             path="newstaff"
             element={
-              <RequireAuth>
+              <RequireAdmin>
                 <NewStaff inputs={userInputs} title="Add New Staff" />
-              </RequireAuth>
+              </RequireAdmin>
             }
           />
           <Route
@@ -155,6 +162,7 @@ useEffect(()=>{
             }
           />
         </Route>
+        <Route path="*" element={<Unauthorized/>}/>
       </Routes>
     </div>
   );
