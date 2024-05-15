@@ -32,7 +32,7 @@ function Sidebar({ setShowLogout }) {
           <NavLink to="/rooms" className="navlink">
               <li>
                 <MeetingRoomIcon className="icon"/>
-                <span>Rooms</span>
+                <span>Room</span>
                 </li>
             </NavLink>
           <NavLink to="/menu" className="navlink">

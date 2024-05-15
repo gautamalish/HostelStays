@@ -5,6 +5,52 @@
 
         .uprofileContents{
             margin: 1rem;
+            h1{
+                font-weight: bold;
+                color: #232323;
+                font-size: 25px;
+                margin-bottom: 30px;
+            }
+            margin-left: 40px;
         }
     }
 }
+
+.profile{
+    margin-bottom: 30px;
+}
+.profileImg{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+h4{
+   font-size: 17px; 
+}
+
+.box{
+    margin-bottom: 20px;
+    
+}
+.box input{
+    padding: 5px;
+    width: 30%;
+    border: none;
+    outline: none;
+    background-color: aliceblue;
+}
+
+
+p{
+    color: grey;
+    font-size: 14px;
+}
+
+label{
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: 17px;
+}
+
