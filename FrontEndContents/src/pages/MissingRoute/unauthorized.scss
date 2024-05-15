@@ -17,10 +17,11 @@
       margin-bottom: 2rem;
     }
   
-    a {
+    .back{
       font-size: 1.2rem;
       color: #007bff;
       text-decoration: none;
+      cursor: pointer;
   
       &:hover {
         text-decoration: underline;
