@@ -77,6 +77,16 @@ const Rooms = () => {
         return !querySnapshot.empty;
     };
 
+    // Validate room number
+    const validateRoomNumber = (value) => {
+        if (/^\d+$/.test(value)) {
+            setRoomNumberError("");
+            setRoom(value);
+        } else {
+            setRoomNumberError("Room number must be numeric.");
+        }
+    };
+
     // Add room to Firestore
     const add = async () => {
         if (!room.trim()) {
@@ -206,7 +216,7 @@ const Rooms = () => {
                                     placeholder='Room Number'
                                     autoComplete='off'
                                     value={room}
-                                    onChange={(e) => setRoom(e.target.value)}
+                                    onChange={(e) => validateRoomNumber(e.target.value)}
                                 />
                                 {roomNumberError && <p className="error">{roomNumberError}</p>}
                                 {roomExistsError && <p className="error">{roomExistsError}</p>}
