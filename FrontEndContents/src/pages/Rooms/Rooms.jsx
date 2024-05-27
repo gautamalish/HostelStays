@@ -7,21 +7,24 @@ import './Rooms.scss';
 import { doc, addDoc, collection, updateDoc, deleteDoc, getDocs, query, where, onSnapshot } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // import necessary storage functions
 import { useAuth } from "../../context/AuthContext";
+
 const Rooms = () => {
     const [room, setRoom] = useState("");
     const [status, setStatus] = useState("");
     const [occby, setOccby] = useState("");
     const [fetchData, setFetchData] = useState([]);
     const [id, setId] = useState("");
-    const {currentUser}=useAuth();
+    const { currentUser } = useAuth();
     const [residentNames, setResidentNames] = useState([]);
     const [roomNumberError, setRoomNumberError] = useState("");
     const [roomExistsError, setRoomExistsError] = useState("");
     const [joinedDate, setJoinedDate] = useState("");
     const [expireDate, setExpireDate] = useState("");
     const [roomImage, setRoomImage] = useState(null); // State for room image
+    const [userDisplayName, setUserDisplayName] = useState("");
+    const [isAdmin, setIsAdmin] = useState(false);
 
-    // Fetch resident names from Firestore
+    // Fetch resident names and current user's displayName from Firestore
     useEffect(() => {
         const fetchResidentNames = async () => {
             try {
@@ -29,26 +32,43 @@ const Rooms = () => {
                 const residentsSnapshot = await getDocs(residentsRef);
                 const names = residentsSnapshot.docs.map(doc => doc.data().displayName);
                 setResidentNames(names);
+
+                // Get current user's displayName
+                const currentUserEmail = currentUser.email;
+                const currentUserDoc = residentsSnapshot.docs.find(doc => doc.data().email === currentUserEmail);
+                if (currentUserDoc) {
+                    setUserDisplayName(currentUserDoc.data().displayName);
+                }
+
+                // Check if current user is admin
+                if (currentUserEmail === "np03cs4a220120@heraldcollege.edu.np") {
+                    setIsAdmin(true);
+                }
             } catch (error) {
                 console.error("Error fetching resident names:", error);
             }
         };
 
         fetchResidentNames();
-    }, []);
+    }, [currentUser]);
 
-    //creating databaseref
+    // Firestore collection reference
     const dbref = collection(db, "Room");
 
     // Fetch room data and subscribe to real-time updates
     useEffect(() => {
         const unsubscribe = onSnapshot(dbref, (snapshot) => {
             const fetchdata = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            setFetchData(fetchdata);
+            if (isAdmin) {
+                setFetchData(fetchdata);
+            } else {
+                const filteredData = fetchdata.filter(data => data.Occupied === userDisplayName);
+                setFetchData(filteredData);
+            }
         });
 
         return () => unsubscribe();
-    }, []);
+    }, [isAdmin, userDisplayName]);
 
     // Check if room number already exists
     const isRoomNumberExists = async (roomNumber) => {
@@ -57,62 +77,58 @@ const Rooms = () => {
         return !querySnapshot.empty;
     };
 
-    //storing data to database
+    // Add room to Firestore
     const add = async () => {
-        // Check if room number is empty
         if (!room.trim()) {
             alert("Room number should not be empty");
             return;
         }
 
-        // Check if room number already exists
         const roomExists = await isRoomNumberExists(room);
         if (roomExists) {
             alert("Room already exists!");
             return;
         }
 
-        // Check authorization
         if (!currentUser || currentUser.email !== "np03cs4a220120@heraldcollege.edu.np") {
             alert("You are not authorized to perform this action.");
             return;
         }
 
-        // Upload image to Firestore Storage
-        const storageRef = ref(storage, `room_images/${roomImage.name}`);
-        const uploadTask = uploadBytes(storageRef, roomImage);
+        if (roomImage) {
+            const storageRef = ref(storage, `room_images/${roomImage.name}`);
+            const uploadTask = uploadBytes(storageRef, roomImage);
 
-        uploadTask.then((snapshot) => {
-            console.log('File uploaded successfully');
-            // Get the download URL after upload completion
-            getDownloadURL(snapshot.ref).then((downloadURL) => {
-                // Add room data to Firestore with image URL
-                addRoomToFirestore(downloadURL);
+            uploadTask.then((snapshot) => {
+                getDownloadURL(snapshot.ref).then((downloadURL) => {
+                    addRoomToFirestore(downloadURL);
+                });
+            }).catch((error) => {
+                console.error("Error uploading image:", error);
             });
-        }).catch((error) => {
-            // Handle unsuccessful uploads
-            console.error("Error uploading image:", error);
-        });
+        } else {
+            addRoomToFirestore(null);
+        }
+    };
 
-        const addRoomToFirestore = async (imageUrl) => {
-            const adddata = await addDoc(dbref, { 
-                Room: room, 
-                Status: status, 
+    const addRoomToFirestore = async (imageUrl) => {
+        try {
+            await addDoc(dbref, {
+                Room: room,
+                Status: status,
                 Occupied: occby,
                 JoinedDate: joinedDate,
                 ExpireDate: expireDate,
-                RoomImageURL: imageUrl // Store image URL in Firestore
+                RoomImageURL: imageUrl
             });
-            if (adddata) {
-                alert("Room Added Successfully");
-            } else {
-                alert("Error occurred while adding room");
-            }
-        };
+            alert("Room Added Successfully");
+        } catch (error) {
+            alert("Error occurred while adding room");
+        }
     };
 
-    //pass update the data
-    const passData = async (id) => {
+    // Update room data
+    const passData = (id) => {
         const matchId = fetchData.find(data => data.id === id);
         if (matchId) {
             setRoom(matchId.Room);
@@ -122,32 +138,35 @@ const Rooms = () => {
             setExpireDate(matchId.ExpireDate);
             setId(matchId.id);
         } else {
-            console.error("Tenant not found with ID:", id);
+            console.error("Room not found with ID:", id);
         }
     };
 
-    // Confirmation before update
     const confirmUpdate = async () => {
         if (window.confirm("Are you sure you want to update this Room?")) {
             await update();
         }
     };
 
-    // Confirmation before delete
     const confirmDelete = async (id) => {
         if (window.confirm("Are you sure you want to delete this Room?")) {
             await del(id);
         }
     };
 
-    // update data base
     const update = async () => {
         try {
             if (!id) {
                 throw new Error("Document ID is empty or undefined.");
             }
             const updateref = doc(dbref, id);
-            await updateDoc(updateref, { Room: room, Status: status, Occupied: occby, JoinedDate: joinedDate, ExpireDate: expireDate });
+            await updateDoc(updateref, {
+                Room: room,
+                Status: status,
+                Occupied: occby,
+                JoinedDate: joinedDate,
+                ExpireDate: expireDate
+            });
             alert("Update successful");
         } catch (error) {
             console.error("Error updating room:", error);
@@ -155,7 +174,6 @@ const Rooms = () => {
         }
     };
 
-    //deleting room from database
     const del = async (id) => {
         const delref = doc(dbref, id);
         try {
@@ -166,33 +184,40 @@ const Rooms = () => {
         }
     };
 
-    // Handler to automatically set status based on "Occupied by" field
     const handleOccupiedChange = (e) => {
         const value = e.target.value;
         setOccby(value);
-        // Automatically set status based on "Occupied by" field
         setStatus(value.trim() !== "" ? "Occupied" : "Not Occupied");
     };
 
     return (
-        <>
         <div className='rooms'>
-            <Sidebar/>
+            <Sidebar />
             <div className="roomscontent">
-                <Navbar/>
-
+                <Navbar />
                 <div className='roomsmain'>
-                    {currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
+                    {isAdmin && (
                         <div className="form_container">
-                            <h2> Add / Update Room</h2>
+                            <h2>Add / Update Room</h2>
                             <div className="box">
-                                <input className='roomno' type='text' placeholder='Room Number' autoComplete='off' value={room} onChange={(e) => setRoom(e.target.value)}></input>
+                                <input
+                                    className='roomno'
+                                    type='text'
+                                    placeholder='Room Number'
+                                    autoComplete='off'
+                                    value={room}
+                                    onChange={(e) => setRoom(e.target.value)}
+                                />
                                 {roomNumberError && <p className="error">{roomNumberError}</p>}
                                 {roomExistsError && <p className="error">{roomExistsError}</p>}
                             </div>
                             <div className="box">
                                 <label htmlFor="roomImage">Image:</label>
-                                <input type="file" id="roomImage" onChange={(e) => setRoomImage(e.target.files[0])} />
+                                <input
+                                    type="file"
+                                    id="roomImage"
+                                    onChange={(e) => setRoomImage(e.target.files[0])}
+                                />
                             </div>
                             <div className="box">
                                 <label htmlFor="occupiedBy">Occupied by:</label>
@@ -208,11 +233,21 @@ const Rooms = () => {
                                 <>
                                     <div className="box">
                                         <label htmlFor="joinedDate">Join Date:</label>
-                                        <input type="date" id="joinedDate" value={joinedDate} onChange={(e) => setJoinedDate(e.target.value)} />
+                                        <input
+                                            type="date"
+                                            id="joinedDate"
+                                            value={joinedDate}
+                                            onChange={(e) => setJoinedDate(e.target.value)}
+                                        />
                                     </div>
                                     <div className="box">
                                         <label htmlFor="expireDate">Expire Date:</label>
-                                        <input type="date" id="expireDate" value={expireDate} onChange={(e) => setExpireDate(e.target.value)} />
+                                        <input
+                                            type="date"
+                                            id="expireDate"
+                                            value={expireDate}
+                                            onChange={(e) => setExpireDate(e.target.value)}
+                                        />
                                     </div>
                                 </>
                             )}
@@ -247,7 +282,7 @@ const Rooms = () => {
                                                 <h3>Expire Date: {data.ExpireDate}</h3>
                                             </>
                                         )}
-                                        {currentUser && currentUser.email === "np03cs4a220120@heraldcollege.edu.np" && (
+                                        {isAdmin && (
                                             <>
                                                 <button onClick={() => passData(data.id)}>UPDATE</button>
                                                 <button onClick={() => confirmDelete(data.id)}>DELETE</button>
@@ -260,7 +295,6 @@ const Rooms = () => {
                 </div>
             </div>
         </div>
-        </>
     );
 };
 
